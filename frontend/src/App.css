@@ -2,7 +2,7 @@
   --font-color: white;
   --screen-width: 1920px;
   --screen-height: 1100px;
-  --body-background-image: url(/src/Assets/gyeongbok-palace_for_bg_1920-1079.jpg)
+  --body-background-image: url(/src/Assets/Images/gyeongbok-palace_for_bg_1920-1079.jpg)
 }
 
 body {
@@ -28,17 +28,18 @@ header {
 }
 
 main {
-  height: calc(var(--screen-height) - 10vh);
+  height: calc(var(--screen-height) - 15vh);
 }
 
 /* Scenes */
 main > * {
   position: absolute;
+  top: -100vh;
   width: 100%;
-  height: calc(100% - 10vh + 5px);
+  height: calc(100% - 15vh + 5px);
 }
 
 footer {
   background-color: #183a86;
-  min-height: 5vh;
+  min-height: 10vh;
 }

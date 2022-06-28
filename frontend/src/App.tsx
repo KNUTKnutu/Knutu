@@ -1,21 +1,19 @@
 import { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
-import GameScene from "/src/Scenes/GameScene/GameScene";
 import IntroScene from "/src/Scenes/IntroScene/IntroScene";
 import LobbyScene from "/src/Scenes/LobbyScene/LobbyScene";
+import GameScene from "/src/Scenes/GameScene/GameScene";
 
-function App() {
-  const [count, setCount] = useState(0)
-
+const App : React.FC = () => {
   return (
     <div className="App">
       <header>
       </header>
       <main>
-        <GameScene />
         <IntroScene />
         <LobbyScene />
+        <GameScene />
       </main>
       <footer>
       </footer>
@@ -23,4 +21,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
