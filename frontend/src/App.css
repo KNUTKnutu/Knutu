@@ -2,11 +2,12 @@
   --font-color: white;
   --screen-width: 1920px;
   --screen-height: 1100px;
+  --body-background-image: url(/src/Assets/gyeongbok-palace_for_bg_1920-1079.jpg)
 }
 
 body {
   color: var(--font-color);
-  background-image: url(/src/Assets/gyeongbok-palace_for_bg_1920-1079.jpg);
+  background-image: var(--body-background-image);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -15,8 +16,6 @@ body {
 }
 
 .App {
-  text-align: center;
-  resize: none;
   width: var(--screen-width);
   height: var(--screen-height);
   overflow: hidden;
@@ -35,7 +34,8 @@ main {
 /* Scenes */
 main > * {
   position: absolute;
-  top: -100vh;
+  width: 100%;
+  height: calc(100% - 10vh + 5px);
 }
 
 footer {
