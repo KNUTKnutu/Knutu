@@ -1,27 +1,44 @@
+:root {
+  --font-color: white;
+  --screen-width: 1920px;
+  --screen-height: 1100px;
+}
+
+body {
+  color: var(--font-color);
+  background-image: url(/src/Assets/gyeongbok-palace_for_bg_1920-1079.jpg);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  opacity: 1;
+  overflow: hidden;
+}
+
 .App {
   text-align: center;
   resize: none;
-  width: 1920px;
-  height: 1080px;
+  width: var(--screen-width);
+  height: var(--screen-height);
   overflow: hidden;
 }
 
 header {
   background-color: #282c34;
-  min-height: 10vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-  resize: none;
+  min-height: 5vh;
+  max-height: 5vh;
 }
 
 main {
+  height: calc(var(--screen-height) - 10vh);
+}
 
+/* Scenes */
+main > * {
+  position: absolute;
+  top: -100vh;
 }
 
 footer {
-  
+  background-color: #183a86;
+  min-height: 5vh;
 }
