@@ -1,0 +1,32 @@
+:root {
+  --font-color: white;
+  --screen-width: 1920px;
+  --screen-height: 1100px;
+  --body-background-image: url(/src/Assets/Images/gyeongbok-palace_for_bg_1920-1079.jpg);
+
+  /* Dim */
+
+  /* Popup */
+  --popup-width: 360px;
+  --popup-height: 600px;
+  --container-gap: 12px;
+  --container-radius: 2px;
+  --container-background-color: beige;
+  --container-padding: 12px;
+
+  --text-wrapper-padding: 20px;
+
+  --text-color: black;
+
+  --button-wrapper-gap: 10px;
+
+  --button-padding: 4px;
+  --button-min-width: 120px;
+  --button-font-size: 1.125rem;
+  --button-font-weight: 600;
+  --button-radius: 8px;
+
+  --button-hover-background-color: lightgray;
+
+  --button-active-background-color: cyan;
+}

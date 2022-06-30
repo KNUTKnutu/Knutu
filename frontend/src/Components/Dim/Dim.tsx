@@ -1,9 +1,13 @@
 import { createPortal } from "react-dom";
 import "./Dim.css";
 
-const Dim = () => {
+interface Props {
+  children: JSX.Element;
+}
+
+const Dim = ({ children }: Props) => {
   const portal = document.getElementById("portal");
-  return portal && createPortal(<div className="dim">Dim</div>, portal);
+  return portal && createPortal(<div className="dim">{children}</div>, portal);
 };
 
 export default Dim;

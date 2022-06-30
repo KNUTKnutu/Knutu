@@ -1,10 +1,10 @@
-import { useState } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import IntroScene from "./Scenes/IntroScene/IntroScene";
 import LobbyScene from "./Scenes/LobbyScene/LobbyScene";
 import GameScene from "./Scenes/GameScene/GameScene";
-import Dim from "./Components/Dim/Dim";
+
+import TwoButton from "./Components/Popup/TwoButton";
+import OneButton from "./Components/Popup/OneButton";
 
 const App: React.FC = () => {
   return (
@@ -18,7 +18,8 @@ const App: React.FC = () => {
         </main>
         <footer></footer>
       </div>
-      <Dim></Dim>
+      <OneButton text="a" buttonText="b"></OneButton>
+      {/* <TwoButton text="a" leftButtonText="a" rightButtonText="b"></TwoButton> */}
     </>
   );
 };

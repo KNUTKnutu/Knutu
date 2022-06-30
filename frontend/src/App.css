@@ -1,9 +1,4 @@
-:root {
-  --font-color: white;
-  --screen-width: 1920px;
-  --screen-height: 1100px;
-  --body-background-image: url(/src/Assets/Images/gyeongbok-palace_for_bg_1920-1079.jpg)
-}
+@import "./variable.css";
 
 body {
   color: var(--font-color);
