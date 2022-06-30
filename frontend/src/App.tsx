@@ -7,6 +7,9 @@ import TwoButton from "./Components/Popup/TwoButton";
 import OneButton from "./Components/Popup/OneButton";
 
 const App: React.FC = () => {
+  const onClick = () => {
+    console.log("Good!");
+  };
   return (
     <>
       <div className="App">
@@ -18,7 +21,7 @@ const App: React.FC = () => {
         </main>
         <footer></footer>
       </div>
-      <OneButton text="a" buttonText="b"></OneButton>
+      <OneButton text="a" buttonText="a" callback={onClick}></OneButton>
       {/* <TwoButton text="a" leftButtonText="a" rightButtonText="b"></TwoButton> */}
     </>
   );
