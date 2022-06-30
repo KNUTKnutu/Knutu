@@ -1,24 +1,26 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
-import IntroScene from "/src/Scenes/IntroScene/IntroScene";
-import LobbyScene from "/src/Scenes/LobbyScene/LobbyScene";
-import GameScene from "/src/Scenes/GameScene/GameScene";
+import { useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import IntroScene from "./Scenes/IntroScene/IntroScene";
+import LobbyScene from "./Scenes/LobbyScene/LobbyScene";
+import GameScene from "./Scenes/GameScene/GameScene";
+import Dim from "./Components/Dim/Dim";
 
-const App : React.FC = () => {
+const App: React.FC = () => {
   return (
-    <div className="App">
-      <header>
-      </header>
-      <main>
-        <IntroScene />
-        <LobbyScene />
-        <GameScene />
-      </main>
-      <footer>
-      </footer>
-    </div>
-  )
-}
+    <>
+      <div className="App">
+        <header></header>
+        <main>
+          <IntroScene />
+          <LobbyScene />
+          <GameScene />
+        </main>
+        <footer></footer>
+      </div>
+      <Dim></Dim>
+    </>
+  );
+};
 
 export default App;
