@@ -1,26 +1,39 @@
-@import "../../variable.css";
+@import "../../../variable.css";
 
-.two_button_container {
+.dialog_container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: var(--container-gap);
-  width: var(--popup-width);
-  height: var(--popup-height);
+  width: var(--popup-width-dialog);
+  height: var(--popup-height-dialog);
   border-radius: var(--container-radius);
   background-color: var(--container-background-color);
   padding: var(--container-padding);
 }
 
-.text_wrapper {
+.element_wrapper {
   flex: 1;
   display: flex;
-  align-items: flex-start;
   width: 100%;
+  height: fit-content;
   border: 1px solid black;
-  color: var(--text-color);
-  padding: var(--text-wrapper-padding);
+  overflow-y: auto;
+  color: black;
+}
+
+.element_wrapper::-webkit-scrollbar {
+  width: 10px;
+}
+.element_wrapper::-webkit-scrollbar-thumb {
+  background-color: #2f3542;
+  border-radius: 10px;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+.element_wrapper::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
 .button_wrapper {
@@ -30,7 +43,10 @@
   gap: var(--button-wrapper-gap);
 }
 
-button {
+.popup_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: var(--button-padding);
   min-width: var(--button-min-width);
   font-size: var(--button-font-size);
@@ -40,13 +56,13 @@ button {
   outline: none;
 }
 
-button:hover {
-  background-color: lightgray;
+.popup_btn:hover {
+  background-color: var(--button-hover-background-color);
   animation: fade 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
   cursor: pointer;
 }
 
-button:active {
+.popup_btn:active {
   background-color: var(--button-active-background-color);
 }
 

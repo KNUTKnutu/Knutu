@@ -6,9 +6,7 @@
 
   /* Dim */
 
-  /* Popup */
-  --popup-width: 360px;
-  --popup-height: 600px;
+  /* Popup - Common */
   --container-gap: 12px;
   --container-radius: 2px;
   --container-background-color: beige;
@@ -29,4 +27,12 @@
   --button-hover-background-color: lightgray;
 
   --button-active-background-color: cyan;
+
+  /* Popup - Simple*/
+  --popup-width-simple: 360px;
+  --popup-height-simple: 600px;
+
+  /* Popup - Dialog */
+  --popup-width-dialog: 480px;
+  --popup-height-dialog: 720px;
 }

@@ -1,4 +1,4 @@
-@import "../../variable.css";
+@import "../../../variable.css";
 
 .one_button_container {
   display: flex;
@@ -6,8 +6,8 @@
   justify-content: center;
   align-items: center;
   gap: var(--container-gap);
-  width: var(--popup-width);
-  height: var(--popup-height);
+  width: var(--popup-width-simple);
+  height: var(--popup-height-simple);
   border-radius: var(--container-radius);
   background-color: var(--container-background-color);
   padding: var(--container-padding);
@@ -23,7 +23,10 @@
   padding: var(--text-wrapper-padding);
 }
 
-button {
+.popup_btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: var(--button-padding);
   min-width: var(--button-min-width);
   font-size: var(--button-font-size);
@@ -33,13 +36,13 @@ button {
   outline: none;
 }
 
-button:hover {
+.popup_btn:hover {
   background-color: var(--button-hover-background-color);
   animation: fade 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
   cursor: pointer;
 }
 
-button:active {
+.popup_btn:active {
   background-color: var(--button-active-background-color);
 }
 

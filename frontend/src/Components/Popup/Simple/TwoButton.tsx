@@ -1,4 +1,4 @@
-import Dim from "../Dim/Dim";
+import Dim from "../../Dim/Dim";
 import "./TwoButton.css";
 
 type Nullable<T> = T | null;
@@ -25,8 +25,12 @@ const TwoButton = ({
           <span>{text}</span>
         </div>
         <div className="button_wrapper">
-          <button onClick={leftButtonCallback}>{leftButtonText}</button>
-          <button onClick={rightButtonCallback}>{rightButtonText}</button>
+          <button className="popup_btn" onClick={leftButtonCallback}>
+            {leftButtonText}
+          </button>
+          <button className="popup_btn" onClick={rightButtonCallback}>
+            {rightButtonText}
+          </button>
         </div>
       </div>
     </Dim>

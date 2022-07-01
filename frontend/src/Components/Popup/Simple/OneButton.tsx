@@ -1,5 +1,4 @@
-import Dim from "../Dim/Dim";
-import OnButtonClick from "../../Assets/Audios/OnButtonClick.mp3";
+import Dim from "../../Dim/Dim";
 import "./OneButton.css";
 
 type Nullable<T> = T | null;
@@ -18,7 +17,9 @@ const OneButton = ({ text, buttonText, callback }: Props) => {
           <span>{text}</span>
         </div>
         <div className="button_wrapper">
-          <button onClick={callback}>{buttonText}</button>
+          <button className="popup_btn" onClick={callback}>
+            {buttonText}
+          </button>
         </div>
       </div>
     </Dim>
