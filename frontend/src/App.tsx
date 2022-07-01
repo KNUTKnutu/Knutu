@@ -7,30 +7,15 @@ import OneButton from "./Components/Popup/Simple/OneButton";
 
 const App: React.FC = () => {
   return (
-    <>
-      <div className="App">
-        <header></header>
-        <main>
-          <IntroScene />
-          <LobbyScene />
-          <GameScene />
-        </main>
-        <footer></footer>
-      </div>
-      <Dialog
-        main={
-          <div style={{ height: "800px" }}>
-            <div>a</div>
-            <div>a</div>
-            <div>a</div>
-            <div>a</div>
-            <div>a</div>
-            <div>a</div>
-          </div>
-        }
-        callback__OK={() => console.log("Good!")}
-      ></Dialog>
-    </>
+    <div className="App">
+      <header></header>
+      <main>
+        <IntroScene />
+        <LobbyScene />
+        <GameScene />
+      </main>
+      <footer></footer>
+    </div>
   );
 };
 
