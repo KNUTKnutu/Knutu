@@ -1,0 +1,3 @@
+app:
+  firebase-configuration-file: ./serviceAccountKey.json
+  firebase-bucket: knutu-3e04f.appspot.com

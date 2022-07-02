@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Firebase Configs ###
+serviceAccountKey.json // KNUT-16
+application.yml // KNUT-16
