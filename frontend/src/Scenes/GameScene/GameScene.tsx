@@ -2,12 +2,12 @@ import { SCENE__GAMESCENE } from "../../constant";
 import "./GameScene.css";
 
 interface Props {
-  isActiveGame: boolean;
+  isActive: boolean;
 }
 
-const GameScene = ({ isActiveGame }: Props): JSX.Element => {
+const GameScene = ({ isActive }: Props): JSX.Element => {
   return (
-    <div id={SCENE__GAMESCENE} className={`${isActiveGame && "active"}`}>
+    <div id={SCENE__GAMESCENE} className={isActive ? "active" : ""}>
       {SCENE__GAMESCENE}
     </div>
   );

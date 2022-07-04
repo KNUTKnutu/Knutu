@@ -6,30 +6,20 @@ import {
 } from "../../constant";
 import { currentSceneState } from "./atom";
 
-interface IsSceneStatesProps {
-  isActiveIntro: boolean;
-  isActiveLobby: boolean;
-  isActiveGame: boolean;
-}
-
-export const isSceneStates = selector<IsSceneStatesProps>({
-  key: "isSceneStates",
+export const sceneStatesState = selector({
+  key: "sceneStates",
   get: ({ get }) => {
     const currentScene = get(currentSceneState);
-    let result = {
-      isActiveIntro: false,
-      isActiveLobby: false,
-      isActiveGame: false,
-    };
+    let result = { intro: false, lobby: false, game: false };
     switch (currentScene) {
       case SCENE__INTROSCENE:
-        result = { ...result, isActiveIntro: true };
+        result = { ...result, intro: true };
         break;
       case SCENE__LOBBYSCENE:
-        result = { ...result, isActiveLobby: true };
+        result = { ...result, lobby: true };
         break;
       case SCENE__GAMESCENE:
-        result = { ...result, isActiveGame: true };
+        result = { ...result, game: true };
         break;
     }
     return result;

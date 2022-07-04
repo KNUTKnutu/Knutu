@@ -39,9 +39,9 @@ main > .active {
   animation: slide-down 2s cubic-bezier(0.165, 0.84, 0.44, 1) both;
 }
 
-/* main > :not(.active) {
+main > :not(.active) {
   animation: slide-up 2s cubic-bezier(0.165, 0.84, 0.44, 1) both;
-} */
+}
 
 footer {
   background-color: #183a86;

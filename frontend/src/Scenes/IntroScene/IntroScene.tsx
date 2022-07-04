@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SCENE__INTROSCENE } from "../../constant";
 import InitApplication from "../../Logic/InitApplication";
 import "./IntroScene.css";
 
 interface Props {
-  isActiveIntro: boolean;
+  isActive: boolean;
 }
 
 // fetch가 완료되면 Suspense안에 컴포넌트들을 보여줌
@@ -12,11 +12,12 @@ interface Props {
 // initialResource는 Promise가 아님. Suspense를 위한 객체.
 const initialResource = InitApplication();
 
-const IntroScene = ({ isActiveIntro }: Props): JSX.Element => {
+const IntroScene = ({ isActive }: Props): JSX.Element => {
   const [intro, setIntro] = useState(initialResource.intro.read());
   const { title } = intro;
+
   return (
-    <div id={SCENE__INTROSCENE} className={`${isActiveIntro && "active"}`}>
+    <div id={SCENE__INTROSCENE} className={isActive ? "active" : ""}>
       {SCENE__INTROSCENE}
     </div>
   );
