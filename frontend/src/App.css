@@ -27,14 +27,45 @@ main {
 }
 
 /* Scenes */
-main > * {
+main > div {
   position: absolute;
   top: -100vh;
   width: 100%;
   height: calc(100% - 25vh + 5px);
 }
 
+main > .active {
+  z-index: 100;
+  animation: slide-down 2s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+}
+
+/* main > :not(.active) {
+  animation: slide-up 2s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+} */
+
 footer {
   background-color: #183a86;
   min-height: 10vh;
+}
+
+footer > button:hover {
+  cursor: pointer;
+}
+
+@keyframes slide-up {
+  0% {
+    top: 5vh;
+  }
+  100% {
+    top: -100vh;
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    top: -100vh;
+  }
+  100% {
+    top: 5vh;
+  }
 }

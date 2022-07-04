@@ -35,4 +35,13 @@
   /* Popup - Dialog */
   --popup-width-dialog: 480px;
   --popup-height-dialog: 720px;
+
+  /* IntroScene */
+  --intro-background-color: red;
+
+  /* LobbyScene */
+  --lobby-background-color: yellow;
+
+  /* GameScene */
+  --game-background-color: cyan;
 }

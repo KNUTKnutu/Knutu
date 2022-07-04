@@ -1,21 +1,17 @@
 import "./App.css";
 import Splash from "./Components/Suspense/Splash";
-import IntroScene from "./Scenes/IntroScene/IntroScene";
-import LobbyScene from "./Scenes/LobbyScene/LobbyScene";
-import GameScene from "./Scenes/GameScene/GameScene";
 import React, { Suspense } from "react";
+import Main from "./Components/Main/Main";
+import Header from "./Components/Header/Header";
+import Footer from "./Components/Footer/Footer";
 
 const App: React.FC = () => {
   return (
     <div className="App">
       <Suspense fallback={<Splash />}>
-        <header></header>
-        <main>
-          <IntroScene />
-          <LobbyScene />
-          <GameScene />
-        </main>
-        <footer></footer>
+        <Header />
+        <Main />
+        <Footer />
       </Suspense>
     </div>
   );
