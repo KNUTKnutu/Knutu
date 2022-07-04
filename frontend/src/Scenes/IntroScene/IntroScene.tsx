@@ -1,9 +1,21 @@
-const IntroScene: React.FC = (): JSX.Element => {
-    return (
-        <div>
-            IntroScene
-        </div>
-    );
+import { useEffect, useState } from "react";
+import { FAKEAPI } from "../../constant";
+import InitApplication from "../../Logic/InitApplication";
+
+// fetch가 완료되면 Suspense안에 컴포넌트들을 보여줌
+// resource는 각 컴포넌트에서 필요로 하는 데이터들을 가지고 있어야 한다.
+// resource는 Promise가 아님. Suspense를 위한 객체.
+// const resource = InitApplication();
+const initialResource = InitApplication();
+
+const IntroScene = (): JSX.Element => {
+  const [intro, setIntro] = useState(initialResource.intro.read());
+  const { title } = intro;
+  return (
+    <div>
+      IntroScene<span>{title}</span>
+    </div>
+  );
 };
 
 export default IntroScene;
