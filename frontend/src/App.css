@@ -23,7 +23,7 @@ header {
 }
 
 main {
-  height: calc(var(--screen-height) - 15vh);
+  height: calc(var(--screen-height) - 25vh);
 }
 
 /* Scenes */
@@ -31,7 +31,7 @@ main > * {
   position: absolute;
   top: -100vh;
   width: 100%;
-  height: calc(100% - 15vh + 5px);
+  height: calc(100% - 25vh + 5px);
 }
 
 footer {
