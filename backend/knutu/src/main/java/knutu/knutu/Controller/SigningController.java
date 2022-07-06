@@ -6,11 +6,12 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.firebase.auth.FirebaseAuthException;
 
 import knutu.knutu.Service.FirebaseService;
-import knutu.knutu.Service.lib.classes.User;
+import knutu.knutu.Service.lib.classes.User.User;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,6 +41,9 @@ public class SigningController {
             if(firebaseInstance.checkDuplicatedId(id)) return "duplicated id";
             firebaseInstance.addUser(id, pw, name);
             return "user added";
+        } catch(InvocationTargetException e) {
+            e.getTargetException();
+            return "error while signing up";
         } catch (Exception e) {
             e.printStackTrace();
             return "error while signing up";
@@ -52,12 +56,19 @@ public class SigningController {
 
         try {
             user = FirebaseService.getFirebaseInstance().getUser(id);
+        } catch(InvocationTargetException e) {
+            e.getTargetException();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if(user.getPw() != pw) return null;
+        if(user == null || user.getPw() != pw) return null;
 
         return user;
+    }
+
+    @GetMapping("/deleteUser")
+    public boolean deleteUser(@RequestParam("id") String id) throws Exception {
+        return FirebaseService.getFirebaseInstance().deleteUser(id);
     }
 }

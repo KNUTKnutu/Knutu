@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -24,114 +26,141 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.firebase.cloud.StorageClient;
+import com.google.gson.JsonObject;
 
-import knutu.knutu.Service.lib.classes.User;
+import knutu.knutu.Service.lib.classes.User.Preference;
+import knutu.knutu.Service.lib.classes.User.User;
+import knutu.knutu.Service.lib.interfaces.FirebaseServiceInterface;
+import knutu.knutu.Service.lib.privates.privates;
 import lombok.extern.slf4j.Slf4j;
-
-interface firebaseService {
-    // PostContruct - Firebase Initializers
-    public void initFirebaseApp(); // Initializer of Firebase Service
-    public void initBucket();
-
-    // Users
-    public void addUser(String id, String pw, String name) throws Exception;
-    public User getUser(String id) throws Exception;
-    public void updateUser(String id, String pw, String name) throws Exception;
-    public void deleteUser(String id) throws Exception;
-
-    // Files
-    public String addFile(MultipartFile file, String fileName) throws IOException, FirebaseAuthException; // By adding file, it outputs its downloadable path
-    public String getFile(MultipartFile file, String fileName) throws IOException, FirebaseAuthException;
-    public void updateFile(MultipartFile file, String fileName) throws IOException, FirebaseAuthException;
-    public void deleteFile(String fileName) throws IOException, FirebaseAuthException;
-}
 
 @Slf4j
 @Service
-public class FirebaseService implements firebaseService {
+public class FirebaseService implements FirebaseServiceInterface {
     
     @Value("${app.firebase-bucket}")
     private String bucket;
     private Bucket firebaseBucket; // storage
     private Firestore db;
+    private FirebaseApp firebaseApp;
 
-    private final String COLLECTION__USER = "user";
-    private final String COLLECTION__FILE = "file";
+    private final String COLLECTION__USER = "User";
+    private final String COLLECTION__FILE = "File";
 
     public static final FirebaseService firebaseInstance = new FirebaseService();
     public static FirebaseService getFirebaseInstance() { return firebaseInstance; }
     
-    @PostConstruct // stands for the genesis of lifecycle in Java Bean
+    @PostConstruct
     public void initFirebaseApp() {
-        try {
-            FileInputStream serviceAccount;
-            FirebaseOptions options;
 
-            final String keyURL = "src/main/resources/serviceAccountKey.json";
-            final String dbURL = "https://knutu-3e04f-default-rtdb.asia-southeast1.firebasedatabase.app";
-            
-            serviceAccount = new FileInputStream(keyURL);
-            options = new FirebaseOptions.Builder()
-                    .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-                    .setDatabaseUrl(dbURL)
-                    .build();
+        List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
 
-            FirebaseApp.initializeApp(options);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(firebaseApps != null && firebaseApps.isEmpty() == false) {
+            for(FirebaseApp app : firebaseApps) {
+                if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
+                    firebaseApp = app;
+                }
+            }
+        }
+        else {
+            try {
+                FileInputStream serviceAccount;
+                FirebaseOptions options;
+    
+                String keyURL = privates.keyURL;
+                String dbURL = privates.dbURL;
+    
+                serviceAccount = new FileInputStream(keyURL);
+                options = new FirebaseOptions.Builder()
+                        .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                        .setDatabaseUrl(dbURL)
+                        .build();
+    
+                firebaseApp.initializeApp(options);
+    
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @PostConstruct
     public void initBucket() {
-        try {
-            this.firebaseBucket = StorageClient.getInstance().bucket(bucket);
-        } catch(Exception e) {
-            e.printStackTrace();
+        if(this.firebaseBucket == null) {
+            try {
+                this.firebaseBucket = StorageClient.getInstance().bucket(bucket);
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @PostConstruct
     public void initDB() {
-        try {
-            this.db = FirestoreClient.getFirestore();
-        } catch(Exception e) {
-            e.printStackTrace();
+        if(this.db == null) {
+            try {
+                this.db = FirestoreClient.getFirestore();
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     /* <!-- User */
     // Create
-    public void addUser(String id, String pw, String name) throws Exception {
+    public boolean addUser(String id, String pw, String name) throws Exception {
 
-        if(this.checkDuplicatedId(id)) return;
+        if(this.checkDuplicatedId(id)) return false;
 
+        Firestore fs = FirestoreClient.getFirestore();
+        
         User user = new User();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        Preference pref = new Preference();
+        pref.setLanguage(Preference.LANGUAGE__DEFAULT);
 
         user.setPw(pw);
         user.setName(name);
+        user.setPreference(pref);
+        user.setCreated_time(now);
+        user.setUpdated_time(now);
 
-        ApiFuture<WriteResult> apiFuture = db.collection(COLLECTION__USER).document(id).set(user);
+        ApiFuture<WriteResult> apiFuture = 
+            fs
+            .collection(COLLECTION__USER)
+            .document(id)
+            .set(user);
+
         log.info(apiFuture.get().getUpdateTime().toString());
+
+        return true;
     }
 
     // Read
     public User getUser(String id) throws Exception {
-        DocumentSnapshot userSnapshot = getUserSnapshot(id);
-
-        if(!userSnapshot.exists()) return null;
-
-        return userSnapshot.toObject(User.class);
+        try {
+            DocumentSnapshot userSnapshot = getUserSnapshot(id);
+    
+            if(!userSnapshot.exists()) return null;
+    
+            return userSnapshot.toObject(User.class);
+        } catch (NullPointerException e) {
+            return null;
+        }
     }
 
     // Update
-    public void updateUser(String id, String pw, String name) throws Exception {
+    public boolean updateUser(String id, String pw, String name) throws Exception {
+        return true;
     }
 
     // Delete
-    public void deleteUser(String id) throws Exception {
-        db.collection(COLLECTION__USER).document(id).delete();
+    public boolean deleteUser(String id) throws Exception {
+        Firestore fs = FirestoreClient.getFirestore();
+
+        ApiFuture<WriteResult> writeResult = fs.collection(COLLECTION__USER).document(id).delete();
+        return writeResult.isDone();
     }
 
     // Etcs
@@ -144,7 +173,11 @@ public class FirebaseService implements firebaseService {
     }
 
     public boolean checkDuplicatedId(String id) throws Exception {
-        return this.getUserSnapshot(id).exists();
+        try {
+            return this.getUserSnapshot(id).exists();
+        } catch (NullPointerException e) {
+            return false;
+        }
     }
     /* User --> */
 
@@ -166,11 +199,16 @@ public class FirebaseService implements firebaseService {
     }
 
     // Update
-    public void updateFile(MultipartFile file, String fileName) throws IOException, FirebaseAuthException {
+    public boolean updateFile(MultipartFile file, String fileName) throws IOException, FirebaseAuthException {
+        return true;
     }
 
     // Delete
-    public void deleteFile(String fileName) throws IOException, FirebaseAuthException {
+    public boolean deleteFile(String fileName) throws IOException, FirebaseAuthException {
+        return true;
     }
     /* File --> */
+
+    /* <!-- Private Functions */
+    /* Private Functions -->*/
 }
