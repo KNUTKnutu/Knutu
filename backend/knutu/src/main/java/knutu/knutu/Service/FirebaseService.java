@@ -40,8 +40,6 @@ public class FirebaseService implements FirebaseServiceInterface {
     
     @Value("${app.firebase-bucket}")
     private String bucket;
-    private Bucket firebaseBucket; // storage
-    private Firestore db;
     private FirebaseApp firebaseApp;
 
     private final String COLLECTION__USER = "User";
@@ -79,28 +77,6 @@ public class FirebaseService implements FirebaseServiceInterface {
                 firebaseApp.initializeApp(options);
     
             } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @PostConstruct
-    public void initBucket() {
-        if(this.firebaseBucket == null) {
-            try {
-                this.firebaseBucket = StorageClient.getInstance().bucket(bucket);
-            } catch(Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @PostConstruct
-    public void initDB() {
-        if(this.db == null) {
-            try {
-                this.db = FirestoreClient.getFirestore();
-            } catch(Exception e) {
                 e.printStackTrace();
             }
         }
@@ -151,7 +127,9 @@ public class FirebaseService implements FirebaseServiceInterface {
     }
 
     // Update
-    public boolean updateUser(String id, String pw, String name) throws Exception {
+    public boolean updateUser(User user) throws Exception {
+        Firestore fs = FirestoreClient.getFirestore();
+
         return true;
     }
 
@@ -165,7 +143,9 @@ public class FirebaseService implements FirebaseServiceInterface {
 
     // Etcs
     private DocumentSnapshot getUserSnapshot(String id) throws Exception {
-        DocumentReference docRefer = db.collection(COLLECTION__USER).document(id);
+        Firestore fs = FirestoreClient.getFirestore();
+
+        DocumentReference docRefer = fs.collection(COLLECTION__USER).document(id);
         ApiFuture<DocumentSnapshot> apiFuture = docRefer.get();
         DocumentSnapshot docSnapshot = apiFuture.get();
 
@@ -184,6 +164,9 @@ public class FirebaseService implements FirebaseServiceInterface {
     /* <!-- File */
     // Create
     public String addFile(MultipartFile file, String fileName) throws IOException, FirebaseAuthException {
+        
+        Bucket firebaseBucket = StorageClient.getInstance().bucket(bucket);
+
         InputStream content;
         Blob blob;
 
