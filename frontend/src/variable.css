@@ -3,14 +3,21 @@
   --screen-width: 1920px;
   --screen-height: 1080px;
 
+  /* Common */
+  --header-footer-bg-color: hsl(0, 0%, 26%);
+  --header-footer-color: hsl(0, 0%, 100%);
+  --header-footer-gutter-x: 48px;
+
   /* Header */
   --header-height: 7%;
+  --header-font-size: 15px;
 
   /* Main */
   --main-background-image: url(/src/Assets/Images/background_image.png);
 
   /* Footer */
   --footer-height: 12%;
+  --footer-font-size: 11px;
 
   /* Dim */
 

@@ -2,7 +2,7 @@
 
 body {
   color: var(--font-color);
-  /* overflow: hidden; */
+  overflow: hidden;
 }
 
 .App {
@@ -11,11 +11,6 @@ body {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-}
-
-header {
-  background-color: #282c34;
-  height: var(--header-height);
 }
 
 main {
@@ -38,7 +33,6 @@ main::before {
 
 /* Scenes */
 .scene {
-  z-index: 1;
   position: absolute;
   top: -200vh;
   width: 60%;
@@ -51,15 +45,6 @@ main::before {
 
 .scene.inactive {
   animation: scene-inactive 2s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-footer {
-  background-color: #183a86;
-  min-height: var(--footer-height);
-}
-
-footer > button:hover {
-  cursor: pointer;
 }
 
 @keyframes background-infinite {

@@ -1,0 +1,24 @@
+@import "../../variable.css";
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--header-footer-bg-color);
+  color: var(--header-footer-color);
+  padding: 0 var(--header-footer-gutter-x);
+  height: var(--header-height);
+}
+
+header > button {
+  border: 1px solid black;
+  border-radius: 4px;
+  padding: 12px;
+  font-size: var(--header-font-size);
+  font-weight: bold;
+}
+
+header > button:hover {
+  color: rgb(237, 77, 77);
+  cursor: pointer;
+}

@@ -1,0 +1,16 @@
+@import "../../variable.css";
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--header-footer-bg-color);
+  color: var(--header-footer-color);
+  padding: 0 var(--header-footer-gutter-x);
+  min-height: var(--footer-height);
+  font-size: var(--footer-font-size);
+}
+
+footer > button:hover {
+  cursor: pointer;
+}
