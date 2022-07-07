@@ -29,7 +29,11 @@ const IntroScene = (): JSX.Element => {
     }
   }, [currentScene]);
 
-  return <div id={SCENE__INTROSCENE}>{SCENE__INTROSCENE}</div>;
+  return (
+    <div id={SCENE__INTROSCENE} className="scene">
+      {SCENE__INTROSCENE}
+    </div>
+  );
 };
 
 export default IntroScene;

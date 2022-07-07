@@ -20,7 +20,11 @@ const LobbyScene = (): JSX.Element => {
     }
   }, [currentScene]);
 
-  return <div id={SCENE__LOBBYSCENE}>{SCENE__LOBBYSCENE}</div>;
+  return (
+    <div id={SCENE__LOBBYSCENE} className="scene">
+      {SCENE__LOBBYSCENE}
+    </div>
+  );
 };
 
 export default LobbyScene;

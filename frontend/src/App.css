@@ -2,69 +2,89 @@
 
 body {
   color: var(--font-color);
-  background-image: var(--body-background-image);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  opacity: 1;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .App {
   width: var(--screen-width);
   height: var(--screen-height);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 header {
   background-color: #282c34;
-  min-height: 5vh;
-  max-height: 5vh;
+  height: var(--header-height);
 }
 
 main {
-  height: calc(var(--screen-height) - 25vh);
+  flex: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+main::before {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-image: var(--main-background-image);
+  background-size: auto;
+  animation: background-infinite 10s linear infinite;
+  opacity: 0.7;
 }
 
 /* Scenes */
-main > div {
+.scene {
+  z-index: 1;
   position: absolute;
-  top: -100vh;
-  width: 100%;
-  height: calc(100% - 25vh + 5px);
+  top: -200vh;
+  width: 60%;
+  height: 100%;
 }
 
-main > .active {
+.scene.active {
   animation: scene-active 2s cubic-bezier(0.165, 0.84, 0.44, 1) both;
 }
 
-main > .inactive {
+.scene.inactive {
   animation: scene-inactive 2s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 footer {
   background-color: #183a86;
-  min-height: 10vh;
+  min-height: var(--footer-height);
 }
 
 footer > button:hover {
   cursor: pointer;
 }
 
-@keyframes scene-active {
+@keyframes background-infinite {
   0% {
-    top: -100vh;
+    background-position: 0 0;
   }
   100% {
-    top: 5vh;
+    background-position: 960px 480px;
+  }
+}
+
+@keyframes scene-active {
+  0% {
+    top: -200vh;
+  }
+  100% {
+    top: 0px;
   }
 }
 
 @keyframes scene-inactive {
   0% {
-    top: 5vh;
+    top: 0px;
   }
   100% {
-    top: 100vh;
+    top: -200vh;
   }
 }

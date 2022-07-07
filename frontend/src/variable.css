@@ -2,7 +2,15 @@
   --font-color: white;
   --screen-width: 1920px;
   --screen-height: 1080px;
-  --body-background-image: url(/src/Assets/Images/background_image.png);
+
+  /* Header */
+  --header-height: 7%;
+
+  /* Main */
+  --main-background-image: url(/src/Assets/Images/background_image.png);
+
+  /* Footer */
+  --footer-height: 12%;
 
   /* Dim */
 

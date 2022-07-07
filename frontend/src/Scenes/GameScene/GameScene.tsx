@@ -20,7 +20,11 @@ const GameScene = (): JSX.Element => {
     }
   }, [currentScene]);
 
-  return <div id={SCENE__GAMESCENE}>{SCENE__GAMESCENE}</div>;
+  return (
+    <div id={SCENE__GAMESCENE} className="scene">
+      {SCENE__GAMESCENE}
+    </div>
+  );
 };
 
 export default GameScene;
