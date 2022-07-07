@@ -6,14 +6,11 @@ import LobbyScene from "../../Scenes/LobbyScene/LobbyScene";
 import { sceneStatesState } from "../Recoil/selector";
 
 const Main = () => {
-  const sceneStates = useRecoilValue(sceneStatesState);
-  const { intro, lobby, game } = sceneStates;
-
   return (
     <main>
-      <IntroScene isActive={intro} />
-      <LobbyScene isActive={lobby} />
-      <GameScene isActive={game} />
+      <IntroScene />
+      <LobbyScene />
+      <GameScene />
     </main>
   );
 };

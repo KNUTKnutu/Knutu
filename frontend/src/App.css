@@ -35,12 +35,11 @@ main > div {
 }
 
 main > .active {
-  z-index: 100;
-  animation: slide-down 2s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+  animation: scene-active 2s cubic-bezier(0.165, 0.84, 0.44, 1) both;
 }
 
-main > :not(.active) {
-  animation: slide-up 2s cubic-bezier(0.165, 0.84, 0.44, 1) both;
+main > .inactive {
+  animation: scene-inactive 2s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 footer {
@@ -52,20 +51,20 @@ footer > button:hover {
   cursor: pointer;
 }
 
-@keyframes slide-up {
+@keyframes scene-active {
   0% {
-    top: 5vh;
+    top: -100vh;
   }
   100% {
-    top: -100vh;
+    top: 5vh;
   }
 }
 
-@keyframes slide-down {
+@keyframes scene-inactive {
   0% {
-    top: -100vh;
+    top: 5vh;
   }
   100% {
-    top: 5vh;
+    top: 100vh;
   }
 }
