@@ -1,5 +1,0 @@
-@import "../../variable.css";
-
-#IntroScene {
-  background-color: var(--intro-background-color);
-}

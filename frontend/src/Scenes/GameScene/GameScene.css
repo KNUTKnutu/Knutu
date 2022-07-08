@@ -1,5 +1,0 @@
-@import "../../variable.css";
-
-#GameScene {
-  background-color: var(--game-background-color);
-}

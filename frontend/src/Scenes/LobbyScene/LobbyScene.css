@@ -1,5 +1,0 @@
-@import "../../variable.css";
-
-#LobbyScene {
-  background-color: var(--lobby-background-color);
-}
