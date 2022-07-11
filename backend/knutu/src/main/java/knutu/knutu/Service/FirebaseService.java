@@ -26,7 +26,6 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.firebase.cloud.StorageClient;
-import com.google.gson.JsonObject;
 
 import knutu.knutu.Service.lib.classes.User.Preference;
 import knutu.knutu.Service.lib.classes.User.User;
@@ -127,9 +126,21 @@ public class FirebaseService implements FirebaseServiceInterface {
     }
 
     // Update
-    public boolean updateUser(User user) throws Exception {
+    public boolean updateUser(String id, User user) throws Exception {
         Firestore fs = FirestoreClient.getFirestore();
 
+        // 1. 현재 저장되어있는 User 정보를 가져온다.
+        User currentUser = this.getUser(id);
+
+        // 2. 매개변수로 받은 id로 DB에 저장된 User 정보가 없으면 false를 return한다.
+        if(currentUser == null) return false;
+
+        // 3. currentUser 와 user를 비교하여, 다른 속성 값(프로퍼티)이 있으면 엎어쳐준다.
+
+        // 4. Firebase에 업데이트한다.
+        // ApiFuture<WriteResult> writeResult = fs.collection(COLLECTION__USER).document(id).update(currentUser);
+
+        // 5. 업데이트가 성공하면 true를 리턴, 실패했다면 false를 리턴한다.
         return true;
     }
 

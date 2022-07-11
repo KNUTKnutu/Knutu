@@ -43,7 +43,7 @@ echo.
     echo.
     cd "src/main/resources"
     if /i exist "static" (
-        rd /q /s "static"
+        rd "static"
     )
     mklink /d static "%FRONTEND_DIST_PATH%"
 

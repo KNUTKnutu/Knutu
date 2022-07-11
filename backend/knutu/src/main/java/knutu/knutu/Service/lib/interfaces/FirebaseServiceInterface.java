@@ -12,7 +12,7 @@ public interface FirebaseServiceInterface {
     // Users
     public boolean addUser(String id, String pw, String name) throws Exception;
     public User getUser(String id) throws Exception;
-    public boolean updateUser(User user) throws Exception;
+    public boolean updateUser(String id, User user) throws Exception;
     public boolean deleteUser(String id) throws Exception;
 
     // Files
