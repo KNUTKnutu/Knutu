@@ -2,16 +2,20 @@
   "name": "knutu",
   "main": "./electron/main.ts",
   "private": true,
+  "homepage": "https://knutknutu.github.io/Knutu/",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "host": "tsc && vite build --host",
     "preview": "vite preview",
-    "start": "electron ."
+    "start": "electron .",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "electron": "^19.0.6",
+    "gh-pages": "^4.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "recoil": "^0.7.4",
