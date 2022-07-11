@@ -13,4 +13,6 @@ public class User {
     private Preference preference;  // Service/lib/classes/User/Preference.java
     private Timestamp created_time;
     private Timestamp updated_time;
+    private int reportedCount;
+    private boolean isAccountSuspended;
 }
