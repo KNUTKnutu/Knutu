@@ -1,16 +1,16 @@
-import { Fragment, useEffect } from "react";
-import { useRecoilValue } from "recoil";
+import { Fragment } from "react";
 import GameScene from "../../Scenes/GameScene/GameScene";
 import IntroScene from "../../Scenes/IntroScene/IntroScene";
 import LobbyScene from "../../Scenes/LobbyScene/LobbyScene";
-import { sceneStatesState } from "../Recoil/selector";
+
+const CONTENTS = [<IntroScene />, <LobbyScene />, <GameScene />];
 
 const Main = () => {
   return (
     <main>
-      <IntroScene />
-      <LobbyScene />
-      <GameScene />
+      {CONTENTS.map((content, idx) => (
+        <Fragment key={idx}>{content}</Fragment>
+      ))}
     </main>
   );
 };

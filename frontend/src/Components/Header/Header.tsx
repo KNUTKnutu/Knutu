@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import OneButton from "../Popup/Simple/OneButton";
+import { get__signin } from "../../Logic/API/GET/get";
+import { post__signup } from "../../Logic/API/POST/post";
+import Dialog from "../Popup/Dialog/Dialog";
 import "./Header.css";
 
 const Header = () => {
@@ -16,6 +18,11 @@ const Header = () => {
       : portal?.classList.remove("active");
   }, [isShow]);
 
+  useEffect(() => {
+    get__signin({ id: "asd", pw: "zxc" });
+    // post__signup({ id: "asd", pw: "zxc", name: "name" });
+  });
+
   return (
     <>
       <header>
@@ -23,10 +30,10 @@ const Header = () => {
         <button onClick={onClickLoginBtn}>Login</button>
       </header>
       {isShow && (
-        <OneButton
-          text="LOGIN MODAL"
-          buttonText="Cancel"
-          callback={() => setIsShow(false)}
+        <Dialog
+          main={<div>asd</div>}
+          callback__OK={() => setIsShow(false)}
+          callback__CANCEL={() => setIsShow(false)}
         />
       )}
     </>
