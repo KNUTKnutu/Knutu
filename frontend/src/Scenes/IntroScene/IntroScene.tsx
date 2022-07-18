@@ -3,7 +3,9 @@ import { useRecoilValue } from "recoil";
 import { currentSceneState } from "../../Components/Recoil/atom";
 import { SCENE__INTROSCENE } from "../../constant";
 import InitApplication from "../../Logic/InitApplication";
-import "./IntroScene.css";
+import ChannelSide from "./ChannelSide/ChannelSide";
+import LoginSide from "./LoginSide/LoginSide";
+import styles from "./_introScene.module.scss";
 
 // fetch가 완료되면 Suspense안에 컴포넌트들을 보여줌
 // initialResource는 각 컴포넌트에서 필요로 하는 데이터들을 가지고 있어야 한다.
@@ -30,8 +32,12 @@ const IntroScene = (): JSX.Element => {
   }, [currentScene]);
 
   return (
-    <div id={SCENE__INTROSCENE} className="scene">
-      {SCENE__INTROSCENE}
+    <div
+      id={SCENE__INTROSCENE}
+      className={`scene ${styles.intro_scene_container}`}
+    >
+      <ChannelSide />
+      <LoginSide />
     </div>
   );
 };

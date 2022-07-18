@@ -1,0 +1,65 @@
+$font-color: white;
+$screen-width: 1920px;
+$screen-height: 1080px;
+$accent_color: rgb(237, 77, 77);
+
+/* Common */
+$header-footer-bg-color: hsl(0, 0%, 26%);
+$header-footer-color: hsl(0, 0%, 100%);
+$header-footer-gutter-x: 48px;
+
+/* Header */
+$header-height: 7%;
+$header-font-size: 15px;
+
+/* Main */
+$main-background-image: url(/src/Assets/Images/background_image.png);
+
+/* Footer */
+$footer-height: 12%;
+$footer-font-size: 11px;
+
+/* Dim */
+
+/* Popup - Common */
+$container-gap: 12px;
+$container-radius: 2px;
+$container-background-color: beige;
+$container-padding: 12px;
+
+$text-wrapper-padding: 20px;
+
+$text-color: black;
+
+$button-wrapper-gap: 10px;
+
+$button-padding: 4px;
+$button-min-width: 120px;
+$button-font-size: 1.125rem;
+$button-font-weight: 600;
+$button-radius: 8px;
+
+$button-hover-background-color: lightgray;
+
+$button-active-background-color: cyan;
+
+/* Popup - Simple*/
+$popup-width-simple: 360px;
+$popup-height-simple: 600px;
+
+/* Popup - Dialog */
+$popup-width-dialog: 480px;
+$popup-height-dialog: 720px;
+
+/* IntroScene */
+$intro-background-color: lightblue;
+$intro-login-container-width: 320px;
+$intro-login-container-height: 350px;
+
+$intro-login-ing-padding-x: 24px;
+
+/* LobbyScene */
+$lobby-background-color: yellow;
+
+/* GameScene */
+$game-background-color: cyan;

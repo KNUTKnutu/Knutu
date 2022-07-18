@@ -1,0 +1,104 @@
+@import "../../../../variable.module";
+
+.signup_container {
+  width: 100%;
+  height: 100%;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+    height: 100%;
+
+    // Common
+    & > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    // Important
+    .signup_head_container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .login_head {
+        font-size: 1.25rem;
+      }
+    }
+
+    .signup_submit_container {
+      flex: 6;
+
+      // Common
+      & > div {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+
+      // Important
+      .input_wrapper {
+        position: relative;
+
+        input {
+          width: 100%;
+          height: 50%;
+          border: none;
+          border-bottom: 1px solid black;
+          outline: none;
+          font-size: 1.125rem;
+          padding-left: 6px;
+
+          &:focus-within,
+          &:not(:placeholder-shown) {
+            border-color: $accent_color;
+            & ~ label {
+              top: 10%;
+              transform: scale(0.75);
+              transition: all 0.3s;
+            }
+          }
+        }
+
+        label {
+          position: absolute;
+          top: 50%;
+          left: 4px;
+          transform: translateY(-50%);
+        }
+      }
+      .maintain_wrapper {
+        justify-content: flex-start;
+      }
+      .signup_btn_wrapper {
+        width: 100%;
+
+        button {
+          width: 100%;
+          height: 80%;
+
+          border-radius: 4px;
+          outline: none;
+          cursor: pointer;
+          font-size: 1.5rem;
+          font-weight: bold;
+
+          &:hover {
+            color: white;
+            background-color: $accent_color;
+            border: none;
+          }
+        }
+      }
+    }
+  }
+}
