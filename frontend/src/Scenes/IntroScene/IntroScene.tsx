@@ -5,7 +5,7 @@ import { SCENE__INTROSCENE } from "../../constant";
 import InitApplication from "../../Logic/InitApplication";
 import ChannelSide from "./ChannelSide/ChannelSide";
 import LoginSide from "./LoginSide/LoginSide";
-import styles from "./_introScene.module.scss";
+import styles from "../../styles/Scenes/IntroScene/_introScene.module.scss";
 
 // fetch가 완료되면 Suspense안에 컴포넌트들을 보여줌
 // initialResource는 각 컴포넌트에서 필요로 하는 데이터들을 가지고 있어야 한다.

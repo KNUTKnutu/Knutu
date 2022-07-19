@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { currentSceneState } from "../../Components/Recoil/atom";
 import { SCENE__LOBBYSCENE } from "../../constant";
-import styles from "./_LobbyScene.module.scss";
+import styles from "../../styles/Scenes/LobbyScene/_lobbyScene.module.scss";
 
 const LobbyScene = (): JSX.Element => {
   const currentScene = useRecoilValue(currentSceneState);

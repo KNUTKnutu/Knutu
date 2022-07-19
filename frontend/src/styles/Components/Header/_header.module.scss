@@ -1,0 +1,11 @@
+@import "../../_variable.module.scss";
+
+.header_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $header-footer-bg-color;
+  color: $header-footer-color;
+  padding: 0 $header-footer-gutter-x;
+  height: $header-height;
+}

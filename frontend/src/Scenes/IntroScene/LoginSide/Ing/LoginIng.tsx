@@ -1,7 +1,7 @@
 import { FormEvent, SetStateAction } from "react";
 import { ID, LOGIN, MAINTAIN, PW, SINGNUP } from "../../../../constant";
 import { LOGINSTATE } from "../../../../enum";
-import styles from "./_loginIng.module.scss";
+import styles from "../../../../styles/Scenes/IntroScene/LoginSide/Ing/_loginIng.module.scss";
 
 interface LoginIngProps {
   setLoginState: React.Dispatch<SetStateAction<LOGINSTATE>>;

@@ -1,9 +1,9 @@
 import { LOGO } from "../../constant";
-import "./Header.css";
+import styles from "../../styles/Components/Header/_header.module.scss";
 
 const Header = () => {
   return (
-    <header>
+    <header className={styles.header_container}>
       <h1>{LOGO}</h1>
     </header>
   );

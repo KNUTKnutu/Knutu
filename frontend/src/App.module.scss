@@ -1,0 +1,14 @@
+@import "./styles/variable.module";
+
+body {
+  color: $font-color;
+  overflow: hidden;
+}
+
+.App {
+  width: $screen-width;
+  height: $screen-height;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}

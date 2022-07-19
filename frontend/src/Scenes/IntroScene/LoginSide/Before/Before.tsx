@@ -1,7 +1,7 @@
 import { SetStateAction } from "react";
 import { LOGIN, SINGNUP } from "../../../../constant";
 import { LOGINSTATE } from "../../../../enum";
-import styles from "./_before.module.scss";
+import styles from "../../../../styles/Scenes/IntroScene/LoginSide/Before/_before.module.scss";
 
 interface BeforeProps {
   setLoginState: React.Dispatch<SetStateAction<LOGINSTATE>>;

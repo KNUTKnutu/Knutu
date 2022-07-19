@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { LOGINSTATE } from "../../../enum";
+import After from "./After/After";
 import Before from "./Before/Before";
 import LoginIng from "./Ing/LoginIng";
 import SignUp from "./SignUp/SignUp";
-import styles from "./_login_side.module.scss";
+import styles from "../../../styles/Scenes/IntroScene/LoginSide/_loginSide.module.scss";
 
 const LoginSide = () => {
   const [loginState, setLoginState] = useState<LOGINSTATE>(LOGINSTATE.Before);
@@ -18,7 +19,7 @@ const LoginSide = () => {
         return <LoginIng setLoginState={setLoginState} />;
       // 3. 로그인 후
       case LOGINSTATE.After:
-        return <div>3</div>;
+        return <After />;
       // 4. 회원가입 버튼 클릭
       case LOGINSTATE.SignUp:
         return <SignUp setLoginState={setLoginState} />;

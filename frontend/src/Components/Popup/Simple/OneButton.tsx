@@ -1,5 +1,5 @@
 import Dim from "../../Dim/Dim";
-import "./OneButton.css";
+import styles from "./_oneButton.module.scss";
 
 type Nullable<T> = T | null;
 
@@ -12,12 +12,12 @@ interface Props {
 const OneButton = ({ text, buttonText, callback }: Props) => {
   return (
     <Dim>
-      <div className="one_button_container">
-        <div className="text_wrapper">
+      <div className={styles.one_button_container}>
+        <div className={styles.text_wrapper}>
           <span>{text}</span>
         </div>
-        <div className="button_wrapper">
-          <button className="popup_btn" onClick={callback}>
+        <div className={styles.button_wrapper}>
+          <button className={styles.popup_btn} onClick={callback}>
             {buttonText}
           </button>
         </div>

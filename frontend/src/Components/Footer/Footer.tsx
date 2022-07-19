@@ -5,7 +5,7 @@ import {
   SCENE__LOBBYSCENE,
 } from "../../constant";
 import { currentSceneState } from "../Recoil/atom";
-import "./Footer.css";
+import styles from "../../styles/Components/Footer/_footer.module.scss";
 
 const Footer = () => {
   const setCurrentScene = useSetRecoilState(currentSceneState);
@@ -18,7 +18,7 @@ const Footer = () => {
     }
   };
   return (
-    <footer onClick={onClickSceneBtn}>
+    <footer onClick={onClickSceneBtn} className={styles.footer_container}>
       <div>
         <button>{SCENE__INTROSCENE}</button>
         <button>{SCENE__LOBBYSCENE}</button>

@@ -1,4 +1,4 @@
-import styles from "./_channel_side.module.scss";
+import styles from "../../../styles/Scenes/IntroScene/ChannelSide/_channelSide.module.scss";
 
 const ChannelSide = () => {
   return (

@@ -1,5 +1,5 @@
 import Dim from "../../Dim/Dim";
-import "./TwoButton.css";
+import styles from "./_twoButton.module.scss";
 
 type Nullable<T> = T | null;
 
@@ -20,15 +20,15 @@ const TwoButton = ({
 }: Props) => {
   return (
     <Dim>
-      <div className="two_button_container">
-        <div className="text_wrapper">
+      <div className={styles.two_button_container}>
+        <div className={styles.text_wrapper}>
           <span>{text}</span>
         </div>
-        <div className="button_wrapper">
-          <button className="popup_btn" onClick={leftButtonCallback}>
+        <div className={styles.button_wrapper}>
+          <button className={styles.popup_btn} onClick={leftButtonCallback}>
             {leftButtonText}
           </button>
-          <button className="popup_btn" onClick={rightButtonCallback}>
+          <button className={styles.popup_btn} onClick={rightButtonCallback}>
             {rightButtonText}
           </button>
         </div>

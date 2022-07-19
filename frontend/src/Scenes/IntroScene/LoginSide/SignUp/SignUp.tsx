@@ -1,7 +1,14 @@
 import { FormEvent, SetStateAction } from "react";
-import { ID, MAINTAIN, PW, SINGNUP } from "../../../../constant";
+import {
+  CHECK_PW,
+  ID,
+  MAINTAIN,
+  NAME,
+  PW,
+  SINGNUP,
+} from "../../../../constant";
 import { LOGINSTATE } from "../../../../enum";
-import styles from "./_signUp.module.scss";
+import styles from "../../../../styles/Scenes/IntroScene/LoginSide/SignUp/_signUp.module.scss";
 
 interface SignUpProps {
   setLoginState: React.Dispatch<SetStateAction<LOGINSTATE>>;
@@ -13,6 +20,7 @@ const SignUp = ({ setLoginState }: SignUpProps) => {
     console.log("signup");
     setLoginState(LOGINSTATE.Before);
   };
+
   return (
     <div className={styles.signup_container}>
       <form onSubmit={onSubmit}>
@@ -29,9 +37,18 @@ const SignUp = ({ setLoginState }: SignUpProps) => {
             <input type="password" id="pw" autoComplete="off" placeholder=" " />
             <label htmlFor="pw">{PW}</label>
           </div>
-          <div className={styles.maintain_wrapper}>
-            <input type="checkbox" id="maintain" />
-            <label htmlFor="maintain">{MAINTAIN}</label>
+          <div className={styles.input_wrapper}>
+            <input
+              type="password"
+              id="check_pw"
+              autoComplete="off"
+              placeholder=" "
+            />
+            <label htmlFor="check_pw">{CHECK_PW}</label>
+          </div>
+          <div className={styles.input_wrapper}>
+            <input type="text" id="name" autoComplete="off" placeholder=" " />
+            <label htmlFor="name">{NAME}</label>
           </div>
           <div className={styles.signup_btn_wrapper}>
             <button>{SINGNUP}</button>

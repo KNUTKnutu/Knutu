@@ -11,4 +11,6 @@ export const LOGIN = "로그인";
 export const SINGNUP = "회원가입";
 export const ID = "아이디";
 export const PW = "비밀번호";
+export const CHECK_PW = "비밀번호 확인";
 export const MAINTAIN = "로그인 상태 유지";
+export const NAME = "이름";

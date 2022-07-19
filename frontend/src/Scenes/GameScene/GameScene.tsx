@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { currentSceneState } from "../../Components/Recoil/atom";
 import { SCENE__GAMESCENE } from "../../constant";
-import "./GameScene.css";
+import styles from "../../styles/Scenes/GameScene/_gameScene.module.scss";
 
 const GameScene = (): JSX.Element => {
   const currentScene = useRecoilValue(currentSceneState);
