@@ -30,37 +30,3 @@ code {
 #portal.active {
   display: block;
 }
-
-/* Scenes */
-.scene {
-  position: absolute;
-  top: -200vh;
-  width: 60%;
-  height: 100%;
-}
-
-.scene.active {
-  animation: scene-active 2s cubic-bezier(0.165, 0.84, 0.44, 1) both;
-}
-
-.scene.inactive {
-  animation: scene-inactive 2s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-@keyframes scene-active {
-  0% {
-    top: -200vh;
-  }
-  100% {
-    top: 0px;
-  }
-}
-
-@keyframes scene-inactive {
-  0% {
-    top: 0px;
-  }
-  100% {
-    top: -200vh;
-  }
-}

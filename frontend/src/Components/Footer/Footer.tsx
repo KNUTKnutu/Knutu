@@ -4,7 +4,7 @@ import {
   SCENE__INTROSCENE,
   SCENE__LOBBYSCENE,
 } from "../../constant";
-import { currentSceneState } from "../Recoil/atom";
+import { currentSceneState } from "../../Recoil/atom";
 import styles from "../../styles/Components/Footer/_footer.module.scss";
 
 const Footer = () => {

@@ -14,3 +14,4 @@ export const PW = "비밀번호";
 export const CHECK_PW = "비밀번호 확인";
 export const MAINTAIN = "로그인 상태 유지";
 export const NAME = "이름";
+export const LOGOUT = "로그아웃";
