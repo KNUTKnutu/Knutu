@@ -15,6 +15,9 @@ const ChannelSide = ({ list }: ChannelSideProps) => {
           ))}
         </div>
       </div>
+      <div className={styles.alert_channel}>
+        <span>로그인을 하면 채널을 볼 수 있습니다.</span>
+      </div>
     </div>
   );
 };

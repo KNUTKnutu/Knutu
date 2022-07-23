@@ -1,15 +1,16 @@
 .channel_side_container {
-  flex: 1;
+  flex: 2;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
   .channel_container {
-    width: 400px;
+    width: 80%;
     height: fit-content;
     border-radius: 10px;
     background-color: white;
+    filter: blur(2px);
 
     & > span {
       font-size: 3rem;
@@ -17,16 +18,36 @@
       display: flex;
       justify-content: flex-start;
       align-items: center;
-      margin-left: 3rem;
+      margin-left: 4rem;
       margin-top: 1rem;
       margin-bottom: 1rem;
     }
 
     .channe_list_wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      padding: 1rem 3rem;
+      gap: 1.5rem;
+      padding: 1.5rem 3rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+    }
+  }
+
+  .alert_channel {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 400px;
+    height: 300px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & > span {
+      font-size: 1.5rem;
+      font-weight: 600;
     }
   }
 }

@@ -78,6 +78,9 @@
       }
       .maintain_wrapper {
         justify-content: flex-start;
+        input {
+          margin-right: 4px;
+        }
       }
       .login_btn_wrapper {
         width: 100%;
