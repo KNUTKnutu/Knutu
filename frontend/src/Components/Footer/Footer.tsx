@@ -40,8 +40,6 @@ const Footer = () => {
 
     const packet = JSON.stringify(_packet);
 
-    console.log(wsURL);
-
     ws.send(packet);
   }
 

@@ -1,6 +1,321 @@
 @import "../../../../variable.module";
 
 .lobby_scene_container {
+  // Inheritants
   background-color: $lobby-background-color;
+  color: $lobby-font-color;
   height: 100%;
+
+  // Blueprinted
+  padding: 60px 92px 60px 92px;
+  display: grid;
+  grid-template-columns: 2fr 8fr;
+  gap: 56px;
+
+  .lobby_scene_components {
+    border: 2px solid black;
+    border-radius: 16px;
+  }
+
+  .lobby_scene_left_container {
+    padding-left: 4px;
+    padding-right: 4px;
+    display: grid;
+    gap: 28px;
+    grid-template-rows: 7fr 3fr;
+
+    .lobby_scene_onlineUsersContainer {
+      display: grid;
+      grid-template-rows: 9fr 1fr;
+  
+      .lobby_scene_onlineUsers {
+        padding: 20px;
+        height: 394px;
+        overflow: auto;
+        border-bottom: 3px solid black;
+    
+        .lobby_scene_onlineUser {
+          display: flex;
+          justify-content: space-between;
+          padding: 0px 24px 12px 10px;
+      
+          .onlineUser__name {
+
+          }
+      
+          .onlineUser__level {
+            width: 51px;
+          }
+        }
+      }
+      
+      .lobby_scene_onlineCount {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .lobby_scene_myInfos {
+      padding: 40px;
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+
+      .lobby_scene_myInfos__top {
+        display: grid;
+        padding-bottom: 32px;
+        grid-template-columns: 1fr 1fr;
+
+        .lobby_scene_myInfos__name {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+
+        .lobby_scene_myInfos__level {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+
+      .lobby_scene_myInfos__bottom {
+        position: relative;
+        z-index: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .lobby_scene_myInfos__expFillColor {
+          position: absolute;
+          z-index: 1;
+          left: 3px; // 경험치 %만 조절. 임시로 테스트용으로 40%만
+          width: calc(40% - 3px);
+          height: 87%;
+          background-color: green;
+        }
+
+        .lobby_scene_myInfos__exp {
+          position: relative;
+          z-index: 2;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 300px;
+          height: 48px;
+          border: 3px solid black;
+        }
+      }
+    }
+  }
+
+  .lobby_scene_right_container {
+    padding-left: 4px;
+    padding-right: 4px;
+    display: grid;
+    gap: 28px;
+    grid-template-rows: 7fr 3fr;
+
+    .lobby_scene_right_top_container {
+
+      .lobby_scene_rooms {
+        padding: 30px;
+        display: grid;
+        height: 441px;
+        overflow: auto;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 24px;
+    
+        .lobby_scene_room {
+          padding: 12px;
+          height: 112px;
+          border: 2px solid black;
+          border-radius: 16px;
+      
+          display: grid;
+          gap: 8px;
+          grid-template-columns: 2fr 8fr;
+      
+          .room__number {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+          }
+        
+          .room__body {
+            display: grid;
+            grid-template-columns: 8fr 2fr;
+        
+            .room__etcs {
+              display: flex;
+              flex-direction: column;
+              justify-content: space-between;
+              align-items: center;
+            }
+          
+            .room__entries {
+              display: flex;
+              gap: 2px;
+              flex-direction: column;
+              align-items: center;
+            }
+          
+            .room__info {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              gap: 2px;
+              font-weight: 500;
+            }
+          
+            .room__title {
+              padding-bottom: 10px;
+            }
+          
+            .room__entries {
+              font-weight: 300;
+            }
+          
+            .room__is_private {
+              
+            }
+          }
+        }
+      }
+    }
+    
+    .lobby_scene_right_bottom_container {
+      display: grid;
+      gap: 32px;
+      grid-template-columns: 6fr 4fr;
+
+      .lobby_scene_chatting {
+        position: relative;
+        z-index: 2;
+
+        .lobby_scene_chatting__title {
+          position: absolute;
+          top: -28px;
+          width: 120px;
+          left: 10px;
+          height: 5rem;
+          border: 2px solid black;
+          border-radius: 16px;
+          text-align: center;
+          padding-top: 4px;
+          background: cyan;
+        }
+        
+        .lobby_scene_chatting__body {
+          display: grid;
+          grid-template-rows: 5.62fr 1.17fr;
+  
+          .lobby_scene_chatting__chattingScreen {
+            padding: 10px;
+            height: 153px;
+            font-weight: 100;
+            border-bottom: 2px solid black;
+            overflow: auto;
+
+            .lobby_scene_chatting__chat {
+              display: grid;
+              grid-template-columns: 3fr 8fr 2fr;
+              padding-bottom: 8px;
+
+              .lobby_scene_chatting__chatter {
+  
+              }
+  
+              .lobby_scene_chatting__chatMessage {
+  
+              }
+  
+              .lobby_scene_chatting__chatTime {
+                display: flex;
+                justify-content: flex-end;
+              }
+            }
+          }
+  
+          .lobby_scene_chatting__chattingBar {
+            display: grid;
+            grid-template-columns: 2fr 12fr 1.5fr;
+            height: 32px;
+  
+            .lobby_scene_chatting__chattingBar__mode {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-right: 2px solid black;
+            }
+  
+            .lobby_scene_chatting__chattingBar__chatContainer {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+  
+              .lobby_scene_chatting__chattingBar__chat {
+                padding-left: 12px;
+                border: unset;
+                resize: none;
+                height: 100%;
+                width: 100%;
+                font-family: "NanumSquareAceb";
+                height: 14px;
+  
+                &:focus {
+                  outline: unset;
+                }
+              }
+            }
+  
+            .lobby_scene_chatting__chattingBar__send {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-left: 2px solid black;
+            }
+          }
+        }
+      }
+
+      .lobby_scene_navs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        background-color: burlywood;
+
+        > * {
+          padding: 12px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 28px;
+          font-weight: 800;
+        }
+
+        .navs__makeRoom {
+            border-right: 1px solid black;
+            border-bottom: 1px solid black;
+        }
+
+        .navs__quickSearch {
+          border-left: 1px solid black;
+          border-bottom: 1px solid black;
+        }
+
+        .navs__friend {
+          border-top: 1px solid black;
+          border-right: 1px solid black;
+        }
+
+        .navs__shop {
+          border-top: 1px solid black;
+          border-left: 1px solid black;
+        }
+      }
+    }
+  }
 }

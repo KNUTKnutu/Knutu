@@ -22,24 +22,30 @@ public class WebSocketHandler {
 
     @OnMessage
     public void onMessage(String msg, Session session) throws Exception {
+        log.info("---------------------------");
         log.info("onMessage");
         log.info(msg);
         log.info(session.toString());
         log.info(clients.toString());
+        log.info("---------------------------");
     }
 	
 	@OnOpen
 	public void onOpen(Session session) {
+        log.info("---------------------------");
         log.info("onOpen");
         log.info(session.toString());
         log.info(clients.toString());
+        log.info("---------------------------");
 	}
 	
 	@OnClose
 	public void onClose(Session session) {
+        log.info("---------------------------");
         log.info("onClose");
         log.info(session.toString());
         log.info(clients.toString());
+        log.info("---------------------------");
 	}
     
 }

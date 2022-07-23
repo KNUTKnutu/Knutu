@@ -1,12 +1,13 @@
-import { useEffect } from "react";
-import { useRecoilValue } from "recoil";
-import { currentSceneState } from "../../../../Recoil/atom";
-import { SCENE__LOBBYSCENE } from "../../../../constant";
 import styles from "../../../../Styles/Components/Main/Scenes/LobbyScene/_lobbyScene.module.scss";
+import LobbySceneLeft from "./LobbySceneLeft";
+import LobbySceneRight from "./LobbySceneRight";
 
 const LobbyScene = (): JSX.Element => {
   return (
-    <div className={styles.lobby_scene_container}>{SCENE__LOBBYSCENE}</div>
+    <div className={styles.lobby_scene_container}>
+      <LobbySceneLeft />
+      <LobbySceneRight />
+    </div>
   );
 };
 
