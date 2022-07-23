@@ -62,21 +62,28 @@
       grid-template-rows: 1fr 1fr;
 
       .lobby_scene_myInfos__top {
-        display: grid;
+        position: relative;
+        display: flex;
+        justify-content: flex-start;
         padding-bottom: 32px;
-        grid-template-columns: 1fr 1fr;
 
-        .lobby_scene_myInfos__name {
-          display: flex;
-          justify-content: center;
-          align-items: center;
+        .lobby_scene_myInfos__character {
+          position: absolute;
+          top: -21px;
+          left: 40px;
+          width: 64px;
+          height: 64px;
         }
 
+        .lobby_scene_myInfos__infoContainer {
+          position: relative;
+          left: 52%;
 
-        .lobby_scene_myInfos__level {
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          .lobby_scene_myInfos__info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
         }
       }
 
@@ -198,8 +205,9 @@
         .lobby_scene_chatting__title {
           position: absolute;
           top: -28px;
-          width: 120px;
           left: 10px;
+          z-index: auto;
+          width: 120px;
           height: 5rem;
           border: 2px solid black;
           border-radius: 16px;
@@ -221,11 +229,11 @@
 
             .lobby_scene_chatting__chat {
               display: grid;
-              grid-template-columns: 3fr 8fr 2.2fr;
+              grid-template-columns: 4fr 7fr 2.5fr;
               padding-bottom: 8px;
 
               .lobby_scene_chatting__chatter {
-  
+                padding-left: 8px;
               }
   
               .lobby_scene_chatting__chatMessage {
@@ -258,12 +266,12 @@
   
               .lobby_scene_chatting__chattingBar__chat {
                 padding-left: 12px;
+                width: 100%;
+                height: 14px;
                 border: unset;
                 resize: none;
-                height: 100%;
-                width: 100%;
                 font-family: "NanumSquareAceb";
-                height: 14px;
+                background-color: $lobby-chatting-bg-color;
   
                 &:focus {
                   outline: unset;

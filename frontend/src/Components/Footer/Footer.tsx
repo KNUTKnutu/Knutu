@@ -9,7 +9,7 @@ import {
 import { currentSceneState } from "../../Recoil/atom";
 import styles from "../../styles/Components/Footer/_footer.module.scss";
 
-const Footer = () => {
+const Footer = (): JSX.Element => {
 
   const wsURL = `ws://localhost:19410/ws`;
 

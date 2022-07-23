@@ -28,4 +28,8 @@ export class RoomClass {
     public static getRoomIsFull = (roomEntries: number, roomMaxEntry: number) => {
         return roomEntries === roomMaxEntry ? "풀방" : "";
     }
+
+    public static getRoomEntryString = (roomEntries: number, roomMaxEntry: number) => {
+        return `${roomEntries} / ${roomMaxEntry}`;
+    }
 }

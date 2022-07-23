@@ -1,6 +1,9 @@
+import { SCENE__GAMESCENE } from "../../../../../../constant";
 import styles from "../../../../../../Styles/Components/Main/Scenes/LobbyScene/_lobbyScene.module.scss";
 import { RoomClass } from "./Class/Room";
 import { roomInfoInterface } from "./Interface/roomOption";
+import { useSetRecoilState } from 'recoil';
+import { currentSceneState } from "../../../../../../Recoil/atom";
 
 const Room = ({roomInfo}: roomInfoInterface): JSX.Element => {
 
@@ -9,11 +12,18 @@ const Room = ({roomInfo}: roomInfoInterface): JSX.Element => {
     const roomNumberString = RoomClass.getRoomNumberString(roomNumber);
     const roomOptionString = RoomClass.getRoomOptionString(roomOption);
     const roomRoundString = RoomClass.getRoomRoundString(roomRound, roomLimitTime);
+    const roomEntryString = RoomClass.getRoomEntryString(roomEntries, roomMaxEntry);
     const roomIsPrivateString = RoomClass.getRoomIsPrivateString(roomIsPrivate);
     const roomIsFull = RoomClass.getRoomIsFull(roomEntries, roomMaxEntry);
+    
+    const setCurrentScene = useSetRecoilState(currentSceneState);
+
+    const onRoomClicked = (e: React.MouseEvent<HTMLDivElement>) => {
+        setCurrentScene(SCENE__GAMESCENE);
+    }
 
     return (
-        <div className={`${styles.lobby_scene_room}`}>
+        <div className={`${styles.lobby_scene_room}`} onClick={onRoomClicked}>
             <div className={styles.room__number}>
                 {roomNumberString}
             </div>
@@ -26,14 +36,14 @@ const Room = ({roomInfo}: roomInfoInterface): JSX.Element => {
                 <div className={styles.room__etcs}>
                     <div className={styles.room__entries}>
                         <div>
-                            {roomEntries} / {roomMaxEntry}
+                            {roomEntryString}
                         </div>
                         <div>
                             {roomIsFull}
                         </div>
                     </div>
                     <div className={styles.room__is_private}>
-                        {roomIsPrivateString ? "자물쇠" : "오픈방"}
+                        {roomIsPrivateString}
                     </div>
                 </div>
             </div>
