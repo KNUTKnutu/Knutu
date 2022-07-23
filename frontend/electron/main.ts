@@ -1,10 +1,17 @@
 const { app, BrowserWindow } = require("electron");
 
-const createWindow = () => {
+const createWindow = async () => {
+
+  const path = await require("path");
+
   const win = new BrowserWindow({
     width: 1920,
     height: 1080,
+    fullscreen: true,
+    icon: path.join(__dirname, "../src/Assets/Images/Knutu_64x64.jpg")
   });
+
+  win.setMenu(null);
   win.setResizable(false);
 
   win.loadURL("http://localhost:3000");
