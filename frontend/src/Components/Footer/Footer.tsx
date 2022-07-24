@@ -6,6 +6,7 @@ import {
   SCENE__INTROSCENE,
   SCENE__LOBBYSCENE,
 } from "../../constant";
+import KnutuAudioHandler from '../../Logic/Library/KnutuAudioHandler';
 import { currentSceneState } from "../../Recoil/atom";
 import styles from "../../styles/Components/Footer/_footer.module.scss";
 
@@ -43,6 +44,33 @@ const Footer = (): JSX.Element => {
     ws.send(packet);
   }
 
+  const audioInstance = KnutuAudioHandler.getInstance();
+
+  const onClickAudioTest__PlayOneShot = () => {
+    audioInstance.playOneShot(KnutuAudioHandler.clipSuspense);
+  }
+
+  const onClickAudioTest__Play = () => {
+    audioInstance.play(KnutuAudioHandler.clipIntroScene);
+  }
+
+  const onClickAudioTest__Pause = () => {
+    if(audioInstance.isPlaying()) return audioInstance.pause();
+    audioInstance.Unpause();
+  }
+
+  const onClickAudioTest__Stop = () => {
+    audioInstance.stop();
+  }
+
+  const onClickAudioTest__Loop = () => {
+    audioInstance.setLoop();
+  }
+
+  const onClickAudioTest__Unloop = () => {
+    audioInstance.setUnloop();
+  }
+
   return (
     <footer onClick={onClickSceneBtn} className={styles.footer_container}>
       <div>
@@ -52,6 +80,12 @@ const Footer = (): JSX.Element => {
       </div>
       <span>Copyright</span>
       <button onClick={onClickWebSocketTest}>websocket test</button>
+      <button onClick={onClickAudioTest__PlayOneShot}>audio test - playOneShot</button>
+      <button onClick={onClickAudioTest__Play}>audio test - play</button>
+      <button onClick={onClickAudioTest__Pause}>audio test - pause / unpause</button>
+      <button onClick={onClickAudioTest__Stop}>audio test - stop</button>
+      <button onClick={onClickAudioTest__Loop}>audio test - loop</button>
+      <button onClick={onClickAudioTest__Unloop}>audio test - unloop</button>
     </footer>
   );
 };
