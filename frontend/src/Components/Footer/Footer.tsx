@@ -12,7 +12,7 @@ import styles from "../../styles/Components/Footer/_footer.module.scss";
 
 const Footer = (): JSX.Element => {
 
-  const wsURL = `ws://localhost:19410/ws`;
+  const wsURL = `ws://localhost:19410/ws/lobbyscene`;
 
   const ws = new WebSocket(wsURL);
 
@@ -34,14 +34,19 @@ const Footer = (): JSX.Element => {
   };
 
   const onClickWebSocketTest = () => {
-    const _packet = {
-      msg: "testing",
-      date: new Date().toLocaleString()
-    };
+    // const _packet = {
+    //   header: {
+    //     type: "tester",
+    //     date: new Date().toLocaleString()
+    //   },
+    //   payload: {
+    //     msg: "testing",
+    //   }
+    // };
 
-    const packet = JSON.stringify(_packet);
+    // const packet = JSON.stringify(_packet);
 
-    ws.send(packet);
+    // ws.send(packet);
   }
 
   const audioInstance = KnutuAudioHandler.getInstance();

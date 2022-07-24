@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "../../../../env.json";
+import { API_URL } from "../../../env";
 
 interface SignUpProps {
   id: string;
