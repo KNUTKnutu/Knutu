@@ -84,6 +84,7 @@ public class LobbySceneWSHandler {
             return;
         }
         clients.remove(session);
+        onlineUsers.remove(session.getId());
         log.info("---------------------------");
         log.info("onClose");
         log.info("---------------------------");
