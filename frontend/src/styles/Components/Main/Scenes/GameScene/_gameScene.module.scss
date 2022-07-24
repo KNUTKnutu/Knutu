@@ -15,24 +15,23 @@
     background-color: darkslateblue;
 
     &.true {
-      display: block; 
-    }
-
-    &.false {
-      display: none;
-    }
-  }
-
-  .game_scene__gaming_container {
-    background-color: darkseagreen;
-    display: none;
-
-    &.true {
       display: none; 
     }
 
     &.false {
       display: block;
+    }
+  }
+
+  .game_scene__gaming_container {
+    background-color: darkseagreen;
+
+    &.true {
+      display: block; 
+    }
+
+    &.false {
+      display: none;
     }
   }
 

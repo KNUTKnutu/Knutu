@@ -14,7 +14,7 @@ class KnutuAudioHandler {
     public static getInstance = (): KnutuAudioHandler => this.audio;
 
     private readonly defaultAudioClipLocation: AudioClip = "/src/Assets/Audios/";
-    private readonly defualtAudioSource: HTMLAudioElement = document.getElementById("audioSource") as HTMLAudioElement;
+    private readonly defaultAudioSource: HTMLAudioElement = document.getElementById("audioSource") as HTMLAudioElement;
     private currentAudioClip: AudioClip = "";
     public static readonly clipAllUserReady: AudioClip = "AllUserReady.mp3";
     public static readonly clipGameSceneGaming: AudioClip = "GameScene_Gaming.mp3";
@@ -63,7 +63,7 @@ class KnutuAudioHandler {
     public play = (_audioClip: AudioClip): void => {
         if(!_audioClip) return;
         this.currentAudioClip = _audioClip;
-        this._setSrc(this.defualtAudioSource, _audioClip);
+        this._setSrc(this.defaultAudioSource, _audioClip);
     };
 
     /** 
@@ -72,7 +72,7 @@ class KnutuAudioHandler {
      * @returns void.
      * */
     public stop = (): void => {
-        this.defualtAudioSource.src = "";
+        this.defaultAudioSource.src = "";
     };
 
     /** 
@@ -82,7 +82,7 @@ class KnutuAudioHandler {
      * @returns void.
      * */
     public pause = (): void => {
-        this.defualtAudioSource.pause();
+        this.defaultAudioSource.pause();
     };
 
     /** 
@@ -101,7 +101,7 @@ class KnutuAudioHandler {
      * @returns number type, the property of currentTime on DefaultAudioSource.
      * */
     public getPlaytime = (): AudioPlaytime => {
-        return this.defualtAudioSource.currentTime;
+        return this.defaultAudioSource.currentTime;
     }
 
     /** 
@@ -110,7 +110,7 @@ class KnutuAudioHandler {
      * @returns void.
      * */
     public setPlaytime = (_audioPlayTime: AudioPlaytime): void => {
-        this.defualtAudioSource.currentTime = _audioPlayTime;
+        this.defaultAudioSource.currentTime = _audioPlayTime;
     }
 
     /** 
@@ -121,7 +121,7 @@ class KnutuAudioHandler {
      * @returns number type, the property of PlaybackRate on DefaultAudioSource.
      * */
     public getPlaybackRate = (): AudioPlaybackRate => {
-        return this.defualtAudioSource.playbackRate;
+        return this.defaultAudioSource.playbackRate;
     }
 
     /** 
@@ -132,20 +132,20 @@ class KnutuAudioHandler {
      * @returns void.
      * */
     public setPlaybackRate = (_playbackRate: AudioPlaybackRate): void => {
-        this.defualtAudioSource.playbackRate = _playbackRate;
+        this.defaultAudioSource.playbackRate = _playbackRate;
     }
 
     /** 
-     * Gets a volume on DefualtAudioSource.  
+     * Gets a volume on DefaultAudioSource.  
      * @param1 No parameter needed.
      * @returns number type, the property of volume on DefaultAudioSource.
      * */
     public getVolume = (): AudioVolume => {
-        return this.defualtAudioSource.volume;
+        return this.defaultAudioSource.volume;
     }
 
     /** 
-     * Sets a volume on DefualtAudioSource.  
+     * Sets a volume on DefaultAudioSource.  
      *   
      * If the given AudioVolume as paramter is less than 1 or equal, use it as default, but
      * when the given AudioVolume is higher than 1, divide the value by 100.  
@@ -157,7 +157,7 @@ class KnutuAudioHandler {
     public setVolume = (_audioVolume: AudioVolume): void => {
         if(_audioVolume > 100) return console.error("given audioVolume is higher than 100, so nothing happened on SetVolume method.");
         if(_audioVolume > 1) _audioVolume /= 100;
-        this.defualtAudioSource.volume = _audioVolume;
+        this.defaultAudioSource.volume = _audioVolume;
     }
 
     /** 
@@ -166,48 +166,60 @@ class KnutuAudioHandler {
      * @returns boolean type, the property of loop on DefaultAudioSource.
      * */
     public getLoop = (): boolean => {
-        return this.defualtAudioSource.loop;
+        return this.defaultAudioSource.loop;
     }
 
     /** 
-     * Lets DefualtAudioSource to loop.  
+     * Lets DefaultAudioSource to loop.  
      * @param1 No parameter needed.
      * @returns void.
      * */
     public setLoop = (): void => {
-        this.defualtAudioSource.loop = true;
+        this.defaultAudioSource.loop = true;
     }
 
     /** 
-     * Lets DefualtAudioSource NOT to loop.  
+     * Lets DefaultAudioSource NOT to loop.  
      * @param1 No parameter needed.
      * @returns void.
      * */
     public setUnloop = (): void => {
-        this.defualtAudioSource.loop = !1;
+        this.defaultAudioSource.loop = !1;
     }
 
     /** 
-     * Returns a boolean value if DefualtAudioSource is current playing.  
+     * Returns a boolean value if DefaultAudioSource is current playing.  
      * If true, DefaultAudioSource is NOT playing, and NOT paused.  
      * @param1 No parameter needed.
      * @returns boolean type, !(the property of paused) on DefaultAudioSource.
      * */
     public isPlaying = (): boolean => {
-        return !this.defualtAudioSource.paused;
+        return !this.defaultAudioSource.paused;
     }
+
+    // TODO
+    /**
+     * 
+     * 
+     * 
+     */
+    /*
+    public addEventListener = (_eventName: string, _callback: void): void => {
+        this.defaultAudioSource.addEvenetListener(_eventName, _callback);
+    }
+    */
 
     ///////// <!-------- private methods ----------> /////////
 
     private _setSrc = (_audioSource: HTMLAudioElement, _audioClip: AudioClip): void => {
         if(!_audioClip) return console.error("no audioClip sent to setSrc");
-        if(!_audioSource) _audioSource = this.defualtAudioSource;
+        if(!_audioSource) _audioSource = this.defaultAudioSource;
         const URL: AudioClipLocation = `${this.defaultAudioClipLocation}${_audioClip}`;
         _audioSource.src = URL;
     }
 
     private _play = (): void => {
-        this.defualtAudioSource.play();
+        this.defaultAudioSource.play();
     }
 }
 

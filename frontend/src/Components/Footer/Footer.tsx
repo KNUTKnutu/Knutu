@@ -51,6 +51,7 @@ const Footer = (): JSX.Element => {
   }
 
   const onClickAudioTest__Play = () => {
+    audioInstance.setVolume(0.1);
     audioInstance.play(KnutuAudioHandler.clipIntroScene);
   }
 
