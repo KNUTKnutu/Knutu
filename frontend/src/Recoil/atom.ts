@@ -32,7 +32,7 @@ export const currentSceneState = atom<string>({
                 let _packet = {
                     header: {
                         type: "onLobbyEntrance",
-                        date: new Date().toLocaleString()
+                        date: new Date().getTime()
                     },
                     payload: {
                         msg: "onLobbyEntrance shit",

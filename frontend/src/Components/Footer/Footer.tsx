@@ -62,7 +62,7 @@ const Footer = (): JSX.Element => {
 
   const onClickAudioTest__Pause = () => {
     if(audioInstance.isPlaying()) return audioInstance.pause();
-    audioInstance.Unpause();
+    audioInstance.unPause();
   }
 
   const onClickAudioTest__Stop = () => {
