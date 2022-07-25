@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -90,16 +91,24 @@ public class FirebaseService implements FirebaseServiceInterface {
         Firestore fs = FirestoreClient.getFirestore();
         
         User user = new User();
-        Timestamp now = new Timestamp(System.currentTimeMillis());
+        long now = Instant.now().toEpochMilli();
 
         Preference pref = new Preference();
         pref.setLanguage(Preference.LANGUAGE__DEFAULT);
 
+        user.setId(id);
         user.setPw(pw);
         user.setName(name);
+        user.setTitle("끄누투를 처음 접한");
         user.setPreference(pref);
+        user.setLevel(1);
+        user.setCurrentExperience(0);
+        user.setTotalExperience(0);
         user.setCreated_time(now);
         user.setUpdated_time(now);
+        user.setReportedCount(0);
+        user.setAccountGaemaeneo(false);
+        user.setAccountSuspended(false);
 
         ApiFuture<WriteResult> apiFuture = 
             fs
