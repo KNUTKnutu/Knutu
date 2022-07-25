@@ -100,6 +100,7 @@ public class FirebaseService implements FirebaseServiceInterface {
         user.setPw(pw);
         user.setName(name);
         user.setTitle("끄누투를 처음 접한");
+        user.setProfilePicture("");
         user.setPreference(pref);
         user.setLevel(1);
         user.setCurrentExperience(0);
