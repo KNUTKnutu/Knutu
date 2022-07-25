@@ -91,7 +91,7 @@ class KnutuAudioHandler {
      * @param1 No parameter needed.
      * @returns void.
      * */
-    public Unpause = (): void => {
+    public unPause = (): void => {
         this._play();
     };
 
