@@ -13,9 +13,9 @@ class KnutuAudioHandler {
     public static audio: KnutuAudioHandler = new KnutuAudioHandler();
     public static getInstance = (): KnutuAudioHandler => this.audio;
 
-    private readonly defaultAudioClipLocation: AudioClip = "/src/Assets/Audios/";
     private readonly defaultAudioSource: HTMLAudioElement = document.getElementById("audioSource") as HTMLAudioElement;
-    private currentAudioClip: AudioClip = "";
+    private readonly defaultAudioClipLocation: AudioClip = "/src/Assets/Audios/";
+    
     public static readonly clipAllUserReady: AudioClip = "AllUserReady.mp3";
     public static readonly clipGameSceneGaming: AudioClip = "GameScene_Gaming.mp3";
     public static readonly clipGameSceneWaiting: AudioClip = "GameScene_Waiting.mp3";
@@ -26,6 +26,8 @@ class KnutuAudioHandler {
     public static readonly clipOnUserEnter: AudioClip = "OnUserEnter.mp3";
     public static readonly clipRoundEnd: AudioClip = "RoundEnd.mp3";
     public static readonly clipSuspense: AudioClip = "Suspense.mp3";
+
+    private currentAudioClip: AudioClip = "";
 
     /** 
      * Plays an AudioClip independent with default audioSource.  
