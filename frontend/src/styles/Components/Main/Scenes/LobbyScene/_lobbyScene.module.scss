@@ -27,28 +27,27 @@
     .lobby_scene_onlineUsersContainer {
       display: grid;
       grid-template-rows: 9fr 1fr;
-  
+
       .lobby_scene_onlineUsers {
         padding: 20px;
         height: 394px;
         overflow: auto;
         border-bottom: 3px solid black;
-    
+
         .lobby_scene_onlineUser {
           display: flex;
           justify-content: space-between;
           padding: 0px 24px 12px 10px;
-      
-          .onlineUser__name {
 
+          .onlineUser__name {
           }
-      
+
           .onlineUser__level {
             width: 51px;
           }
         }
       }
-      
+
       .lobby_scene_onlineCount {
         display: flex;
         justify-content: center;
@@ -125,7 +124,6 @@
     grid-template-rows: 7fr 3fr;
 
     .lobby_scene_right_top_container {
-
       .lobby_scene_rooms {
         padding: 30px;
         display: grid;
@@ -134,41 +132,41 @@
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr 1fr;
         gap: 24px;
-    
+
         .lobby_scene_room {
           padding: 12px;
           height: 112px;
           border: 2px solid black;
           border-radius: 16px;
-      
+
           display: grid;
           gap: 8px;
           grid-template-columns: 2fr 8fr;
-      
+
           .room__number {
             display: flex;
             align-items: center;
             font-weight: 700;
           }
-        
+
           .room__body {
             display: grid;
             grid-template-columns: 8fr 2fr;
-        
+
             .room__etcs {
               display: flex;
               flex-direction: column;
               justify-content: space-between;
               align-items: center;
             }
-          
+
             .room__entries {
               display: flex;
               gap: 2px;
               flex-direction: column;
               align-items: center;
             }
-          
+
             .room__info {
               display: flex;
               flex-direction: column;
@@ -176,37 +174,36 @@
               gap: 2px;
               font-weight: 500;
             }
-          
+
             .room__title {
               padding-bottom: 10px;
             }
-          
+
             .room__entries {
               font-weight: 300;
             }
-          
+
             .room__is_private {
-              
             }
           }
         }
       }
     }
-    
+
     .lobby_scene_right_bottom_container {
       display: grid;
       gap: 32px;
-      grid-template-columns: 6fr 4fr;
+      grid-template-columns: 3fr 2fr;
+      opacity: 0.99;
 
       .lobby_scene_chatting {
         position: relative;
-        z-index: 2;
 
         .lobby_scene_chatting__title {
           position: absolute;
           top: -28px;
           left: 10px;
-          z-index: auto;
+          z-index: -1;
           width: 120px;
           height: 5rem;
           border: 2px solid black;
@@ -215,11 +212,13 @@
           padding-top: 4px;
           background: cyan;
         }
-        
+
         .lobby_scene_chatting__body {
           display: grid;
           grid-template-rows: 5.62fr 1.17fr;
-  
+          background-color: antiquewhite;
+          border-radius: 14px;
+
           .lobby_scene_chatting__chattingScreen {
             padding: 10px;
             height: 153px;
@@ -235,35 +234,34 @@
               .lobby_scene_chatting__chatter {
                 padding-left: 8px;
               }
-  
+
               .lobby_scene_chatting__chatMessage {
-  
               }
-  
+
               .lobby_scene_chatting__chatTime {
                 display: flex;
                 justify-content: flex-end;
               }
             }
           }
-  
+
           .lobby_scene_chatting__chattingBar {
             display: grid;
             grid-template-columns: 2fr 12fr 1.5fr;
             height: 32px;
-  
+
             .lobby_scene_chatting__chattingBar__mode {
               display: flex;
               justify-content: center;
               align-items: center;
               border-right: 2px solid black;
             }
-  
+
             .lobby_scene_chatting__chattingBar__chatContainer {
               display: flex;
               justify-content: center;
               align-items: center;
-  
+
               .lobby_scene_chatting__chattingBar__chat {
                 padding-left: 12px;
                 width: 100%;
@@ -272,13 +270,13 @@
                 resize: none;
                 font-family: "NanumSquareAceb";
                 background-color: $lobby-chatting-bg-color;
-  
+
                 &:focus {
                   outline: unset;
                 }
               }
             }
-  
+
             .lobby_scene_chatting__chattingBar__send {
               display: flex;
               justify-content: center;
@@ -305,8 +303,8 @@
         }
 
         .navs__makeRoom {
-            border-right: 1px solid black;
-            border-bottom: 1px solid black;
+          border-right: 1px solid black;
+          border-bottom: 1px solid black;
         }
 
         .navs__quickSearch {
