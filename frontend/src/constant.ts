@@ -15,3 +15,8 @@ export const CHECK_PW = "비밀번호 확인";
 export const MAINTAIN = "로그인 상태 유지";
 export const NAME = "이름";
 export const LOGOUT = "로그아웃";
+
+// Preference
+export const LANGUAGE__KOREAN: string = "Korean";
+export const LANGUAGE__ENGLISH: string = "English";
+export const LANGUAGE__DEFAULT: string = LANGUAGE__KOREAN;

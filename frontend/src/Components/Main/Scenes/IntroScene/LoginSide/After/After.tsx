@@ -1,18 +1,21 @@
 import { SetStateAction } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { LOGOUT } from "../../../../../../constant";
 import { LOGINSTATE } from "../../../../../../enum";
+import { TestingUser } from "../../../../../../interface";
+import { userState } from "../../../../../../Recoil/atom";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/After/_after.module.scss";
 
 interface AfterProps {
   setLoginState: React.Dispatch<SetStateAction<LOGINSTATE>>;
 }
 
-const res = { name: "test_name", level: 2, win_count: 3 };
-
 const After = ({ setLoginState }: AfterProps) => {
-  const { name, level, win_count } = res;
+  const [user, setUser] = useRecoilState(userState);
+  const { name, level, win_count } = user as TestingUser;
 
   const onClickLogout = () => {
+    setUser(null);
     setLoginState(LOGINSTATE.Before);
   };
   return (

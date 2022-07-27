@@ -2,8 +2,11 @@ import InitApplication from "../../../../Logic/InitApplication";
 import ChannelSide from "./ChannelSide/ChannelSide";
 import LoginSide from "./LoginSide/LoginSide";
 import styles from "../../../../Styles/Components/Main/Scenes/IntroScene/_introScene.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { channel_list } from "../../../../dummy";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../../Recoil/atom";
+import { Nullish, TestingUser } from "../../../../interface";
 
 // fetch가 완료되면 Suspense안에 컴포넌트들을 보여줌
 // initialResource는 각 컴포넌트에서 필요로 하는 데이터들을 가지고 있어야 한다.
@@ -11,8 +14,8 @@ import { channel_list } from "../../../../dummy";
 const initialResource = InitApplication();
 
 const IntroScene = (): JSX.Element => {
-  // const [intro, setIntro] = useState(initialResource.intro.read());
-  // const { title } = intro;
+  const [intro, setIntro] = useState(initialResource.intro.read());
+  const { title } = intro;
 
   const ch_list = channel_list;
 

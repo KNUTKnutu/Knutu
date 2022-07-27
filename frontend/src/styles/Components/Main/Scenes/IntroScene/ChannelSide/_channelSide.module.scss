@@ -10,7 +10,6 @@
     height: fit-content;
     border-radius: 10px;
     background-color: white;
-    filter: blur(2px);
 
     & > span {
       font-size: 3rem;
@@ -23,7 +22,14 @@
       margin-bottom: 1rem;
     }
 
-    .channe_list_wrapper {
+    &.nope {
+      & {
+        pointer-events: none;
+        filter: blur(2px);
+      }
+    }
+
+    .channel_list_wrapper {
       gap: 1.5rem;
       padding: 1.5rem 3rem;
       display: grid;

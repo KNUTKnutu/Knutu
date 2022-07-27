@@ -1,11 +1,15 @@
 import { FormEvent } from "react";
+import { useSetRecoilState } from "recoil";
 import { ID, LOGIN, MAINTAIN, PW, SINGNUP } from "../../../../../../constant";
 import { LOGINSTATE } from "../../../../../../enum";
 import { LoginIngProps } from "../../../../../../interface";
+import { userState } from "../../../../../../Recoil/atom";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Ing/_loginIng.module.scss";
 
 // 로그인하는 컴포넌트, 서버에 get요청을 보냄.
 const LoginIng = ({ setLoginState }: LoginIngProps) => {
+  const setUser = useSetRecoilState(userState);
+
   const onClickSignUp = () => {
     setLoginState(LOGINSTATE.SignUp);
   };
@@ -16,7 +20,7 @@ const LoginIng = ({ setLoginState }: LoginIngProps) => {
     // axios - get(login)
     const res = { name: "test_name", level: 2, win_count: 3 };
     if (res !== null || res !== undefined) {
-      console.log("change State");
+      setUser(res);
       setLoginState(LOGINSTATE.After);
     }
 
