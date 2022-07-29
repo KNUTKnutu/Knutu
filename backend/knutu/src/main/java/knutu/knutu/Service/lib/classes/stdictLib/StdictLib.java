@@ -3,9 +3,10 @@ package knutu.knutu.Service.lib.classes.stdictLib;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+
+import javax.net.ssl.HttpsURLConnection;
 
 import org.springframework.stereotype.Service;
 
@@ -17,10 +18,6 @@ public class StdictLib {
     public static StdictLib getstdictLibInstance() { return stdictLibInstance; }
 
     private static final String authKey = privates.stdictAuthKey;
-
-    private HttpURLConnection conn = null;
-    private BufferedReader bufferedReader = null;
-    private StringBuffer stringBuffer = null;
 
     /**
      * Makes a query to stdict, with shorthand way.  
@@ -35,19 +32,22 @@ public class StdictLib {
             final Short num = 10;
             final Short start = 1;
             final String req_type = "json";
-            final String url = String.format("https://stdict.korean.go.kr/api/search.do?key=%s&req_type=%s&num=%d&start=%d&q=%s", authKey, req_type, num, start, word);
-            final URL URL = new URL(URLEncoder.encode(url,"UTF-8"));
+            final String q = URLEncoder.encode(word, "UTF-8");
+            final String url = String.format("https://stdict.korean.go.kr/api/search.do?key=%s&req_type=%s&num=%d&start=%d&q=%s",
+                                                                                                authKey, req_type, num, start, q);
+            final URL URL = new URL(url);
             final String METHOD = "GET";
 
-            conn = (HttpURLConnection) URL.openConnection();
+            HttpsURLConnection conn = (HttpsURLConnection) URL.openConnection();
             
-            conn.setRequestProperty("Accept", "application/json");
+            conn.setUseCaches(false);
+            conn.setReadTimeout(10000);
             conn.setRequestMethod(METHOD);
 
             conn.connect();
 
-            bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            stringBuffer = new StringBuffer();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            StringBuffer stringBuffer = new StringBuffer();
 
             String responseData;
 
@@ -62,15 +62,7 @@ public class StdictLib {
 
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (bufferedReader != null) 
-                    bufferedReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                return "뭔가 잘못 되었을 걸? ㅎㅎ";
-            }
-        }
+            return "error";
+        } 
     }
 }
