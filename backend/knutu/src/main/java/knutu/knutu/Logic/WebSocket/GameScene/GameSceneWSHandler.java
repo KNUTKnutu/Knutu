@@ -12,6 +12,7 @@ import javax.websocket.server.ServerEndpoint;
 import org.springframework.stereotype.Component;
 
 import knutu.knutu.Logic.WebSocket.WebSocketController;
+import knutu.knutu.Service.lib.classes.User.User;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -21,7 +22,7 @@ public class GameSceneWSHandler {
     
     private GameSceneInstances instances = GameSceneInstances.getInstance();
     private Set<Session> clients = instances.clients;
-    private Map<String, String> onlineUsers = instances.onlineUsers;
+    private Map<String, User> onlineUsers = instances.onlineUsers;
 
     @OnMessage
     public void onMessage(String msg, Session session) throws Exception {
