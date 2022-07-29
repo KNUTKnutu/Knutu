@@ -1,10 +1,10 @@
-import { atom } from "recoil";
+import { atom, useSetRecoilState } from "recoil";
 import {
   SCENE__GAMESCENE,
   SCENE__INTROSCENE,
   SCENE__LOBBYSCENE,
 } from "../constant";
-import { Nullish, TestingUser } from "../interface";
+import { Nullish, User } from "../interface";
 import storageEffect from "./effects/storage";
 
 // 어떤 Scene을 보여줄 지
@@ -21,22 +21,28 @@ export const currentSceneState = atom<string>({
             break;
           case SCENE__LOBBYSCENE:
             ws = new WebSocket(`ws://localhost:19410/ws/lobbyscene`);
+            
+            const setUserState = useSetRecoilState<Nullish<User>>(userState);
 
             ws.onmessage = (msg) => {
               console.log(msg);
-              console.log(JSON.parse(msg.data));
+              const data = JSON.parse(JSON.parse(msg.data).payload.data);
+              console.log(data);
+              setUserState(data);
               console.log("message above is from lobbyscene");
             };
 
+            const type = "onLobbyEntrance";
+            const date = new Date().getTime();
+
             let _packet = {
               header: {
-                type: "onLobbyEntrance",
-                date: new Date().getTime(),
+                type,
+                date,
               },
               payload: {
-                msg: "onLobbyEntrance shit",
                 user: {
-                  name: "신이종" + Math.floor(Math.random() * Math.pow(2, 32)),
+                  name: "shinleejong",
                 },
               },
             };
@@ -54,7 +60,7 @@ export const currentSceneState = atom<string>({
   ],
 });
 
-export const userState = atom<Nullish<TestingUser>>({
+export const userState = atom<Nullish<User>>({
   key: "userState",
   default: null,
   effects: [storageEffect("user")],

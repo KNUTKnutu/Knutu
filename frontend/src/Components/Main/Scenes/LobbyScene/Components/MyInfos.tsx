@@ -1,6 +1,13 @@
 import styles from "../../../../../Styles/Components/Main/Scenes/LobbyScene/_lobbyScene.module.scss";
+import { userState } from "../../../../../Recoil/atom";
+import { useRecoilState } from "recoil";
+import { Nullish, User } from "../../../../../interface";
 
 const MyInfos = (): JSX.Element => {
+
+    const [user, setUser] = useRecoilState<Nullish<User>>(userState);
+    const {name, level} = user!;
+
     return (
         <div className={`${styles.lobby_scene_myInfos} ${styles.lobby_scene_components}`}>
             <div className={styles.lobby_scene_myInfos__top}>
@@ -9,7 +16,7 @@ const MyInfos = (): JSX.Element => {
                 </div>
                 <div className={styles.lobby_scene_myInfos__infoContainer}>
                     <div className={styles.lobby_scene_myInfos__level}>
-                        레벨 15&nbsp;&nbsp;&nbsp;신이종
+                        <span>레벨 {level}   {name}</span>
                     </div>
                 </div>
             </div>
