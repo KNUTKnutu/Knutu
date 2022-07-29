@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,11 @@ public class StdictLib {
     public String simpleQuery(String word) {
         
         try {
-            final URL URL = new URL(String.format("https://stdict.korean.go.kr/api/search.do?key=%s&q=%s", authKey, word));
+            final int num = 10;
+            final int start = 1;
+            final String req_type = "json";
+            final String url = String.format("https://stdict.korean.go.kr/api/search.do?key=%s&req_type=%s&num=%d&start=%d&q=%s", authKey, req_type, num, start, word);
+            final URL URL = new URL(URLEncoder.encode(url,"UTF-8"));
             final String METHOD = "GET";
 
             conn = (HttpURLConnection) URL.openConnection();
