@@ -7,7 +7,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
 import knutu.knutu.Service.lib.privates.privates;
@@ -33,8 +32,8 @@ public class StdictLib {
     public String simpleQuery(String word) {
         
         try {
-            final int num = 10;
-            final int start = 1;
+            final Short num = 10;
+            final Short start = 1;
             final String req_type = "json";
             final String url = String.format("https://stdict.korean.go.kr/api/search.do?key=%s&req_type=%s&num=%d&start=%d&q=%s", authKey, req_type, num, start, word);
             final URL URL = new URL(URLEncoder.encode(url,"UTF-8"));
