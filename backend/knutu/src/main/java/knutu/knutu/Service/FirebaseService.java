@@ -6,19 +6,26 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.api.core.ApiFuture;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.firestore.CollectionReference;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Firestore;
+import com.google.cloud.firestore.Query;
+import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
@@ -27,6 +34,7 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.firebase.cloud.StorageClient;
+import com.google.firebase.internal.NonNull;
 
 import knutu.knutu.Service.lib.classes.User.Preference;
 import knutu.knutu.Service.lib.classes.User.User;
@@ -135,6 +143,18 @@ public class FirebaseService implements FirebaseServiceInterface {
         }
     }
 
+    public User getUserWithName(String name) throws Exception {
+        try {
+            DocumentSnapshot userSnapshot = this.getUserByName(name);
+    
+            if(!userSnapshot.exists()) return null;
+    
+            return userSnapshot.toObject(User.class);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
     // Update
     public boolean updateUser(String id, User user) throws Exception {
         Firestore fs = FirestoreClient.getFirestore();
@@ -171,6 +191,25 @@ public class FirebaseService implements FirebaseServiceInterface {
         DocumentSnapshot docSnapshot = apiFuture.get();
 
         return docSnapshot;
+    }
+
+    private DocumentSnapshot getUserByName(String name) throws Exception {
+        Firestore fs = FirestoreClient.getFirestore();
+
+        CollectionReference collectionRef = fs.collection(COLLECTION__USER);
+        Query query = collectionRef.whereEqualTo("name", name);
+
+        ApiFuture<QuerySnapshot> apiFuture = query.get();
+        
+        QuerySnapshot result = apiFuture.get();
+
+        List<QueryDocumentSnapshot> docList = result.getDocuments();
+        
+        if(docList.isEmpty()) return null;
+
+        DocumentSnapshot ret = docList.get(0);
+        
+        return ret;
     }
 
     public boolean checkDuplicatedId(String id) throws Exception {
