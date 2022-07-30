@@ -23,10 +23,8 @@
     }
 
     &.nope {
-      & {
-        pointer-events: none;
-        filter: blur(2px);
-      }
+      pointer-events: none;
+      filter: blur(2px);
     }
 
     .channel_list_wrapper {
