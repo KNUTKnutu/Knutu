@@ -11,6 +11,7 @@ const GameScene = (): JSX.Element => {
 
   return (
     <div className={styles.game_scene_container}>
+      <button className={styles.game_scene_for_test} onClick={onTestBtnClicked}>for testing</button>
       <GameScene__Waiting _isGaming={isGaming} />
       <GameScene__Gaming _isGaming={isGaming} />
     </div>

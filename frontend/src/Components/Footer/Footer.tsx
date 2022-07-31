@@ -34,19 +34,19 @@ const Footer = (): JSX.Element => {
   };
 
   const onClickWebSocketTest = () => {
-    // const _packet = {
-    //   header: {
-    //     type: "tester",
-    //     date: new Date().toLocaleString()
-    //   },
-    //   payload: {
-    //     msg: "testing",
-    //   }
-    // };
+    const _packet = {
+      header: {
+        type: "tester",
+        date: new Date().toLocaleString()
+      },
+      payload: {
+        msg: "testing",
+      }
+    };
 
-    // const packet = JSON.stringify(_packet);
+    const packet = JSON.stringify(_packet);
 
-    // ws.send(packet);
+    ws.send(packet);
   }
 
   const audioInstance = KnutuAudioHandler.getInstance();
