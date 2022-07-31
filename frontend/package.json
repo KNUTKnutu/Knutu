@@ -5,7 +5,7 @@
   "homepage": "https://knutknutu.github.io/Knutu/",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --open",
     "build": "tsc && vite build",
     "host": "tsc && vite build --host",
     "preview": "vite preview",
