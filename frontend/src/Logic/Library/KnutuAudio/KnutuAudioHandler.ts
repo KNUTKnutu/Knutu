@@ -1,8 +1,4 @@
-type AudioClip = string;
-type AudioClipLocation = string;
-type AudioVolume = number;
-type AudioPlaytime = number;
-type AudioPlaybackRate = number;
+import { AudioClip, AudioClipLocation, AudioPlaybackRate, AudioPlaytime, AudioVolume } from './KnutuAudioTypes';
 
 /**
 * Knutu Library - KnutuAudioHandler
