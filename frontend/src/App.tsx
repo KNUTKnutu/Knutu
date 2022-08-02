@@ -4,11 +4,28 @@ import { Suspense } from "react";
 import Main from "./Components/Main/Main";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
-
-// const socket = io(`http://localhost:8080`);
-// socket.emit("Test", { Classes: "Test", Text: "Testing now" });
+import { useSetRecoilState } from "recoil";
+import { Nullish, User } from "./interface";
+import { userState } from "./Recoil/atom";
+import KnutuWebSocketHandler from "./Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
 
 const App = () => {
+            
+  const setUserState = useSetRecoilState<Nullish<User>>(userState);
+  
+  const messageListener = (msg: any) => {
+    const type = JSON.parse(msg.data).header.type;
+
+    switch(type) {
+      case "onLobbyEntrance":
+        setUserState(JSON.parse(JSON.parse(msg.data).payload.data));
+        console.log(userState);
+        break;
+    }
+  };
+
+  KnutuWebSocketHandler.onMessageReceiver = messageListener;
+
   return (
     <div className={styles.App}>
       <Suspense fallback={<Splash />}>

@@ -6,6 +6,7 @@ import {
 } from "../constant";
 import { Nullish, User } from "../interface";
 import storageEffect from "./effects/storage";
+import KnutuWebSocketHandler from '../Logic/Library/KnutuWebSocket/KnutuWebSocketHandler';
 
 // 어떤 Scene을 보여줄 지
 export const currentSceneState = atom<string>({
@@ -14,45 +15,15 @@ export const currentSceneState = atom<string>({
   effects: [
     ({ onSet }) => {
       onSet((currScene, prevScene) => {
-        let ws: WebSocket;
-
         switch (currScene) {
           case SCENE__INTROSCENE:
+            KnutuWebSocketHandler.getInstance().setEnabledScene("IntroScene");
             break;
           case SCENE__LOBBYSCENE:
-            // ws = new WebSocket(`ws://localhost:19410/ws/lobbyscene`);
-            
-            // const setUserState = useSetRecoilState<Nullish<User>>(userState);
-
-            // ws.onmessage = (msg) => {
-            //   console.log(msg);
-            //   const data = JSON.parse(JSON.parse(msg.data).payload.data);
-            //   console.log(data);
-            //   setUserState(data);
-            //   console.log("message above is from lobbyscene");
-            // };
-
-            // const type = "onLobbyEntrance";
-            // const date = new Date().getTime();
-
-            // let _packet = {
-            //   header: {
-            //     type,
-            //     date,
-            //   },
-            //   payload: {
-            //     user: {
-            //       name: "shinleejong",
-            //     },
-            //   },
-            // };
-
-            // let packet = JSON.stringify(_packet);
-
-            // setTimeout(() => ws.send(packet), 1000);
-            // break;
+            KnutuWebSocketHandler.getInstance().setEnabledScene("LobbyScene");
+            break;
           case SCENE__GAMESCENE:
-            ws = new WebSocket(`ws://localhost:19410/ws/gamescene`);
+            KnutuWebSocketHandler.getInstance().setEnabledScene("GameScene");
             break;
         }
       });
