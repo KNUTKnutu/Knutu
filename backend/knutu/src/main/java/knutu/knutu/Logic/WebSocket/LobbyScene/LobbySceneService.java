@@ -84,6 +84,10 @@ public class LobbySceneService {
     }
 
     private void initialize() {
-
+        // Channels
+            // K (From Phase I)
+                Channel K = new Channel("K");
+                this.availableChannels.put("K", K);
+            // N (Maybe on Phase II)
     }
 }

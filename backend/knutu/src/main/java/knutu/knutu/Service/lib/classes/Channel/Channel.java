@@ -11,4 +11,8 @@ import lombok.Setter;
 public class Channel {
     private String name;
     private Map<String, User> onlineUsers;
+
+    public Channel(String channelName) {
+        this.name = channelName;
+    }
 }
