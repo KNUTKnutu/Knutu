@@ -1,5 +1,6 @@
 package knutu.knutu.Logic.WebSocket.LobbyScene;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import knutu.knutu.Service.FirebaseService;
+import knutu.knutu.Service.lib.classes.Channel.Channel;
 import knutu.knutu.Service.lib.classes.GameRoom.Room;
 import knutu.knutu.Service.lib.classes.Player.Player;
 import knutu.knutu.Service.lib.classes.User.User;
@@ -24,6 +26,9 @@ public class LobbySceneService {
     private LobbySceneInstances instances = LobbySceneInstances.getInstance();
     private Map<String, User> onlineUsers = instances.onlineUsers;
     private Map<String, Room> gameRooms = instances.gameRooms;
+    public Map<String, Channel> availableChannels = instances.availableChannels;
+
+    private boolean isInitialized = false;
     
     public String onLobbyEntrance(Session _session, JSONObject _requestPacket) throws Exception {
         JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
@@ -36,6 +41,15 @@ public class LobbySceneService {
         String ret = gson.toJson(user);
 
         return ret;
+    }
+
+    public Collection<Channel> getChannelInfos() {
+        if(this.isInitialized == false) {
+            this.initialize();
+            this.isInitialized = true;
+        }
+
+        return this.availableChannels.values();
     }
 
     public boolean makeRoom(Room room) {
@@ -67,5 +81,9 @@ public class LobbySceneService {
         } catch (Exception e){
             return false;
         }
+    }
+
+    private void initialize() {
+
     }
 }
