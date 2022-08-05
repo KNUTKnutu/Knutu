@@ -36,3 +36,8 @@ export const userState = atom<Nullish<User>>({
   default: null,
   effects: [storageEffect("user")],
 });
+
+export const readyState = atom({
+  key: 'readyState',
+  default: false,
+});

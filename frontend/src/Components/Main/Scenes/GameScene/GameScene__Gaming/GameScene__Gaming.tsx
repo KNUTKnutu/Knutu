@@ -8,7 +8,12 @@ const GameScene__Gaming = ({ _isGaming }: any): JSX.Element => {
         _isGaming ? styles.true : styles.false
       }`}
     >
-      GameScene Gaming
+      <div>userlist</div> 
+
+      <div>
+        <div>gameboard</div>
+        <div>IngameChat</div>
+      </div>
     </div>
   );
 };

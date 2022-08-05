@@ -65,3 +65,16 @@ $lobby-font-color: black;
 $lobby-chatting-bg-color: $lobby-background-color;
 
 /* GameScene */
+$game-wating-color: rgb(129, 123, 173);
+
+$game-border-color: black;
+$game-border-size: 3px;
+$game-border-radius: 20px;
+
+$game-roominfo-padding: 20px;
+$game-roominfo-width: 400px;
+$game-roominfo-height: 420px;
+$game-roominfo-gap: 20px;
+$game-roominfo-min-width: $game-roominfo-width - $game-roominfo-padding * 2;
+$game-roominfo-max-height: $game-roominfo-height - $game-roominfo-gap * 3;
+
