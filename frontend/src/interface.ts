@@ -1,4 +1,4 @@
-import { SetStateAction } from "react";
+import { ChangeEvent, SetStateAction } from "react";
 import { LOGINSTATE } from "./enum";
 
 export type Nullish<T> = null | T;
@@ -70,4 +70,13 @@ export interface Room {
   currEntry: number;
   maxEntry: number;
   pw: string;
+}
+
+export interface FloatingLabelProps {
+  type: "text" | "password";
+  id: string;
+  name: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  label: string;
 }

@@ -1,0 +1,40 @@
+@import "../../../variable.module";
+
+// Important
+.floating_label {
+  position: relative;
+
+  input {
+    width: 100%;
+    height: 50%;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+    font-size: 1.125rem;
+    padding-left: 6px;
+
+    &:focus-within,
+    &:not(:placeholder-shown) {
+      border-color: $accent_color;
+      & ~ label {
+        top: 10%;
+        transform: scale(0.75);
+        transition: all 0.3s;
+      }
+    }
+  }
+
+  label {
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    transform: translateY(-50%);
+  }
+
+  .visibility {
+    position: absolute;
+    right: 0;
+    top: 50;
+    transform: translateY(-50);
+  }
+}

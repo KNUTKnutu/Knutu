@@ -4,7 +4,7 @@ import { userState } from "../../../../../Recoil/atom";
 import styles from "../../../../../Styles/Components/Main/Scenes/IntroScene/ChannelSide/_channelSide.module.scss";
 import Channel from "../../../../Reusable/Channel/Channel";
 
-// fetch된 채털 리스트를 보여주는 컴포넌트
+// fetch된 채널 리스트를 보여주는 컴포넌트
 const ChannelSide = ({ list }: ChannelSideProps) => {
   const user = useRecoilValue(userState);
   return (

@@ -1,1 +1,1 @@
-export const API_URL = 'http://localhost:19410';
+export const API_URL = "http://112.173.234.250:19410";
