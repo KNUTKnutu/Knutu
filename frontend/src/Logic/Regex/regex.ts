@@ -1,2 +1,3 @@
-export const RegexId = /[]/;
-export const RegexPw = /[]/;
+export const RegexId = /^[a-z0-9]{5,12}$/g; // ID는 문자와 숫자만이 올 수 있다. (문자는 꼭 필요하고 숫자는 꼭 필요하지 않음)
+export const RegexPw = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*\W).{6,20}$/; // PW는 문자와 숫자, 특수기호(₩~!@#$%^&*()_+-=,./<>?)가 올 수 있고 숫자와 특수기호는 하나 이상 포함되어 있어야 한다.
+export const RegexName = /[A-Z0-9가-힣]+{,8}/; // 닉네임
