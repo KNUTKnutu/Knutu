@@ -24,9 +24,11 @@ const LoginIng = ({ setLoginState }: LoginIngProps) => {
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // axios - get(login)
     const res = get__signin({ id, pw });
+    console.log(res);
     // status 코드보고 switch나 if문
+    // res보고 localStorage의 userState에 담기
+    // res가 localStorage에 담겼다면 setLoginState(LOGINSTATE.After)로 변경
   };
 
   const LOGINCONTENTS: FloatingLabelProps[] = [
@@ -50,7 +52,7 @@ const LoginIng = ({ setLoginState }: LoginIngProps) => {
 
   return (
     <div className={styles.login_ing_container}>
-      <form onSubmit={onSubmit}>
+      <form>
         <div className={styles.login_head_container}>
           <span className={styles.login_head}>{LOGIN}</span>
         </div>
@@ -64,7 +66,7 @@ const LoginIng = ({ setLoginState }: LoginIngProps) => {
             <label htmlFor="maintain">{MAINTAIN}</label>
           </div>
           <div className={styles.login_btn_wrapper}>
-            <button>{LOGIN}</button>
+            <button onClick={onSubmit}>{LOGIN}</button>
           </div>
         </div>
         <hr />

@@ -34,10 +34,10 @@ const SignUp = ({ setLoginState }: SignUpProps) => {
     e.preventDefault();
     // pw와 pw_check이 동일하다면 post_signup()을 실행한다.
     if (pw === pw_check) {
-      post__signup({ id, pw, name });
+      const res = post__signup({ id, pw, name });
+      console.log(res);
+      // setLoginState(LOGINSTATE.Before);
     }
-
-    // setLoginState(LOGINSTATE.Before);
   };
 
   const SIGNUPCONTENTS: FloatingLabelProps[] = [
@@ -77,7 +77,7 @@ const SignUp = ({ setLoginState }: SignUpProps) => {
 
   return (
     <div className={styles.signup_container}>
-      <form onSubmit={onSubmit}>
+      <form>
         <div className={styles.signup_head_container}>
           <span className={styles.signup_head}>{SINGNUP}</span>
         </div>
@@ -87,8 +87,10 @@ const SignUp = ({ setLoginState }: SignUpProps) => {
             <FloatingLabel key={idx} {...content} />
           ))}
           <div className={styles.signup_btn_wrapper}>
-            <button>뒤로 가기</button>
-            <button>{SINGNUP}</button>
+            <button onClick={() => setLoginState(LOGINSTATE.Before)}>
+              뒤로 가기
+            </button>
+            <button onClick={onSubmit}>{SINGNUP}</button>
           </div>
         </div>
       </form>
