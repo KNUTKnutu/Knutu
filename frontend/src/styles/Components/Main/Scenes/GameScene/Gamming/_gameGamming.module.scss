@@ -1,0 +1,152 @@
+@import "../../../../../variable.module";
+
+/*left*/
+.gamer_list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  border: 3px solid black;
+  border-radius: 5px;
+  padding: 20px;
+  gap: 20px;
+
+  .gamer {
+    display: grid;
+    padding: 20px;
+    border: 3px solid black;
+    border-radius: 5px;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    .name {
+      grid-row: 3;
+      grid-column: 2;
+    }
+    .profile {
+      grid-row: 2 / span 2;
+      grid-column: 1;
+    }
+    .level {
+      grid-row: 2;
+      grid-column: 2;
+    }
+    .score {
+      grid-row: 1;
+      grid-column: 1 / span 2;
+    }
+  }
+}
+
+/*right*/
+.gamming_container {
+  display: flex;
+  flex-direction: column;
+  border: 3px solid black;
+  border-radius: 5px;
+  padding: 20px;
+  gap: 20px;
+
+  .gameboard_container {
+    height: 400px;
+    display: grid;
+    grid-template-rows: 2fr 1fr 1fr;
+    .questionboard{
+      display: grid;
+      grid-template-rows: 1fr 5fr;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      .board_suggestion{
+        display: flex;
+        justify-content: center;
+      }
+
+      .board_question{
+        border: 2px solid black;
+        border-radius: 5px;
+        padding: 30px 276px;
+        font-size: 48px;
+      }
+    }
+
+    .timer{
+      position: relative;
+      border: 2px solid black;
+      height: 48px;
+      top: -27px;
+      width: 693px;
+    }
+
+    .gamelog{
+
+    }
+
+  }
+
+  .gamming_chatting {
+    display: grid;
+    border: $game-border-color $game-border-size solid;
+    border-radius: $game-border-radius;
+    height: 158px;
+    .game_gamming_chatting__body {
+      display: grid;
+      grid-template-rows: 5.62fr 1.17fr;
+      background-color: darkseagreen;
+      border-radius: 20px;
+
+      .game_gamming_chatting__chattingScreen {
+        padding: 18px;
+        height: 116px;
+        font-weight: 100;
+        border-bottom: 2px solid black;
+        overflow: auto;
+
+        .game_gamming_chatting_chat {
+          display: grid;
+          grid-template-columns: 4fr 7fr 2.5fr;
+          padding-bottom: 8px;
+          .game_gamming_chatting_chatter {
+            padding-left: 8px;
+          }
+
+          .game_gamming_chatting_chatMessage {
+          }
+
+          .game_gamming_chatting_chatTime {
+            display: flex;
+            justify-content: flex-end;
+          }
+        }
+      }
+
+      .game_gamming_chatting__chattingBar {
+        display: grid;
+        grid-template-columns: 12fr 1.5fr;
+        height: 20px;
+
+        
+          .game_gamming_chatting__chattingBar__chat {
+            padding-left: 26px;
+            width: 100%;
+            height: 14px;
+            border: unset;
+            resize: none;
+            font-family: "NanumSquareAceb";
+            background-color: darkseagreen;
+
+            &:focus {
+              outline: unset;
+            }
+          }
+        
+        .game_gamming_chatting__chattingBar__send {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-left: 2px solid black;
+        }
+      }
+    }
+  }
+}

@@ -28,7 +28,10 @@
     background-color: darkseagreen;
 
     &.true {
-      display: block;
+      display: grid;
+      padding: 40px 92px 40px 92px;
+      grid-template-columns: 5fr 5fr;
+      column-gap: 30px;
     }
 
     &.false {
