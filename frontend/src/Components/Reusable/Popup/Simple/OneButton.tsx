@@ -1,7 +1,6 @@
+import { Nullable } from "../../../../Logic/Library/CommonTypes/CommonTypes";
 import Dim from "../../../Dim/Dim";
 import styles from "./_oneButton.module.scss";
-
-type Nullable<T> = T | null;
 
 interface Props {
   text: Nullable<string>;

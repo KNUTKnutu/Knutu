@@ -4,9 +4,9 @@ import {
   SCENE__INTROSCENE,
   SCENE__LOBBYSCENE,
 } from "../constant";
-import { Nullish, User } from "../interface";
+import { Nullable, User } from "../interface";
 import storageEffect from "./effects/storage";
-import KnutuWebSocketHandler from '../Logic/Library/KnutuWebSocket/KnutuWebSocketHandler';
+import KnutuWebSocketHandler from "../Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
 
 // 어떤 Scene을 보여줄 지
 export const currentSceneState = atom<string>({
@@ -31,13 +31,13 @@ export const currentSceneState = atom<string>({
   ],
 });
 
-export const userState = atom<Nullish<User>>({
+export const userState = atom<Nullable<User>>({
   key: "userState",
   default: null,
   effects: [storageEffect("user")],
 });
 
 export const readyState = atom({
-  key: 'readyState',
+  key: "readyState",
   default: false,
 });

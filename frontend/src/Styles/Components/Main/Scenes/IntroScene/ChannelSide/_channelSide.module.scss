@@ -1,57 +1,68 @@
-.channel_side_container {
+@import "../../../../../variable.module";
+
+.channel_side {
   flex: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  height: 100%;
+  background-color: bisque;
+  border-radius: 20px;
+  position: relative;
 
-  .channel_container {
-    width: 80%;
-    height: fit-content;
-    border-radius: 10px;
-    background-color: white;
+  .channel_main {
+    display: flex;
+    flex-direction: column;
+    position: relative;
 
-    & > span {
-      font-size: 3rem;
-      font-weight: 700;
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      margin-left: 4rem;
-      margin-top: 1rem;
-      margin-bottom: 1rem;
+    .title {
+      border-bottom: 1px solid black;
+      h2 {
+        margin: 20px;
+        font-size: 2rem;
+      }
     }
 
-    &.nope {
-      pointer-events: none;
-      filter: blur(2px);
-    }
-
-    .channel_list_wrapper {
-      gap: 1.5rem;
-      padding: 1.5rem 3rem;
+    .channels {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(4, 1fr);
+      gap: 20px;
+      margin: 20px;
     }
   }
 
-  .alert_channel {
+  .modal_container {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    width: 400px;
-    height: 300px;
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    left: 50%;
+    translate: -50% -50%;
+    width: fit-content;
+    height: 50%;
 
-    & > span {
-      font-size: 1.5rem;
-      font-weight: 600;
+    .glass_panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      padding: 30px;
+      height: 100%;
+      border-radius: 20px;
+      border: 2px solid white;
+      box-shadow: 5px 5px 5px 5px lightgray;
+
+      // glass
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+
+      & > span {
+        font-size: 2.5rem;
+        color: $accent_color;
+        font-weight: 700;
+      }
     }
   }
+}
+
+.yet {
+  filter: blur(6px);
+  pointer-events: none;
 }

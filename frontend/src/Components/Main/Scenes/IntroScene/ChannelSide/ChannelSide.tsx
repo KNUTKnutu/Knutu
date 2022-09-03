@@ -6,25 +6,27 @@ import Channel from "../../../../Reusable/Channel/Channel";
 
 // fetch된 채널 리스트를 보여주는 컴포넌트
 const ChannelSide = ({ list }: ChannelSideProps) => {
-  const user = useRecoilValue(userState);
+  // const isLogin = useRecoilValue(userState);
+  const isLogin = false;
+  console.log(isLogin);
   return (
-    <div className={styles.channel_side_container}>
-      <div
-        className={`${styles.channel_container} ${
-          user === null && styles.nope
-        }`}
-      >
-        <span>채널 선택</span>
-        <hr />
-        <div className={styles.channel_list_wrapper}>
+    <div className={styles.channel_side}>
+      <div className={`${styles.channel_main} ${!isLogin && styles.yet}`}>
+        <div className={styles.title}>
+          <h2>채널 선택</h2>
+        </div>
+        <div className={styles.channels}>
           {list.map((channel, idx) => (
             <Channel key={idx} {...channel} />
           ))}
         </div>
       </div>
-      {user === null && (
-        <div className={styles.alert_channel}>
-          <span>로그인을 하면 채널을 볼 수 있습니다.</span>
+      {!isLogin && (
+        <div className={styles.modal_container}>
+          <div className={styles.glass_panel}>
+            <span>로그인하면 </span>
+            <span>채널 목록을 볼 수 있습니다!!</span>
+          </div>
         </div>
       )}
     </div>

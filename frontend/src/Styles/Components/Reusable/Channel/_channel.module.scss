@@ -2,10 +2,46 @@
 
 .channel_wrapper {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
+  flex-direction: column;
+  background: white;
+  font-size: 20px;
+  width: 32rem;
+  height: 80px;
+  border-radius: 20px 20px 0 0;
+
   cursor: pointer;
-  border: 1px solid black;
-  border-radius: 10px;
+  transition: 0.5s;
+
+  &:hover {
+    box-shadow: inset 32rem 0 0 0 black;
+    color: white;
+  }
+
+  .channel_main {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 20px;
+    background-color: none;
+
+    .left {
+      flex: 1;
+    }
+
+    .right {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+
+      .enter_icon {
+        font-size: 2rem;
+      }
+    }
+  }
+
+  .bar {
+    height: 5px;
+  }
 }

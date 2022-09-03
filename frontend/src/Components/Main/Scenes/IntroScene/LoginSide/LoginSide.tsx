@@ -17,23 +17,7 @@ const LoginSide = () => {
     console.log(user);
   }, [user]);
 
-  const conditionalRendering = () => {
-    if (user !== null && loginState === LOGINSTATE.After) {
-      return <After setLoginState={setLoginState} />;
-    } else if (loginState === LOGINSTATE.Before) {
-      return <Before setLoginState={setLoginState} />;
-    } else if (loginState === LOGINSTATE.Ing) {
-      return <LoginIng setLoginState={setLoginState} />;
-    } else if (loginState === LOGINSTATE.SignUp) {
-      return <SignUp setLoginState={setLoginState} />;
-    }
-  };
-
-  return (
-    <div className={styles.login_side}>
-      <div className={styles.login_container}>{conditionalRendering()}</div>
-    </div>
-  );
+  return <div className={styles.login_side}></div>;
 };
 
 export default LoginSide;

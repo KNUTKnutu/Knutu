@@ -1,12 +1,12 @@
 import { ChangeEvent, SetStateAction } from "react";
 import { LOGINSTATE } from "./enum";
 
-export type Nullish<T> = null | T;
+export type Nullable<T> = null | T;
 
 // Channel
 export interface ChannelProps {
-  channel_name: string;
-  current_people: number;
+  name: string;
+  visitor: number;
 }
 
 export interface ChannelSideProps {

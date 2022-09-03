@@ -1,10 +1,10 @@
 import styles from "../../../../../Styles/Components/Main/Scenes/LobbyScene/_lobbyScene.module.scss";
 import { userState } from "../../../../../Recoil/atom";
 import { useRecoilState } from "recoil";
-import { Nullish, User } from "../../../../../interface";
+import { Nullable, User } from "../../../../../interface";
 
 const MyInfos = (): JSX.Element => {
-  // const [user, setUser] = useRecoilState<Nullish<User>>(userState);
+  // const [user, setUser] = useRecoilState<Nullable<User>>(userState);
   const user = { name: "test", level: 6 };
   const { name, level } = user!;
 

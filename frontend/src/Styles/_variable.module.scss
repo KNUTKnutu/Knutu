@@ -53,9 +53,9 @@ $popup-width-dialog: 480px;
 $popup-height-dialog: 720px;
 
 /* IntroScene */
-$intro-background-color: lightblue;
-$intro-login-container-width: 320px;
-$intro-login-container-height: 350px;
+$intro-background-color: $accent_color;
+$intro-login-container-width: 82%;
+$intro-login-container-height: 70%;
 
 $intro-login-ing-padding-x: 24px;
 
@@ -77,4 +77,3 @@ $game-roominfo-height: 420px;
 $game-roominfo-gap: 20px;
 $game-roominfo-min-width: $game-roominfo-width - $game-roominfo-padding * 2;
 $game-roominfo-max-height: $game-roominfo-height - $game-roominfo-gap * 3;
-

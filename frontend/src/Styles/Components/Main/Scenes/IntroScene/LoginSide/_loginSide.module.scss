@@ -2,15 +2,7 @@
 
 .login_side {
   flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .login_container {
-    background-color: white;
-    border-radius: 10px;
-
-    width: $intro-login-container-width;
-    height: $intro-login-container-height;
-  }
+  height: 100%;
+  background-color: white;
+  border-radius: 20px;
 }

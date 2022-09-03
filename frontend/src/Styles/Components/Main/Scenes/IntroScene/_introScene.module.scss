@@ -2,8 +2,11 @@
 
 .intro_scene_container {
   display: flex;
-  background-color: $intro-background-color;
+  align-items: center;
+  background-color: $accent_color;
   height: 100%;
-
+  border-radius: 20px;
+  gap: 20px;
+  padding: 20px;
   color: black;
 }
