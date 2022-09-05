@@ -19,20 +19,6 @@ const LoginSide = () => {
     }
   };
 
-  useEffect(() => {
-    switch (currLoginState) {
-      case LOGINSTATE.LOGIN:
-        setCurrLoginState(LOGINSTATE.LOGIN);
-        break;
-      case LOGINSTATE.SIGNUP:
-        setCurrLoginState(LOGINSTATE.SIGNUP);
-        break;
-      case LOGINSTATE.FIND:
-        setCurrLoginState(LOGINSTATE.FIND);
-        break;
-    }
-  }, [currLoginState]);
-
   return (
     <div className={styles.login_side}>{condi_render(currLoginState)}</div>
   );
