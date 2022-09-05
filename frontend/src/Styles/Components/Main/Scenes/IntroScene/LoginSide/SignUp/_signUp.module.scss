@@ -1,0 +1,87 @@
+@import "../../../../../../variable.module";
+
+.signup {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & > div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 30px;
+  }
+
+  .title {
+    flex: 1;
+    & > h2 {
+      font-size: 4rem;
+      font-weight: 700;
+    }
+  }
+
+  .form {
+    flex: 5;
+    border-top: 2px solid gray;
+    & > form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+
+      & > input,
+      & > button {
+        width: 80%;
+        height: 60px;
+        border-radius: 12px;
+      }
+
+      & > input {
+        padding: 0 20px;
+        font-size: 1.875rem;
+        border: none;
+        outline: 2px solid gray;
+
+        &:focus {
+          outline: 2px solid $accent-color;
+        }
+      }
+
+      & > button {
+        font-size: 2rem;
+        font-weight: 700;
+        background-color: white;
+        border: none;
+        outline: solid black;
+        margin: 16px 0;
+
+        &:hover {
+          background-color: $accent-color;
+          color: white;
+          outline: solid $accent-color;
+          cursor: pointer;
+        }
+      }
+
+      .sub {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        width: 70%;
+        font-size: 1.375rem;
+
+        & > span {
+          &:hover {
+            color: $accent-color;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}

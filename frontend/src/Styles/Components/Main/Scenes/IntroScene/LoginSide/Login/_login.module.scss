@@ -64,6 +64,7 @@
           background-color: $accent-color;
           color: white;
           outline: solid $accent-color;
+          cursor: pointer;
         }
       }
 
@@ -77,6 +78,7 @@
         & > span {
           &:hover {
             color: $accent-color;
+            cursor: pointer;
           }
         }
       }

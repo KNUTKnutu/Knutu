@@ -1,10 +1,19 @@
-import { FormEvent } from "react";
+import React, { Dispatch, FormEvent, SetStateAction } from "react";
+import { LOGINSTATE } from "../../../../../../enum";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Login/_login.module.scss";
 
-const Login = () => {
+interface Props {
+  setCurrLoginState: React.Dispatch<React.SetStateAction<LOGINSTATE>>;
+}
+
+const Login = ({ setCurrLoginState }: Props) => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("submit");
+  };
+
+  const onClickSignup = () => {
+    setCurrLoginState(LOGINSTATE.SIGNUP);
   };
   return (
     <div className={styles.login}>
@@ -17,7 +26,8 @@ const Login = () => {
           <input type="password" placeholder="비밀번호" />
           <button>로그인</button>
           <div className={styles.sub}>
-            <span>회원가입</span>|<span>아이디/비밀번호 찾기</span>
+            <span onClick={onClickSignup}>회원가입</span>|
+            <span>아이디/비밀번호 찾기</span>
           </div>
         </form>
       </div>
