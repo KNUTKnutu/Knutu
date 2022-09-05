@@ -1,13 +1,10 @@
-@import "../../styles/variable.module";
+@import "../../variable.module";
 
-.dim_container {
+.modal_container {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(0, 0, 0, 0.7);
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: fit-content;
+  height: 50%;
 }

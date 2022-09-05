@@ -1,26 +1,11 @@
-import { Nullable } from "../../../../Logic/Library/CommonTypes/CommonTypes";
 import Dim from "../../../Dim/Dim";
-import styles from "./_oneButton.module.scss";
+import styles from "../../../../Styles/Components/Reusable/Popup/Simple/_oneButton.module.scss";
+import { OneButtonProps } from "../../../../interface";
 
-interface Props {
-  text: Nullable<string>;
-  buttonText: Nullable<string>;
-  callback?(): void;
-}
-
-const OneButton = ({ text, buttonText, callback }: Props) => {
+const OneButton = ({ text, buttonText, callback, id }: OneButtonProps) => {
   return (
-    <Dim>
-      <div className={styles.one_button_container}>
-        <div className={styles.text_wrapper}>
-          <span>{text}</span>
-        </div>
-        <div className={styles.button_wrapper}>
-          <button className={styles.popup_btn} onClick={callback}>
-            {buttonText}
-          </button>
-        </div>
-      </div>
+    <Dim id={id}>
+      <div className={styles.modal_container}></div>
     </Dim>
   );
 };

@@ -1,9 +1,4 @@
-export enum LOGINSTATE {
-  Before = 1,
-  Ing,
-  After,
-  SignUp,
-}
+export enum LOGINSTATE {}
 
 export enum SCENESTATE {
   SCENE__INTROSCENE = 1,

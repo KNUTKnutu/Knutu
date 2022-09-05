@@ -3,6 +3,7 @@ import { ChannelSideProps } from "../../../../../interface";
 import { userState } from "../../../../../Recoil/atom";
 import styles from "../../../../../Styles/Components/Main/Scenes/IntroScene/ChannelSide/_channelSide.module.scss";
 import Channel from "../../../../Reusable/Channel/Channel";
+import OneButton from "../../../../Reusable/Popup/Simple/OneButton";
 
 // fetch된 채널 리스트를 보여주는 컴포넌트
 const ChannelSide = ({ list }: ChannelSideProps) => {
@@ -10,7 +11,7 @@ const ChannelSide = ({ list }: ChannelSideProps) => {
   const isLogin = false;
   console.log(isLogin);
   return (
-    <div className={styles.channel_side}>
+    <div className={styles.channel_side} id="channel_side">
       <div className={`${styles.channel_main} ${!isLogin && styles.yet}`}>
         <div className={styles.title}>
           <h2>채널 선택</h2>

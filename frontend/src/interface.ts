@@ -80,3 +80,10 @@ export interface FloatingLabelProps {
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   label: string;
 }
+
+export interface OneButtonProps {
+  text: Nullable<string>;
+  buttonText: Nullable<string>;
+  callback?(): void;
+  id: string;
+}

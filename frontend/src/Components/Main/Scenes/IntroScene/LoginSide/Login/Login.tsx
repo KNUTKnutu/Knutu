@@ -1,5 +1,32 @@
+import { FormEvent } from "react";
+import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Login/_login.module.scss";
+
 const Login = () => {
-  return <div>Login</div>;
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("submit");
+  };
+  return (
+    <div className={styles.login}>
+      <div className={styles.title}>
+        <h2>KKNUT</h2>
+      </div>
+      <div className={styles.form}>
+        <form onSubmit={onSubmit}>
+          <input type="text" placeholder="아이디" />
+          <input type="password" placeholder="비밀번호" />
+          <button>로그인</button>
+          <div className={styles.sub}>
+            <span>회원가입</span>|<span>아이디/비밀번호 찾기</span>
+          </div>
+        </form>
+      </div>
+      <div className={styles.social}>
+        <button id="kakao">카카오로 간편 로그인</button>
+        <button id="naver">네이버로 간편 로그인</button>
+      </div>
+    </div>
+  );
 };
 
 export default Login;
