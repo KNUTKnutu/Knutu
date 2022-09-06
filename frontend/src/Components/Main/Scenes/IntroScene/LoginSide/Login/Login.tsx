@@ -1,4 +1,10 @@
-import React, { Dispatch, FormEvent, SetStateAction } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useState,
+} from "react";
 import { LOGINSTATE } from "../../../../../../enum";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Login/_login.module.scss";
 
@@ -7,9 +13,17 @@ interface Props {
 }
 
 const Login = ({ setCurrLoginState }: Props) => {
+  const [input, setInput] = useState({ id: "", pw: "" });
+  const { id, pw } = input;
+
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setInput({ ...input, [e.target.name]: e.target.value });
+  };
+
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submit");
+    // input get
+    console.log(input);
   };
 
   const onClickSignup = () => {
@@ -22,8 +36,20 @@ const Login = ({ setCurrLoginState }: Props) => {
       </div>
       <div className={styles.form}>
         <form onSubmit={onSubmit}>
-          <input type="text" placeholder="아이디" />
-          <input type="password" placeholder="비밀번호" />
+          <input
+            type="text"
+            placeholder="아이디"
+            name="id"
+            value={id}
+            onChange={onChange}
+          />
+          <input
+            type="password"
+            placeholder="비밀번호"
+            name="pw"
+            value={pw}
+            onChange={onChange}
+          />
           <button>로그인</button>
           <div className={styles.sub}>
             <span onClick={onClickSignup}>회원가입</span>|
