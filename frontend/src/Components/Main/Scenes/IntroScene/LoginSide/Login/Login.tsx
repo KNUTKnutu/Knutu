@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { LOGINSTATE } from "../../../../../../enum";
+import { get__signin } from "../../../../../../Logic/API/GET/get";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Login/_login.module.scss";
 
 interface Props {
@@ -21,6 +22,7 @@ const Login = ({ setCurrLoginState }: Props) => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // login get
+    get__signin(input);
     console.log(input);
   };
 

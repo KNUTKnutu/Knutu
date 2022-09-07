@@ -1,0 +1,137 @@
+@import "../../../../../../variable.module";
+
+.profile {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & > div {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 30px;
+  }
+
+  .title {
+    flex: 1;
+    & > h2 {
+      font-size: 4rem;
+      font-weight: 700;
+    }
+  }
+
+  .player {
+    flex: 4;
+    border-top: 2px solid gray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    .sub {
+      flex: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      margin-top: 20px;
+      img {
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+      }
+
+      & > span {
+        position: absolute;
+
+        &.title {
+          left: 0;
+          top: 0;
+          border: 1px solid black;
+          padding: 10px;
+          border-radius: 4px;
+          font-weight: 600;
+          font-size: 1.25rem;
+        }
+
+        &.gaemaeneo {
+          right: 0;
+          top: 0;
+          border: 1px solid black;
+          padding: 10px;
+          border-radius: 4px;
+
+          & > span {
+            font-weight: 600;
+            font-size: 2rem;
+          }
+        }
+      }
+    }
+
+    .main {
+      flex: 3;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;
+      width: 80%;
+      margin-top: 10px;
+
+      .name {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        & > span {
+          font-size: 2.5rem;
+          font-weight: 700;
+        }
+      }
+
+      .levelWrapper {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 1.75rem;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .logout {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    border-top: 2px solid gray;
+
+    & > button {
+      width: 80%;
+      height: 60px;
+      border-radius: 12px;
+      font-size: 2rem;
+      font-weight: 700;
+      background-color: white;
+      border: none;
+      outline: solid black;
+      margin: 16px 0;
+
+      &:hover {
+        background-color: $accent-color;
+        color: white;
+        outline: solid $accent-color;
+        cursor: pointer;
+      }
+    }
+  }
+}

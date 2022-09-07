@@ -2,6 +2,7 @@ export enum LOGINSTATE {
   LOGIN = 1,
   SIGNUP,
   FIND,
+  PROFILE,
 }
 
 export enum SCENESTATE {
