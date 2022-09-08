@@ -13,7 +13,7 @@ KNUTU = KNUT(Korea National University of Transportation) + kkutu(끄투)
 <img src="https://img.shields.io/badge/Electron-191970?style=for-the-badge&logo=Electron&logoColor=white">
 <img src="https://img.shields.io/badge/recoil-000000?style=for-the-badge&logo=recoil&logoColor=white">
 <img src="https://img.shields.io/badge/Websocket-E53238?style=for-the-badge&logo=Websocket&logoColor=white">
-<img src="https://img.shields.io/badge/react v18-61DAFB?style=for-the-badge&logo=react&logoColor=black">
+<img src="https://img.shields.io/badge/react v.18-61DAFB?style=for-the-badge&logo=react&logoColor=black">
 
 ### Back-end
 <img src="https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
