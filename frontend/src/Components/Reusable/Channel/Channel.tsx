@@ -30,7 +30,7 @@ const Channel = ({ name, visitor }: ChannelProps) => {
   };
 
   return (
-    <div className={styles.channel_wrapper} style={{}}>
+    <div className={styles.channel_wrapper}>
       <div className={styles.channel_main}>
         <span className={styles.left}>{name}</span>
         <div className={styles.right}>

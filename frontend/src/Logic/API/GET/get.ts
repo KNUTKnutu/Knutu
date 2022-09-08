@@ -1,6 +1,8 @@
+import { Player } from "../../../interface";
+import ProPic from "../../../Assets/Images/Deokgu/Deokgu3_64x64.jpeg";
+import { RegexId, RegexPw } from "../../Regex/regex";
 import axios from "axios";
 import { API_URL } from "../../../env";
-import { RegexId, RegexPw } from "../../Regex/regex";
 
 interface SignInProps {
   id: string;
@@ -24,11 +26,13 @@ export const get__signin = async ({ id, pw }: SignInProps) => {
   // } else {
   //   console.log("모징..");
   // }
-  console.log("Signin");
+  // id가 정규표현식을 만족하냐?
+  // pw가 정규표현식을 만족하냐?
   try {
     const res = await axios.get(`${API_URL}/signin?id=${id}&pw=${pw}`);
+    console.log(res);
     return res;
-  } catch (err) {
-    console.error(err);
+  } catch (e) {
+    console.error(e);
   }
 };

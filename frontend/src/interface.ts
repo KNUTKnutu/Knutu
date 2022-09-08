@@ -55,12 +55,6 @@ export interface Player {
   isAccountgaemaeneo: boolean; // 개매너 유저인지
 }
 
-export interface TestingUser {
-  name: string;
-  level: number;
-  win_count: number;
-}
-
 export interface Room {
   number: number;
   title: string;
@@ -70,15 +64,6 @@ export interface Room {
   currEntry: number;
   maxEntry: number;
   pw: string;
-}
-
-export interface FloatingLabelProps {
-  type: "text" | "password";
-  id: string;
-  name: string;
-  value: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-  label: string;
 }
 
 export interface OneButtonProps {

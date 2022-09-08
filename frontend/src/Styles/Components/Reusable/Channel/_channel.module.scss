@@ -5,17 +5,11 @@
   flex-direction: column;
   background: white;
   font-size: 20px;
-  width: 32rem;
+  width: 520px;
   height: 80px;
   border-radius: 20px 20px 0 0;
-
   cursor: pointer;
   transition: 0.5s;
-
-  &:hover {
-    box-shadow: inset 32rem 0 0 0 black;
-    color: white;
-  }
 
   .channel_main {
     flex: 1;
@@ -43,5 +37,10 @@
 
   .bar {
     height: 5px;
+  }
+
+  &:hover {
+    box-shadow: inset 520px 0 0 0 black;
+    color: white;
   }
 }

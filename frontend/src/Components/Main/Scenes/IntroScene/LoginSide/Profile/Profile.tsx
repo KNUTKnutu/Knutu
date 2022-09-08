@@ -1,5 +1,7 @@
+import { useSetRecoilState } from "recoil";
+import { LOGOUT, TITLE } from "../../../../../../constant";
 import { LOGINSTATE } from "../../../../../../enum";
-import { Player } from "../../../../../../interface";
+import { userState } from "../../../../../../Recoil/atom";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Profile/_profile.module.scss";
 
 interface Props {
@@ -32,13 +34,16 @@ const Profile = ({
   currentExperience,
   isAccountgaemaeneo,
 }: Props) => {
+  const setUser = useSetRecoilState(userState);
+
   const onClickLogout = () => {
     setCurrLoginState(LOGINSTATE.LOGIN);
+    setUser(null);
   };
   return (
     <div className={styles.profile}>
       <div className={styles.title}>
-        <h2>KKNUT</h2>
+        <h2>{TITLE}</h2>
       </div>
       <div className={styles.player}>
         <div className={styles.sub}>
@@ -56,7 +61,7 @@ const Profile = ({
         </div>
       </div>
       <div className={styles.logout}>
-        <button onClick={onClickLogout}>로그아웃</button>
+        <button onClick={onClickLogout}>{LOGOUT}</button>
       </div>
     </div>
   );

@@ -16,6 +16,7 @@
       border-bottom: 1px solid black;
       h2 {
         margin: 20px;
+        margin-left: 52px;
         font-size: 2rem;
       }
     }
@@ -23,8 +24,10 @@
     .channels {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      margin: 20px;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      margin: 30px;
     }
   }
 

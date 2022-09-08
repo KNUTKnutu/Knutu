@@ -6,21 +6,17 @@ import Find from "./Find/Find";
 import Login from "./Login/Login";
 import Profile from "./Profile/Profile";
 import Signup from "./Signup/Signup";
-
-import ProPic from "../../../../../Assets/Images/Deokgu/Deokgu3_64x64.jpeg";
-
-const DummyPlayer: Player = {
-  name: "TestUser",
-  level: 328,
-  title: "뉴비 절단기",
-  currentExperience: 998300,
-  profilePicture: ProPic,
-  isAccountgaemaeneo: false,
-};
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../../../Recoil/atom";
+import { DummyPlayer } from "../../../../../dummy";
 
 const LoginSide = () => {
-  // const [currLoginState, setCurrLoginState] = useState(LOGINSTATE.LOGIN);
-  const [currLoginState, setCurrLoginState] = useState(LOGINSTATE.PROFILE);
+  const user = useRecoilValue(userState);
+  const [currLoginState, setCurrLoginState] = useState(
+    user ? LOGINSTATE.PROFILE : LOGINSTATE.LOGIN
+  );
+
+  // localStorage.clear();
 
   const condi_render = (currLoginState: LOGINSTATE) => {
     switch (currLoginState) {

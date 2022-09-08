@@ -1,20 +1,11 @@
-import { ChannelProps } from "./interface";
+import { Player } from "./interface";
+import ProPic from "./Assets/Images/Deokgu/Deokgu3_64x64.jpeg";
 
-export const channel_list: ChannelProps[] = [
-  {
-    channel_name: "감자",
-    current_people: 95,
-  },
-  {
-    channel_name: "다래",
-    current_people: 75,
-  },
-  {
-    channel_name: "상추",
-    current_people: 55,
-  },
-  {
-    channel_name: "보리",
-    current_people: 35,
-  },
-];
+export const DummyPlayer: Player = {
+  name: "TestUser",
+  level: 328,
+  title: "뉴비 절단기",
+  currentExperience: 998300,
+  profilePicture: ProPic,
+  isAccountgaemaeneo: false,
+};

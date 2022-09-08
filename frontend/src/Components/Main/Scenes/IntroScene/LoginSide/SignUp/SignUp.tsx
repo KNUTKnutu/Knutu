@@ -1,4 +1,13 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import {
+  CONFIRM_PW,
+  ID,
+  LOGIN,
+  NAME,
+  PW,
+  SINGNUP,
+  TITLE,
+} from "../../../../../../constant";
 import { LOGINSTATE } from "../../../../../../enum";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Signup/_signup.module.scss";
 
@@ -27,6 +36,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(input);
+    setCurrLoginState(LOGINSTATE.LOGIN);
   };
 
   const onClickLogin = () => {
@@ -44,7 +54,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
   return (
     <div className={styles.signup}>
       <div className={styles.title}>
-        <h2>KKNUT</h2>
+        <h2>{TITLE}</h2>
       </div>
       <div className={styles.form}>
         <form onSubmit={onSubmit}>
@@ -57,7 +67,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               value={id}
               onChange={onChange}
             />
-            <label htmlFor="id">아이디</label>
+            <label htmlFor="id">{ID}</label>
           </div>
           <div className={styles.input_wrapper}>
             <input
@@ -68,7 +78,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               value={pw}
               onChange={onChange}
             />
-            <label htmlFor="pw">비밀번호</label>
+            <label htmlFor="pw">{PW}</label>
             <div className={styles.visi_icon} onClick={onClickVisi}>
               {isPwVisi ? VISIBILITY_ON : VISIBILITY_OFF}
             </div>
@@ -82,7 +92,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               value={confirm_pw}
               onChange={onChange}
             />
-            <label htmlFor="confirm_pw">비밀번호 확인</label>
+            <label htmlFor="confirm_pw">{CONFIRM_PW}</label>
             <div className={styles.visi_icon} onClick={onClickPwCVisi}>
               {isPwCVisi ? VISIBILITY_ON : VISIBILITY_OFF}
             </div>
@@ -96,11 +106,11 @@ const Signup = ({ setCurrLoginState }: Props) => {
               value={name}
               onChange={onChange}
             />
-            <label htmlFor="name">닉네임</label>
+            <label htmlFor="name">{NAME}</label>
           </div>
-          <button>회원가입</button>
+          <button>{SINGNUP}</button>
           <div className={styles.sub}>
-            <span onClick={onClickLogin}>로그인</span>|
+            <span onClick={onClickLogin}>{LOGIN}</span>|
             <span>아이디/비밀번호 찾기</span>
           </div>
         </form>

@@ -63,9 +63,10 @@
           &:not(:placeholder-shown) {
             & + label {
               font-size: 0.875rem;
-              top: 10px;
+              top: 0px;
               transition: all 0.3s;
               color: black;
+              background-color: white;
             }
           }
         }
@@ -75,6 +76,7 @@
           right: 20px;
           top: 50%;
           transform: translateY(-50%);
+          cursor: pointer;
         }
       }
 

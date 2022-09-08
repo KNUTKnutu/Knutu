@@ -69,6 +69,7 @@ public class FirebaseService implements FirebaseServiceInterface {
                 FirebaseOptions options;
     
                 String keyURL = privates.keyURL;
+                System.out.println(keyURL);
                 String dbURL = privates.dbURL;
     
                 serviceAccount = new FileInputStream(keyURL);
