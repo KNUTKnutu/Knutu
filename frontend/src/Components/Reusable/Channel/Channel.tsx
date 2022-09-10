@@ -1,8 +1,10 @@
 import styles from "../../../Styles/Components/Reusable/Channel/_channel.module.scss";
-import { ChannelProps } from "../../../interface";
-import { useSetRecoilState } from "recoil";
-import { currentSceneState } from "../../../Recoil/atom";
+import { ChannelProps, User, Users } from "../../../interface";
+import { useRecoilState, useRecoilStoreID, useRecoilValue, useSetRecoilState } from "recoil";
+import { currentSceneState, usersState, userState } from "../../../Recoil/atom";
 import { SCENE__LOBBYSCENE } from "../../../constant";
+import { put__enterChannel } from "../../../Logic/API/PUT/put";
+import { AxiosError } from "axios";
 
 // 최대 400명으로 제한을 둠.
 
@@ -15,6 +17,7 @@ import { SCENE__LOBBYSCENE } from "../../../constant";
 
 const total = 400;
 
+// 민경호 TODO: Scene을 바꾸는 동안에는, Main부는 클릭이 걸려선 안 됨.
 const Channel = ({ name, visitor }: ChannelProps) => {
   // const setCurrentScene = useSetRecoilState(currentSceneState);
   // const onClickChannel = () => {
@@ -28,9 +31,35 @@ const Channel = ({ name, visitor }: ChannelProps) => {
     else if (visitor <= 350) return "#f9a825";
     else return "#c62828";
   };
+  
+  const setCurrentScene = useSetRecoilState(currentSceneState);
+  const setUsersOnChannel = useSetRecoilState<Users>(usersState);
+  const usersOnChannel = useRecoilValue<Users>(usersState);
+    
+  const [user, _] = useRecoilState(userState);
+
+  const onChannelClicked = async () => {
+    const channelName = name;
+
+    const res = await put__enterChannel({user, channelName});
+
+    if(res !== null && !(res instanceof AxiosError)) {
+      setCurrentScene(SCENE__LOBBYSCENE);
+      
+      const users = Object.values(res.data.onlineUsers);
+      const sortedUsers: any = users.sort((a: any, b: any) => {
+        return b.level - a.level;
+      });
+      
+      setUsersOnChannel(sortedUsers);
+    }
+    else {
+      window.alert("채널에 입장할 수 없습니다. 다시 시도해주세요.");
+    }
+  }
 
   return (
-    <div className={styles.channel_wrapper}>
+    <div className={styles.channel_wrapper} onClick={onChannelClicked}>
       <div className={styles.channel_main}>
         <span className={styles.left}>{name}</span>
         <div className={styles.right}>

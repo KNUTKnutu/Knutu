@@ -11,8 +11,6 @@ import { currentSceneState } from "../../Recoil/atom";
 import styles from "../../styles/Components/Footer/_footer.module.scss";
 
 const Footer = (): JSX.Element => {
-
-  const [data, setData] = useState({});
   
   const setCurrentScene = useSetRecoilState(currentSceneState);
 

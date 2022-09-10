@@ -6,7 +6,7 @@ import { getChannelInfos, get__signin } from "../../../../../../Logic/API/GET/ge
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Login/_login.module.scss";
 import ProPic from "../../../../../../Assets/Images/Deokgu/Deokgu3_64x64.jpeg";
 import { useSetRecoilState } from "recoil";
-import { userState } from "../../../../../../Recoil/atom";
+import { channelsState, userState } from "../../../../../../Recoil/atom";
 import { DummyPlayer } from "../../../../../../dummy";
 import { unwatchFile } from "fs";
 import { AxiosError } from "axios";
@@ -18,11 +18,13 @@ interface Props {
 const VISIBILITY_ON = <span className="material-icons">visibility</span>;
 const VISIBILITY_OFF = <span className="material-icons">visibility_off</span>;
 
+// 민경호 TODO: 아이디 저장, 비밀번호 저장, 자동 로그인 등
 const Login = ({ setCurrLoginState }: Props) => {
   const [input, setInput] = useState({ id: "", pw: "" });
   const { id, pw } = input;
   const [isPwVisi, setIsPwVisi] = useState(false);
   const setUser = useSetRecoilState(userState);
+  const setChannels = useSetRecoilState(channelsState);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -30,7 +32,7 @@ const Login = ({ setCurrLoginState }: Props) => {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     const res = await get__signin(input);
     
     if(res instanceof AxiosError) {
@@ -44,8 +46,14 @@ const Login = ({ setCurrLoginState }: Props) => {
     } else {
       const channels = await getChannelInfos();
       if(channels !== null) {
-        console.log(channels);
         setUser(res?.data);
+        const channelsForRecoil = channels.map(val => {
+          return {
+            name: val.name,
+            visitor: val.userCount
+          }
+        });
+        setChannels(channelsForRecoil);
       }
     }
   };

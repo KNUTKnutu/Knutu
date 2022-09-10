@@ -13,8 +13,9 @@ public class User {
     private String      profilePicture;     // 프로필 사진 Firebase Storage URI String. "" == 끄누투
     private Preference  preference;         // 개인 환경 설정 => Service/lib/classes/User/Preference.java
     private int         level;              // 현재 레벨
-    private long        currentExperience;  // 현재 경험치
-    private long        totalExperience;    // 총 누적 경험치. User Validation 위함
+    private double      currentExperience;  // 현재 경험치
+    private double      totalExperience;    // 총 누적 경험치. User Validation 위함
+    private double      remainExperience;   // 레벨업을 위해 남은 경험치. User Validation 위함
     private int         reputation;         // 유저 칭찬점수(평판)
     private long        created_time;       // 유저 생성일자 timestamp
     private long        updated_time;       // 유저가 마지막으로 업데이트 된 시점 timestamp

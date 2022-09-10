@@ -43,6 +43,10 @@ public class LobbySceneService {
         return ret;
     }
 
+    public Channel getChannelInfo(String channelName) {
+        return this.availableChannels.get(channelName);
+    }
+
     public Collection<Channel> getChannelInfos() {
         if(this.isInitialized == false) {
             this.initialize();
@@ -55,11 +59,10 @@ public class LobbySceneService {
     public boolean enterChannel(User user, String channelName) {
         try {
             Channel channel = this.availableChannels.get(channelName);
-            Map<String, User> currentUsers = channel.getOnlineUsers();
-            currentUsers.put(channelName, user);
-            channel.setOnlineUsers(currentUsers);
+            channel.addUserOnline(user);
             return true;
         } catch(Exception e) {
+            e.printStackTrace();
             return false;
         }
     }

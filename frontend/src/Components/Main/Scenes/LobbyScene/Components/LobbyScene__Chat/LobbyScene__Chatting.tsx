@@ -1,70 +1,80 @@
-import { ChangeEventHandler, useState } from "react";
+// import { ChangeEventHandler, useState } from "react";
 import styles from "../../../../../../Styles/Components/Main/Scenes/LobbyScene/_lobbyScene.module.scss";
 import LobbyScene__Chat from "./LobbyScene__Chat";
 
+// 허강민 TODO: Phase 2. 적절하게 Blur처리 필요(IntroScene의 채널창 처럼)
 const LobbyScene__Chatting = (): JSX.Element => {
-  const [mode, setMode] = useState("전체");
-  const [chat, setChat] = useState("");
-  const [chats, setChats] = useState([]);
+  // const [mode, setMode] = useState("전체");
+  // const [chat, setChat] = useState("");
+  // const [chats, setChats] = useState([]);
 
-  const onClickMode = (): void => {
-    if (mode === "전체") setMode("귓속말");
-    if (mode === "귓속말") setMode("전체");
-  };
+  // const onClickMode = (): void => {
+  //   if (mode === "전체") setMode("귓속말");
+  //   if (mode === "귓속말") setMode("전체");
+  // };
 
-  const onChatChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
-    console.log(e.target.value);
-    setChat(e.target.value);
-  };
+  // const onChatChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
+  //   console.log(e.target.value);
+  //   setChat(e.target.value);
+  // };
 
-  const sendChat = (): void => {
-    console.log("??");
-    setChat("");
-  };
+  // const sendChat = (): void => {
+  //   console.log("??");
+  //   setChat("");
+  // };
 
-  // Test용
-  const testChats = [
-    {
-      chatter: "신이종",
-      chatMessage: "테스팅 중",
-      chatTime: new Date().toLocaleTimeString(),
-    },
-    {
-      chatter: "신이종",
-      chatMessage: "테스팅 중",
-      chatTime: new Date().toLocaleTimeString(),
-    },
-    {
-      chatter: "신이종",
-      chatMessage: "테스팅 중",
-      chatTime: new Date().toLocaleTimeString(),
-    },
-    {
-      chatter: "신이종",
-      chatMessage: "테스팅 중",
-      chatTime: new Date().toLocaleTimeString(),
-    },
-    {
-      chatter: "신이종",
-      chatMessage: "테스팅 중",
-      chatTime: new Date().toLocaleTimeString(),
-    },
-    {
-      chatter: "신이종",
-      chatMessage: "테스팅 중",
-      chatTime: new Date().toLocaleTimeString(),
-    },
-    {
-      chatter: "신이종",
-      chatMessage: "테스팅 중",
-      chatTime: new Date().toLocaleTimeString(),
-    },
-  ];
+  // // Test용
+  // const testChats = [
+  //   {
+  //     chatter: "신이종",
+  //     chatMessage: "테스팅 중",
+  //     chatTime: new Date().toLocaleTimeString(),
+  //   },
+  //   {
+  //     chatter: "신이종",
+  //     chatMessage: "테스팅 중",
+  //     chatTime: new Date().toLocaleTimeString(),
+  //   },
+  //   {
+  //     chatter: "신이종",
+  //     chatMessage: "테스팅 중",
+  //     chatTime: new Date().toLocaleTimeString(),
+  //   },
+  //   {
+  //     chatter: "신이종",
+  //     chatMessage: "테스팅 중",
+  //     chatTime: new Date().toLocaleTimeString(),
+  //   },
+  //   {
+  //     chatter: "신이종",
+  //     chatMessage: "테스팅 중",
+  //     chatTime: new Date().toLocaleTimeString(),
+  //   },
+  //   {
+  //     chatter: "신이종",
+  //     chatMessage: "테스팅 중",
+  //     chatTime: new Date().toLocaleTimeString(),
+  //   },
+  //   {
+  //     chatter: "신이종",
+  //     chatMessage: "테스팅 중",
+  //     chatTime: new Date().toLocaleTimeString(),
+  //   },
+  // ];
 
   // const chatsList = chats.map((chat) => <LobbyScene__Chat chatInfo={chat}/>)
-  const chatsList = testChats.map((chat) => (
-    <LobbyScene__Chat key={Math.random()} chatInfo={chat} />
-  ));
+  // const chatsList = testChats.map((chat) => (
+  //   <LobbyScene__Chat key={Math.random()} chatInfo={chat} />
+  // ));
+
+  // 임시
+  const chatsList: any = [].map((chat) => <LobbyScene__Chat chatInfo={{chatter: "", chatMessage: "", chatTime: ""}}/>);
+  const onClickMode = () => {};
+  const mode = "";
+  const onChatChange = () => {};
+  const chat = "";
+  const sendChat = () => {};
+
 
   return (
     <div

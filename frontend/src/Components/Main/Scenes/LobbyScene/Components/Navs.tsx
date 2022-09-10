@@ -2,8 +2,9 @@ import styles from "../../../../../Styles/Components/Main/Scenes/LobbyScene/_lob
 
 const Navs = (): JSX.Element => {
 
+    // 허강민 TODO: 방 만들기 팝업 제작
     const onClickMakeRoom = (): void => {
-        console.log("onClickMakeRoom");
+        
     };
 
     const onClickQuickSearch = (): void => {

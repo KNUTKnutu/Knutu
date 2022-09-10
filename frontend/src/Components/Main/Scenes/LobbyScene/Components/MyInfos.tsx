@@ -1,12 +1,13 @@
 import styles from "../../../../../Styles/Components/Main/Scenes/LobbyScene/_lobbyScene.module.scss";
 import { userState } from "../../../../../Recoil/atom";
-import { useRecoilState } from "recoil";
-import { Nullable, User } from "../../../../../interface";
+import { User } from "../../../../../interface";
+import { useRecoilValue } from "recoil";
 
 const MyInfos = (): JSX.Element => {
   // const [user, setUser] = useRecoilState<Nullable<User>>(userState);
-  const user = { name: "test", level: 6 };
-  const { name, level } = user!;
+  const recoilValueUser = useRecoilValue<User>(userState);
+  const user = recoilValueUser ?? {name: null, level: null};
+  const { name, level, currentExperience, totalExperience } = user;
 
   return (
     <div
@@ -30,7 +31,7 @@ const MyInfos = (): JSX.Element => {
       </div>
       <div className={styles.lobby_scene_myInfos__bottom}>
         <div className={styles.lobby_scene_myInfos__expFillColor} />
-        <div className={styles.lobby_scene_myInfos__exp}>86,482 / 104,800</div>
+        <div className={styles.lobby_scene_myInfos__exp}>{currentExperience} / {totalExperience}</div>
       </div>
     </div>
   );

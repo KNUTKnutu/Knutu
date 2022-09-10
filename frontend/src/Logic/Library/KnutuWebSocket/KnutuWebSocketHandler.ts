@@ -1,5 +1,6 @@
 import { availableScenes, WebSocketPacket, WSURLs } from './KnutuWebSocketTypes';
 import { Nullable } from '../CommonTypes/CommonTypes';
+import KnutuAudioHandler from '../KnutuAudio/KnutuAudioHandler';
 
 /**
 * Knutu Library - KnutuWebSocketHandler
@@ -119,23 +120,9 @@ class KnutuWebSocketHandler {
             case "IntroScene":
                 return;
             case "LobbyScene":
-                const type = "onLobbyEntrance";
-                const date = new Date().getTime();
-                
-                let _packet = {
-                  header: {
-                    date,
-                  },
-                  payload: {
-                    user: {
-                      name: "shinleejong",
-                    },
-                  },
-                };
-
-                this.send(type, _packet);
                 return;
             case "GameScene":
+                // TODO
                 return;
         }
     }

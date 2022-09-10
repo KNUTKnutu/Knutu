@@ -31,6 +31,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.cloud.FirestoreClient;
 import com.google.firebase.cloud.StorageClient;
 
+import knutu.knutu.Service.lib.classes.User.Experience;
 import knutu.knutu.Service.lib.classes.User.Preference;
 import knutu.knutu.Service.lib.classes.User.User;
 import knutu.knutu.Service.lib.interfaces.FirebaseServiceInterface;
@@ -69,7 +70,6 @@ public class FirebaseService implements FirebaseServiceInterface {
                 FirebaseOptions options;
     
                 String keyURL = privates.keyURL;
-                System.out.println(keyURL);
                 String dbURL = privates.dbURL;
     
                 serviceAccount = new FileInputStream(keyURL);
@@ -108,7 +108,8 @@ public class FirebaseService implements FirebaseServiceInterface {
         user.setPreference(pref);
         user.setLevel(1);
         user.setCurrentExperience(0);
-        user.setTotalExperience(0);
+        user.setTotalExperience(Experience.getTotalExperience(1));
+        user.setRemainExperience(Experience.getRemainExperience(0, 1));
         user.setCreated_time(now);
         user.setUpdated_time(now);
         user.setReportedCount(0);
@@ -130,10 +131,11 @@ public class FirebaseService implements FirebaseServiceInterface {
     public User getUser(String id) throws Exception {
         try {
             DocumentSnapshot userSnapshot = getUserSnapshot(id);
-    
             if(!userSnapshot.exists()) return null;
+
+            User user = userSnapshot.toObject(User.class);
     
-            return userSnapshot.toObject(User.class);
+            return user;
         } catch (NullPointerException e) {
             return null;
         }
@@ -146,6 +148,16 @@ public class FirebaseService implements FirebaseServiceInterface {
             if(!userSnapshot.exists()) return null;
     
             return userSnapshot.toObject(User.class);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    public User getUserForLogin(String id, String pw) throws Exception {
+        try {
+            User user = this.getUser(id);
+            if(!user.getPw().contains(pw) || user.getPw().length() != pw.length()) return null;
+            return user;
         } catch (NullPointerException e) {
             return null;
         }

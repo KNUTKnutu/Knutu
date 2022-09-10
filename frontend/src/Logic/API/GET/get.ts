@@ -39,7 +39,6 @@ export const get__signin = async ({ id, pw }: SignInProps): Promise<Nullable<Axi
   try {
     // 민경호 TODO, res의 statusCode가 401이라면 아디 혹은 비번이 틀렸음
     const res = await axios.get(`${API_URL}/signin?id=${id}&pw=${pw}`);
-    console.log(res);
     return res;
   } catch (e: any) {
     const axiosError: AxiosError = e;

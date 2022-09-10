@@ -4,9 +4,10 @@ import {
   SCENE__INTROSCENE,
   SCENE__LOBBYSCENE,
 } from "../constant";
-import { Nullable, Player, User } from "../interface";
+import { ChannelProps, Nullable, User, Users } from "../interface";
 import storageEffect from "./effects/storage";
 import KnutuWebSocketHandler from "../Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
+import KnutuAudioHandler from "../Logic/Library/KnutuAudio/KnutuAudioHandler";
 
 // 어떤 Scene을 보여줄 지
 export const currentSceneState = atom<string>({
@@ -17,12 +18,16 @@ export const currentSceneState = atom<string>({
       onSet((currScene, prevScene) => {
         switch (currScene) {
           case SCENE__INTROSCENE:
+            KnutuAudioHandler.getInstance().play(KnutuAudioHandler.clipIntroScene);
             KnutuWebSocketHandler.getInstance().setEnabledScene("IntroScene");
             break;
           case SCENE__LOBBYSCENE:
+            KnutuAudioHandler.getInstance().play(KnutuAudioHandler.clipLobbyScene);
             KnutuWebSocketHandler.getInstance().setEnabledScene("LobbyScene");
             break;
           case SCENE__GAMESCENE:
+            KnutuAudioHandler.getInstance().play(KnutuAudioHandler.clipGameSceneWaiting);
+            // 아마도 GameSceneWaiting, GameScenePlaying 마다 브금 바꾸는 작업은 여기서 이루어져야 할 듯.
             KnutuWebSocketHandler.getInstance().setEnabledScene("GameScene");
             break;
         }
@@ -42,8 +47,18 @@ export const readyState = atom({
   default: false,
 });
 
-export const userState = atom<Nullable<Player>>({
+export const userState = atom<User>({
   key: "userState",
-  default: null,
+  default: {},
   effects: [storageEffect("user")],
+});
+
+export const usersState = atom<Users>({
+  key: "usersState",
+  default: [],
+});
+
+export const channelsState = atom<ChannelProps[]>({
+  key: "channelsState",
+  default: [],
 });
