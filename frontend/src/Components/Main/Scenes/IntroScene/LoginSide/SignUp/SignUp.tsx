@@ -10,6 +10,7 @@ import {
 } from "../../../../../../constant";
 import { LOGINSTATE } from "../../../../../../enum";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Signup/_signup.module.scss";
+import { post__signup } from "../../../../../../Logic/API/POST/post";
 
 interface Props {
   setCurrLoginState: React.Dispatch<React.SetStateAction<LOGINSTATE>>;
@@ -36,6 +37,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(input);
+    post__signup({id, pw, name});
     setCurrLoginState(LOGINSTATE.LOGIN);
   };
 
