@@ -1,13 +1,15 @@
 import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
-import { ID, LOGIN, PW, SINGNUP, TITLE } from "../../../../../../constant";
+import { ID, LOGIN, PW, SINGNUP, STATUSCODE__OK, STATUSCODE__UNAUTHORIZED, TITLE } from "../../../../../../constant";
 import { LOGINSTATE } from "../../../../../../enum";
 import { Player } from "../../../../../../interface";
-import { get__signin } from "../../../../../../Logic/API/GET/get";
+import { getChannelInfos, get__signin } from "../../../../../../Logic/API/GET/get";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Login/_login.module.scss";
 import ProPic from "../../../../../../Assets/Images/Deokgu/Deokgu3_64x64.jpeg";
 import { useSetRecoilState } from "recoil";
 import { userState } from "../../../../../../Recoil/atom";
 import { DummyPlayer } from "../../../../../../dummy";
+import { unwatchFile } from "fs";
+import { AxiosError } from "axios";
 
 interface Props {
   setCurrLoginState: React.Dispatch<React.SetStateAction<LOGINSTATE>>;
@@ -26,11 +28,26 @@ const Login = ({ setCurrLoginState }: Props) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    get__signin(input);
-    // setUser(DummyPlayer);
-    // setCurrLoginState(LOGINSTATE.PROFILE);
+    
+    const res = await get__signin(input);
+    
+    if(res instanceof AxiosError) {
+      switch(res?.response?.status) {
+        case STATUSCODE__UNAUTHORIZED:
+          window.alert("아이디와 비밀번호를 확인 후 다시 입력해주세요.");
+          break;
+        default:
+          break;
+      }
+    } else {
+      const channels = await getChannelInfos();
+      if(channels !== null) {
+        console.log(channels);
+        setUser(res?.data);
+      }
+    }
   };
 
   const onClickSignup = () => {
