@@ -122,7 +122,6 @@ class KnutuWebSocketHandler {
             case "LobbyScene":
                 return;
             case "GameScene":
-                // TODO
                 return;
         }
     }

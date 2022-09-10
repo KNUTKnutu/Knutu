@@ -16,7 +16,7 @@ public class SigningController {
 
     @GetMapping("/signin")
     public User signIn(@RequestParam("id") String id, @RequestParam("pw") String pw) throws Exception {
-        // 여진씨 TODO, getUser 메소드로 땡겨온 유저 정보가 null이라면 401 Unauthorized 를 보내야 함
+        // 황여진 TODO, getUser 메소드로 땡겨온 유저 정보가 null이라면 401 Unauthorized 를 보내야 함
         User user = FirebaseService.getFirebaseInstance().getUserForLogin(id, pw);
         if(user == null) {
             throw new Unauthorized("Wrong user information given.");
