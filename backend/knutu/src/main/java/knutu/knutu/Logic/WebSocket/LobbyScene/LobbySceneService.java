@@ -52,6 +52,18 @@ public class LobbySceneService {
         return this.availableChannels.values();
     }
 
+    public boolean enterChannel(User user, String channelName) {
+        try {
+            Channel channel = this.availableChannels.get(channelName);
+            Map<String, User> currentUsers = channel.getOnlineUsers();
+            currentUsers.put(channelName, user);
+            channel.setOnlineUsers(currentUsers);
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
+    }
+
     public boolean makeRoom(Room room) {
         try {
             gameRooms.put(room.getTitle(), room);
