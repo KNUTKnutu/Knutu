@@ -22,16 +22,16 @@ const Navs = (): JSX.Element => {
     return (
         <div className={`${styles.lobby_scene_navs} ${styles.lobby_scene_components}`}>
             <div className={styles.navs__makeRoom} onClick={onClickMakeRoom}>
-                방만들기
+                <span>방만들기</span>
             </div>
             <div className={styles.navs__quickSearch} onClick={onClickQuickSearch}>
-                빠른입장
+                <span>빠른입장</span>
             </div>
             <div className={styles.navs__friend} onClick={onClickFriend}>
-                친구
+                <span>친구</span>
             </div>
             <div className={styles.navs__shop} onClick={onClickShop}>
-                상점
+                <span>상점</span>
             </div>
         </div>
     );
