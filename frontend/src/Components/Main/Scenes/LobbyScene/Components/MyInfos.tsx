@@ -7,7 +7,7 @@ const MyInfos = (): JSX.Element => {
   // const [user, setUser] = useRecoilState<Nullable<User>>(userState);
   const recoilValueUser = useRecoilValue<User>(userState);
   const user = recoilValueUser ?? {name: null, level: null};
-  const { name, level, currentExperience, totalExperience } = user;
+  const { name, level, title, currentExperience, totalExperience } = user;
 
   return (
     <div
@@ -22,9 +22,9 @@ const MyInfos = (): JSX.Element => {
           />
         </div>
         <div className={styles.lobby_scene_myInfos__infoContainer}>
-          <div className={styles.lobby_scene_myInfos__level}>
+          <div className={styles.lobby_scene_myInfos__info}>
             <span>
-              레벨 {level} {name}
+              레벨 {level} {title} {name}
             </span>
           </div>
         </div>

@@ -73,17 +73,17 @@
         .lobby_scene_myInfos__character {
           position: absolute;
           top: -21px;
-          left: 40px;
           width: 64px;
           height: 64px;
         }
 
         .lobby_scene_myInfos__infoContainer {
           position: relative;
-          left: 52%;
+          left: 30%;
 
           .lobby_scene_myInfos__info {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
           }
