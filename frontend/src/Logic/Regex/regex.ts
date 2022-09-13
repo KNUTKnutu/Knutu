@@ -6,7 +6,7 @@ export const RegexId: RegExp = /^[a-z0-9]{4,12}$/gi;
 // PW
 // 1. 8자 이상 20자 이하
 // 2. 영문자 대소문자 가능, 숫자와 특수문자 1개 이상 사용, 한글 불가능
-// 민경호 TODO, RegEx 잘못됨. Validation 옳지 않으며, 글자수도 8~20인데 6,20 으로 들어감.
+// 허강민 TODO, RegEx 잘못됨. Validation 옳지 않으며, 글자수도 8~20인데 6,20 으로 들어감.
 export const RegexPw: RegExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*\W).{6,20}$/;
 
 // 닉네임

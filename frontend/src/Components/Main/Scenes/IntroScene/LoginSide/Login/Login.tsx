@@ -36,6 +36,7 @@ const Login = ({ setCurrLoginState }: Props) => {
     const res = await get__signin(input);
     
     if(res instanceof AxiosError) {
+      // 민경호 작업할 곳 - 401번 에러 처리 TODO
       switch(res?.response?.status) {
         case STATUSCODE__UNAUTHORIZED:
           window.alert("아이디와 비밀번호를 확인 후 다시 입력해주세요.");

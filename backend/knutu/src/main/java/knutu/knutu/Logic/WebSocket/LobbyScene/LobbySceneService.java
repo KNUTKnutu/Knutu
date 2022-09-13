@@ -60,6 +60,7 @@ public class LobbySceneService {
         try {
             Channel channel = this.availableChannels.get(channelName);
             channel.addUserOnline(user);
+            channel.setUserCount(channel.getUserCount() + 1);
             return true;
         } catch(Exception e) {
             e.printStackTrace();

@@ -9,6 +9,7 @@ public class User {
     private String      id;                 // 아디
     private String      pw;                 // 비번
     private String      name;               // 닉네임
+    private String      email;              // 이메일 주소
     private String      title;              // 칭호
     private String      profilePicture;     // 프로필 사진 Firebase Storage URI String. "" == 끄누투
     private Preference  preference;         // 개인 환경 설정 => Service/lib/classes/User/Preference.java

@@ -21,6 +21,7 @@ export const LANGUAGE__KOREAN: string = "Korean";
 export const LANGUAGE__ENGLISH: string = "English";
 export const LANGUAGE__DEFAULT: string = LANGUAGE__KOREAN;
 
+// TODO: 몇 개 더 준비
 // status codes
 export const STATUSCODE__OK: number = 200;                  // 정상 동작
 export const STATUSCODE__BAD_REQUEST: number = 400;         // Request에 잘못된 필드나 이상한 필드가 섞여서 넘어가서 서버에서 수상하다고 Response를 에러로 주는 상황
