@@ -88,9 +88,9 @@ public class FirebaseService implements FirebaseServiceInterface {
 
     /* <!-- User */
     // Create
-    public boolean addUser(String id, String pw, String name) throws Exception {
+    public boolean addUser(User _user) throws Exception {
 
-        if(this.checkDuplicatedId(id)) return false;
+        if(this.checkDuplicatedId(_user.getId())) return false;
 
         Firestore fs = FirestoreClient.getFirestore();
         
@@ -100,9 +100,10 @@ public class FirebaseService implements FirebaseServiceInterface {
         Preference pref = new Preference();
         pref.setLanguage(Preference.LANGUAGE__DEFAULT);
 
-        user.setId(id);
-        user.setPw(pw);
-        user.setName(name);
+        user.setId(_user.getId());
+        user.setPw(_user.getPw());
+        user.setName(_user.getName());
+        user.setEmail(_user.getEmail());
         user.setTitle("끄누투를 처음 접한");
         user.setProfilePicture("");
         user.setPreference(pref);
@@ -119,7 +120,7 @@ public class FirebaseService implements FirebaseServiceInterface {
         ApiFuture<WriteResult> apiFuture = 
             fs
             .collection(COLLECTION__USER)
-            .document(id)
+            .document(_user.getId())
             .set(user);
 
         log.info(apiFuture.get().getUpdateTime().toString());
