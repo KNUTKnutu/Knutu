@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="https://cdn.pixabay.com/photo/2018/05/26/18/06/dog-3431913_960_720.jpg" width="140" height="140"/>
+
 # KNUTU
 <a href="https://kkutu.co.kr/">끄투코리아</a> 클론코딩 프로젝트 입니다.
 
