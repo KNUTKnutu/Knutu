@@ -1,13 +1,20 @@
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import styles from "../../Styles/Components/Dim/_dim.module.scss";
 
 interface Props {
   children: JSX.Element;
-  id: string;
 }
 /** Dim은 단순히 children을 id를 가진 엘리먼트의 자식요소로 들여보내주는 역할을 한다. */
-const Dim = ({ children, id }: Props) => {
-  const portal = document.getElementById(id);
+const Dim = ({ children }: Props) => {
+  const portal = document.getElementById("portal");
+
+  useEffect(() => {
+    portal!.style.display = "flex";
+    return () => {
+      portal!.style.display = "none";
+    };
+  });
   return (
     portal &&
     createPortal(

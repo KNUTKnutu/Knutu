@@ -1,5 +1,5 @@
 import Dim from "../../../Dim/Dim";
-import styles from "../../../styles/Components/Popup/Dialog/_dialog.module.scss";
+import styles from "../../../../Styles/Components/Reusable/Popup/Dialog/_dialog.module.scss";
 
 interface Props {
   main: JSX.Element;
