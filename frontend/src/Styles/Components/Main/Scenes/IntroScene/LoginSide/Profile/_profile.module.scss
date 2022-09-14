@@ -44,6 +44,7 @@
         width: 250px;
         height: 250px;
         border-radius: 50%;
+        margin-top: 20px;
       }
 
       & > span {
@@ -57,19 +58,6 @@
           border-radius: 4px;
           font-weight: 600;
           font-size: 1.25rem;
-        }
-
-        &.gaemaeneo {
-          right: 0;
-          top: 0;
-          border: 1px solid black;
-          padding: 10px;
-          border-radius: 4px;
-
-          & > span {
-            font-weight: 600;
-            font-size: 2rem;
-          }
         }
       }
     }
