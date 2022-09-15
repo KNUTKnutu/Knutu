@@ -1,5 +1,10 @@
+import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import { ChannelProps, ChannelSideProps, Nullable } from "../../../../../interface";
+import {
+  ChannelProps,
+  ChannelSideProps,
+  Nullable,
+} from "../../../../../interface";
 import { channelsState, userState } from "../../../../../Recoil/atom";
 import styles from "../../../../../Styles/Components/Main/Scenes/IntroScene/ChannelSide/_channelSide.module.scss";
 import Channel from "../../../../Reusable/Channel/Channel";

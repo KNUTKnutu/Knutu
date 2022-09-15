@@ -5,10 +5,9 @@ import styles from "../../../../../Styles/Components/Main/Scenes/IntroScene/Logi
 import Find from "./Find/Find";
 import Login from "./Login/Login";
 import Profile from "./Profile/Profile";
-import Signup from "./Signup/Signup";
+import Signup from "./Signup/SignUp";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../../Recoil/atom";
-import { DummyPlayer } from "../../../../../dummy";
 
 const LoginSide = () => {
   const user = useRecoilValue(userState);
@@ -16,7 +15,10 @@ const LoginSide = () => {
     user ? LOGINSTATE.PROFILE : LOGINSTATE.LOGIN
   );
 
-  // localStorage.clear();
+  useEffect(() => {
+    setCurrLoginState(user ? LOGINSTATE.PROFILE : LOGINSTATE.LOGIN);
+    console.log(user, currLoginState);
+  }, [user]);
 
   const condi_render = (currLoginState: LOGINSTATE) => {
     switch (currLoginState) {
@@ -27,9 +29,7 @@ const LoginSide = () => {
       case LOGINSTATE.FIND:
         return <Find />;
       case LOGINSTATE.PROFILE:
-        return (
-          <Profile setCurrLoginState={setCurrLoginState} {...DummyPlayer} />
-        );
+        return <Profile setCurrLoginState={setCurrLoginState} user={user} />;
     }
   };
 

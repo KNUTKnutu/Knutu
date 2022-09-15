@@ -6,20 +6,23 @@ interface SignUpProps {
   id: string;
   pw: string;
   name: string;
+  email: string;
 }
 
-export const post__signup = async ({ id, pw, name }: SignUpProps) => {
+export const post__signup = async ({ id, pw, name, email }: SignUpProps) => {
   // regex
   // 1. id가 regex를 만족하냐
   // 2. pw가 regex를 만족하냐
   // 3. name이 regex를 만족하냐
-  console.log(`${API_URL}/signup?id=${id}&pw=${pw}&name=${name}`);
   if (RegexId.test(id) && RegexPw.test(pw) && RegexName.test(name)) {
     console.log("정규표현식이 만족합니다.");
     try {
-      const res = await axios.post(
-        `${API_URL}/signup?id=${id}&pw=${pw}&name=${name}`
-      );
+      const res = await axios.post(`${API_URL}/signup`, {
+        id,
+        pw,
+        name,
+        email,
+      });
       console.log(res);
       return res;
     } catch (err) {

@@ -1,13 +1,21 @@
 import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
-import { ID, LOGIN, PW, SINGNUP, STATUSCODE__OK, STATUSCODE__UNAUTHORIZED, TITLE } from "../../../../../../constant";
+import {
+  ID,
+  LOGIN,
+  PW,
+  SINGNUP,
+  STATUSCODE__OK,
+  STATUSCODE__UNAUTHORIZED,
+  TITLE,
+} from "../../../../../../constant";
 import { LOGINSTATE } from "../../../../../../enum";
-import { Player } from "../../../../../../interface";
-import { getChannelInfos, get__signin } from "../../../../../../Logic/API/GET/get";
+import {
+  getChannelInfos,
+  get__signin,
+} from "../../../../../../Logic/API/GET/get";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Login/_login.module.scss";
-import ProPic from "../../../../../../Assets/Images/Deokgu/Deokgu3_64x64.jpeg";
 import { useSetRecoilState } from "recoil";
 import { channelsState, userState } from "../../../../../../Recoil/atom";
-import { DummyPlayer } from "../../../../../../dummy";
 import { unwatchFile } from "fs";
 import { AxiosError } from "axios";
 
@@ -34,10 +42,10 @@ const Login = ({ setCurrLoginState }: Props) => {
     e.preventDefault();
 
     const res = await get__signin(input);
-    
-    if(res instanceof AxiosError) {
+
+    if (res instanceof AxiosError) {
       // 민경호 작업할 곳 - 401번 에러 처리 TODO
-      switch(res?.response?.status) {
+      switch (res?.response?.status) {
         case STATUSCODE__UNAUTHORIZED:
           window.alert("아이디와 비밀번호를 확인 후 다시 입력해주세요.");
           break;
@@ -46,13 +54,14 @@ const Login = ({ setCurrLoginState }: Props) => {
       }
     } else {
       const channels = await getChannelInfos();
-      if(channels !== null) {
+      if (channels !== null) {
         setUser(res?.data);
-        const channelsForRecoil = channels.map(val => {
+        const channelsForRecoil = channels.map((val) => {
+          const { name, userCount } = val;
           return {
-            name: val.name,
-            visitor: val.userCount
-          }
+            name,
+            userCount,
+          };
         });
         setChannels(channelsForRecoil);
       }

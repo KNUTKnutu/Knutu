@@ -1,25 +1,13 @@
-import { ChangeEvent, SetStateAction } from "react";
-import { LOGINSTATE } from "./enum";
-
 export type Nullable<T> = null | T;
 
 // Channel
 export interface ChannelProps {
   name: string;
-  visitor: number;
+  userCount: number;
 }
 
 export interface ChannelSideProps {
   list: ChannelProps[];
-}
-
-// Login
-export interface BeforeProps {
-  setLoginState: React.Dispatch<SetStateAction<LOGINSTATE>>;
-}
-
-export interface LoginIngProps {
-  setLoginState: React.Dispatch<SetStateAction<LOGINSTATE>>;
 }
 
 export interface Preference {

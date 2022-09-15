@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import {
   CONFIRM_PW,
+  EMAIL,
   ID,
   LOGIN,
   NAME,
@@ -25,8 +26,9 @@ const Signup = ({ setCurrLoginState }: Props) => {
     pw: "",
     confirm_pw: "",
     name: "",
+    email: "",
   });
-  const { id, pw, confirm_pw, name } = input;
+  const { id, pw, confirm_pw, name, email } = input;
   const [isPwVisi, setIsPwVisi] = useState(false);
   const [isPwCVisi, setIsPwCVisi] = useState(false);
 
@@ -42,7 +44,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(input);
-    post__signup({id, pw, name});
+    post__signup({ id, pw, name, email });
     setCurrLoginState(LOGINSTATE.LOGIN);
   };
 
@@ -114,6 +116,17 @@ const Signup = ({ setCurrLoginState }: Props) => {
               onChange={onChange}
             />
             <label htmlFor="name">{NAME}</label>
+          </div>
+          <div className={styles.input_wrapper}>
+            <input
+              type="email"
+              id="email"
+              placeholder=" "
+              name="email"
+              value={email}
+              onChange={onChange}
+            />
+            <label htmlFor="email">{EMAIL}</label>
           </div>
           <button>{SINGNUP}</button>
           <div className={styles.sub}>
