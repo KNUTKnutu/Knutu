@@ -16,7 +16,10 @@ interface Channel {
 
 type Channels = Channel[];
 
-export const get__signin = async ({ id, pw }: SignInProps): Promise<Nullable<AxiosResponse | AxiosError>> => {
+export const get__signin = async ({
+  id,
+  pw,
+}: SignInProps): Promise<Nullable<AxiosResponse | AxiosError>> => {
   // Regex
   // if (RegexId.test(id) && RegexPw.test(pw)) {
   //   console.log("ID, PW가 정규표현식을 만족합니다.");
@@ -55,4 +58,4 @@ export const getChannelInfos = async (): Promise<Nullable<Channels>> => {
     console.error(e);
     return null;
   }
-}
+};

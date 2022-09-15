@@ -75,6 +75,8 @@ const Login = ({ setCurrLoginState }: Props) => {
   const onClickVisi = () => {
     setIsPwVisi((prev) => !prev);
   };
+
+  // 아이디 저장과 자동 로그인 로직은 추후 구현 예정
   return (
     <div className={styles.login}>
       <div className={styles.title}>
@@ -107,6 +109,16 @@ const Login = ({ setCurrLoginState }: Props) => {
               {isPwVisi ? VISIBILITY_ON : VISIBILITY_OFF}
             </div>
           </div>
+          <div className={styles.remember}>
+            <div>
+              <input type="checkbox" name="" id="remember_id" />
+              <label htmlFor="remember_id">아이디 기억하기</label>
+            </div>
+            <div>
+              <input type="checkbox" name="" id="auto_login" />
+              <label htmlFor="auto_login">자동로그인</label>
+            </div>
+          </div>
           <button>{LOGIN}</button>
           <div className={styles.sub}>
             <span onClick={onClickSignup}>{SINGNUP}</span>|
@@ -114,10 +126,10 @@ const Login = ({ setCurrLoginState }: Props) => {
           </div>
         </form>
       </div>
-      <div className={styles.social}>
+      {/* <div className={styles.social}>
         <button id="kakao">카카오로 간편 로그인</button>
         <button id="naver">네이버로 간편 로그인</button>
-      </div>
+      </div> */}
     </div>
   );
 };

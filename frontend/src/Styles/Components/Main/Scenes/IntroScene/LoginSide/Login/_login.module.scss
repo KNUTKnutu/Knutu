@@ -99,6 +99,24 @@
         }
       }
 
+      .remember {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 20px;
+        width: 80%;
+        font-size: 1.25rem;
+
+        & > div {
+          display: flex;
+          gap: 8px;
+
+          & > input {
+            scale: 1.5;
+          }
+        }
+      }
+
       .sub {
         display: flex;
         justify-content: center;

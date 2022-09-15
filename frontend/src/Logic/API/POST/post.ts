@@ -1,6 +1,6 @@
 import axios from "axios";
 import { API_URL } from "../../../env";
-import { RegexId, RegexName, RegexPw } from "../../Regex/regex";
+import { RegexEmail, RegexId, RegexName, RegexPw } from "../../Regex/regex";
 
 interface SignUpProps {
   id: string;
@@ -11,10 +11,12 @@ interface SignUpProps {
 
 export const post__signup = async ({ id, pw, name, email }: SignUpProps) => {
   // regex
-  // 1. id가 regex를 만족하냐
-  // 2. pw가 regex를 만족하냐
-  // 3. name이 regex를 만족하냐
-  if (RegexId.test(id) && RegexPw.test(pw) && RegexName.test(name)) {
+  const isConfirmId = RegexId.test(id);
+  const isConfirmPw = RegexPw.test(pw);
+  const isConfirmName = RegexName.test(name);
+  const isConfirmEmail = RegexEmail.test(email);
+
+  if (isConfirmId && isConfirmPw && isConfirmName && isConfirmEmail) {
     console.log("정규표현식이 만족합니다.");
     try {
       const res = await axios.post(`${API_URL}/signup`, {
