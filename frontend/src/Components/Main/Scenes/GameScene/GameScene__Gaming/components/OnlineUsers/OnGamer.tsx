@@ -1,4 +1,4 @@
-import styles from "../../../../../../Styles/Components/Main/Scenes/GameScene/Gamming/_gameGamming.module.scss";
+import styles from "../../../../../../../Styles/Components/Main/Scenes/GameScene/Gamming/_gameGamming.module.scss";
 
 const OnGamer = ({userinfo}:any) => {
   return (

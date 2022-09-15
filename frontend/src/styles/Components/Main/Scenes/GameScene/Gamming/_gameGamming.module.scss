@@ -60,6 +60,8 @@
       .board_suggestion{
         display: flex;
         justify-content: center;
+        gap: 10px;
+        
       }
 
       .board_question{
@@ -96,7 +98,7 @@
       border-radius: 20px;
 
       .game_gamming_chatting__chattingScreen {
-        padding: 18px;
+        padding: 13px 18px 2px;
         height: 116px;
         font-weight: 100;
         border-bottom: 2px solid black;

@@ -1,13 +1,23 @@
+import { useSetRecoilState } from "recoil";
 import { useRecoilState } from "recoil";
 import { readyState } from "../../../../../../Recoil/atom";
 import styles from "../../../../../../styles/Components/Main/Scenes/GameScene/Wating/_gameWating.module.scss";
+import { currentSceneState } from "../../../../../../Recoil/atom";
+import { SCENE__LOBBYSCENE } from "../../../../../../constant";
 
 const GameRoomInfo = () => {
   const [readystate, setReadyState] = useRecoilState(readyState);
 
+  const setCurrentScene = useSetRecoilState(currentSceneState);
+
+  const getout = (e: any) => {
+    setCurrentScene(SCENE__LOBBYSCENE);
+  };
+
   const ready = () => {
     setReadyState(!readystate);
   };
+
   return (
     <div className={styles.roominfo}>
       <div className={styles.room_title}>
@@ -19,8 +29,12 @@ const GameRoomInfo = () => {
       </div>
       <div className={styles.room_time}>라운드 5 / 60초</div>
       <div className={styles.wating_button}>
-        <div className={styles.ready_button} onClick={ready}>준비</div>
-        <div className={styles.exit_button}>나가기</div>
+        <div className={styles.ready_button} onClick={ready}>
+          준비
+        </div>
+        <div className={styles.exit_button} onClick={getout}>
+          나가기
+        </div>
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "../../../../../../Styles/Components/Main/Scenes/GameScene/Gamming/_gameGamming.module.scss";
+import styles from "../../../../../../../Styles/Components/Main/Scenes/GameScene/Gamming/_gameGamming.module.scss";
 import OnGamer from "./OnGamer";
 
 interface testuser {

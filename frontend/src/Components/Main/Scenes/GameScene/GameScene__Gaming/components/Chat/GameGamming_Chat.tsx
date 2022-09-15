@@ -1,4 +1,4 @@
-import styles from "../../../../../../Styles/Components/Main/Scenes/GameScene/Gamming/_gameGamming.module.scss";
+import styles from "../../../../../../../styles/Components/Main/Scenes/GameScene/Gamming/_gameGamming.module.scss";
 
 interface ChatInfoInterface {
     chatInfo: {

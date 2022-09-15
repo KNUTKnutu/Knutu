@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "../../../../../../Styles/Components/Main/Scenes/GameScene/Gamming/_gameGamming.module.scss";
+import styles from "../../../../../../../styles/Components/Main/Scenes/GameScene/Gamming/_gameGamming.module.scss";
 import GameGamming_Chat from "./GameGamming_Chat";
 
 const GameGamming_Chatting = () => {
