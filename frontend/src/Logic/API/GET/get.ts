@@ -59,3 +59,21 @@ export const getChannelInfos = async (): Promise<Nullable<Channels>> => {
     return null;
   }
 };
+
+export const getFindId = async (email: string) => {
+  try {
+    const res = await axios.get(`${API_URL}/findId?email=${email}`);
+    return res;
+  } catch (e: any) {
+    console.error(e);
+  }
+};
+
+export const getFindPw = async (id: string, email: string) => {
+  try {
+    const res = await axios.get(`${API_URL}/findPw?id=${id}&email=${email}`);
+    return res;
+  } catch (e: any) {
+    console.error(e);
+  }
+};

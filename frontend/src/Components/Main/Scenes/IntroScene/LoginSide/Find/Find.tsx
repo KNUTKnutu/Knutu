@@ -1,6 +1,7 @@
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
 import { EMAIL, ID, LOGIN, SINGNUP, TITLE } from "../../../../../../constant";
 import { FINDSTATE, LOGINSTATE } from "../../../../../../enum";
+import { getFindId, getFindPw } from "../../../../../../Logic/API/GET/get";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Find/_find.module.scss";
 
 interface Props {
@@ -35,6 +36,25 @@ const Find = ({ setCurrLoginState }: Props) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
+  /**
+   * res를 보여줄 UI를 작성해야함.
+   */
+  const onClickFindId = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const res = getFindId(id_email);
+    console.log(res);
+  };
+
+  /**
+   * 나중에 api_doc보고 getFindPw의 파라미터 바꿔야 함.
+   * res를 보여줄 UI를 작성해야함.
+   */
+  const onClickFindPw = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const res = getFindPw(pw_id, pw_email);
+    console.log(res);
+  };
+
   const onClickLogin = () => {
     setCurrLoginState(LOGINSTATE.LOGIN);
   };
@@ -47,7 +67,7 @@ const Find = ({ setCurrLoginState }: Props) => {
     switch (currFind) {
       case FINDSTATE.ID:
         return (
-          <form>
+          <form onSubmit={onClickFindId}>
             <div className={styles.input_wrapper}>
               <input
                 type="email"
@@ -64,7 +84,7 @@ const Find = ({ setCurrLoginState }: Props) => {
         );
       case FINDSTATE.PW:
         return (
-          <form>
+          <form onSubmit={onClickFindPw}>
             <div className={styles.input_wrapper}>
               <input
                 type="text"
