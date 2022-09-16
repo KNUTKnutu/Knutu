@@ -52,6 +52,10 @@ const Signup = ({ setCurrLoginState }: Props) => {
     setCurrLoginState(LOGINSTATE.LOGIN);
   };
 
+  const onClickFind = () => {
+    setCurrLoginState(LOGINSTATE.FIND);
+  };
+
   const onClickVisi = () => {
     setIsPwVisi((prev) => !prev);
   };
@@ -131,7 +135,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
           <button>{SINGNUP}</button>
           <div className={styles.sub}>
             <span onClick={onClickLogin}>{LOGIN}</span>|
-            <span>아이디/비밀번호 찾기</span>
+            <span onClick={onClickFind}>아이디/비밀번호 찾기</span>
           </div>
         </form>
       </div>

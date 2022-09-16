@@ -10,3 +10,8 @@ export enum SCENESTATE {
   SCENE__LOBBYSCENE,
   SCENE__GAMESCENE,
 }
+
+export enum FINDSTATE {
+  ID = 1,
+  PW,
+}

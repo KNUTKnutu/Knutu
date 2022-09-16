@@ -5,7 +5,7 @@ import styles from "../../../../../Styles/Components/Main/Scenes/IntroScene/Logi
 import Find from "./Find/Find";
 import Login from "./Login/Login";
 import Profile from "./Profile/Profile";
-import Signup from "./Signup/SignUp";
+import Signup from "./SignUp/SignUp";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../../../Recoil/atom";
 
@@ -27,7 +27,7 @@ const LoginSide = () => {
       case LOGINSTATE.SIGNUP:
         return <Signup setCurrLoginState={setCurrLoginState} />;
       case LOGINSTATE.FIND:
-        return <Find />;
+        return <Find setCurrLoginState={setCurrLoginState} />;
       case LOGINSTATE.PROFILE:
         return <Profile setCurrLoginState={setCurrLoginState} user={user} />;
     }
