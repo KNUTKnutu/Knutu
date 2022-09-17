@@ -11,6 +11,7 @@
   }
 
   &.inactive {
+    pointer-events: none;
     animation: scene-inactive 2s cubic-bezier(0.165, 0.84, 0.44, 1);
   }
 }
@@ -18,6 +19,8 @@
 @keyframes scene-active {
   0% {
     top: -200vh;
+  }
+  99% {
     pointer-events: none;
   }
   100% {
