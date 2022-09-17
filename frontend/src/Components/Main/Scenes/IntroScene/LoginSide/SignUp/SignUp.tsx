@@ -34,9 +34,6 @@ const Signup = ({ setCurrLoginState }: Props) => {
 
   // 민경호 TODO: 비밀번호 해싱 => SHA256
 
-  // 민경호 TODO: 회원가입 시 이메일을 입력받도록
-  // 민경호 TODO: 회원가입의 POST는 Query String 방식이 아닌, Body에 JSON을 실어서 보낼 수 있도록
-
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };

@@ -26,7 +26,6 @@ interface Props {
 const VISIBILITY_ON = <span className="material-icons">visibility</span>;
 const VISIBILITY_OFF = <span className="material-icons">visibility_off</span>;
 
-// 민경호 TODO: 아이디 저장, 비밀번호 저장, 자동 로그인 등
 const Login = ({ setCurrLoginState }: Props) => {
   const [input, setInput] = useState({ id: "", pw: "" });
   const { id, pw } = input;
