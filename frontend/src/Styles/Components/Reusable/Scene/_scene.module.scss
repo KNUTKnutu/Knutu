@@ -18,9 +18,11 @@
 @keyframes scene-active {
   0% {
     top: -200vh;
+    pointer-events: none;
   }
   100% {
     top: 6%;
+    pointer-events: all;
   }
 }
 
