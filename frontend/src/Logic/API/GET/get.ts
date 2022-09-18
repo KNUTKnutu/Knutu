@@ -49,7 +49,9 @@ export const getFindId = async (email: string) => {
     const res = await axios.get(`${API_URL}/findId?email=${email}`);
     return res;
   } catch (e: any) {
+    const error: AxiosError = e;
     console.error(e);
+    return e;
   }
 };
 
@@ -58,6 +60,8 @@ export const getFindPw = async (id: string, email: string) => {
     const res = await axios.get(`${API_URL}/findPw?id=${id}&email=${email}`);
     return res;
   } catch (e: any) {
+    const error: AxiosError = e;
     console.error(e);
+    return e;
   }
 };

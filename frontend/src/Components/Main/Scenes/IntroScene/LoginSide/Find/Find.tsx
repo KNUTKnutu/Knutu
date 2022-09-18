@@ -1,7 +1,10 @@
+import { AxiosError } from "axios";
 import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
-import { EMAIL, ID, LOGIN, SINGNUP, TITLE } from "../../../../../../constant";
+import { CHANGE_PW, EMAIL, ID, LOGIN, SINGNUP, TITLE } from "../../../../../../constant";
 import { FINDSTATE, LOGINSTATE } from "../../../../../../enum";
 import { getFindId, getFindPw } from "../../../../../../Logic/API/GET/get";
+import { patchChangePw } from "../../../../../../Logic/API/PATCH/patch";
+import hashing from "../../../../../../Logic/hashing";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Find/_find.module.scss";
 
 interface Props {
@@ -19,8 +22,9 @@ const Find = ({ setCurrLoginState }: Props) => {
    * pw_email: pw를 찾는데 쓰이는 email
    * pw_id: pw를 찾는데 쓰이는 id
    */
-  const [input, setInput] = useState({ id_email: "", pw_email: "", pw_id: "" });
-  const { id_email, pw_email, pw_id } = input;
+  const [input, setInput] = useState({ id_email: "", pw_email: "", pw_id: "", pw_pw: "" });
+  const [findIdResult, setFindIdResult] = useState("");
+  const { id_email, pw_email, pw_id, pw_pw } = input;
 
   /** 아이디 찾기와 비밀번호 찾기를 선택하는 이벤트 핸들러 */
   const onClickNav = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -39,20 +43,36 @@ const Find = ({ setCurrLoginState }: Props) => {
   /**
    * res를 보여줄 UI를 작성해야함.
    */
-  const onClickFindId = (e: FormEvent<HTMLFormElement>) => {
+  const onClickFindId = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = getFindId(id_email);
-    console.log(res);
+    const res = await getFindId(id_email);
+    if(res instanceof AxiosError) {
+      window.alert("입력하신 이메일에 맞는 유저가 없습니다.");
+    } else {
+      const { data } = res;
+      setFindIdResult(data);
+      setCurrFind(FINDSTATE.RESULT__FINDID);
+    }
   };
 
   /**
    * 나중에 api_doc보고 getFindPw의 파라미터 바꿔야 함.
    * res를 보여줄 UI를 작성해야함.
    */
-  const onClickFindPw = (e: FormEvent<HTMLFormElement>) => {
+  const onClickFindPw = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = getFindPw(pw_id, pw_email);
-    console.log(res);
+    const res = await getFindPw(pw_id, pw_email);
+    if(res instanceof AxiosError) {
+      window.alert("비밀번호가 틀렸습니다.");
+    } else {
+      setCurrFind(FINDSTATE.CHANGEPW);
+    }
+  };
+
+  const onClickChangePw = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const hashing_pw = hashing(pw_pw);
+    const res = await patchChangePw(pw_id, hashing_pw);
   };
 
   const onClickLogin = () => {
@@ -108,6 +128,47 @@ const Find = ({ setCurrLoginState }: Props) => {
               <label htmlFor="pw_email">{EMAIL}</label>
             </div>
             <button>비밀번호 찾기</button>
+          </form>
+        );
+      case FINDSTATE.CHANGEPW:
+        return (
+          <form onSubmit={onClickChangePw}>
+            <div className={styles.input_wrapper}>
+              <input
+                type="text"
+                id="pw_pw"
+                placeholder=" "
+                name="pw_pw"
+                value={pw_pw}
+                onChange={onChange}
+              />
+              <label htmlFor="pw_pw">{CHANGE_PW}</label>
+            </div>
+            <button>비밀번호 재설정</button>
+          </form>
+        );
+      case FINDSTATE.RESULT__FINDID:
+        return (
+          <form onSubmit={onClickChangePw}>
+            <div className={styles.input_wrapper}>
+              <center>요청하신 아이디는 {findIdResult} 입니다.</center>
+            </div>
+          </form>
+        );
+      case FINDSTATE.RESULT__CHANGEPW:
+        return (
+          <form onSubmit={onClickChangePw}>
+            <div className={styles.input_wrapper}>
+              <input
+                type="text"
+                id="pw_pw"
+                placeholder=" "
+                name="pw_pw"
+                value={pw_pw}
+                onChange={onChange}
+              />
+              <label htmlFor="pw_pw">비밀번호 재설정을 완료하였습니다. 다시 로그인해주세요.</label>
+            </div>
           </form>
         );
     }

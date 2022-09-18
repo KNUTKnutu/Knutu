@@ -16,6 +16,7 @@ export const SINGNUP: UserInformation = "회원가입";
 export const ID: UserInformation = "아이디";
 export const PW: UserInformation = "비밀번호";
 export const CONFIRM_PW: UserInformation = "비밀번호 확인";
+export const CHANGE_PW: UserInformation = "비밀번호 재설정";
 export const NAME: UserInformation = "닉네임";
 export const LOGOUT: UserInformation = "로그아웃";
 export const EMAIL: UserInformation = "이메일";

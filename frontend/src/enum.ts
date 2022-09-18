@@ -14,4 +14,7 @@ export enum SCENESTATE {
 export enum FINDSTATE {
   ID = 1,
   PW,
+  CHANGEPW,
+  RESULT__FINDID,
+  RESULT__CHANGEPW
 }
