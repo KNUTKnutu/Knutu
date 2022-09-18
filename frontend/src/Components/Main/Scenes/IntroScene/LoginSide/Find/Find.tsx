@@ -1,11 +1,22 @@
 import { AxiosError } from "axios";
 import { ChangeEvent, FormEvent, MouseEvent, useState } from "react";
-import { CHANGE_PW, EMAIL, ID, LOGIN, SINGNUP, TITLE } from "../../../../../../constant";
+import {
+  CHANGE_PW,
+  EMAIL,
+  ID,
+  LOGIN,
+  SINGNUP,
+  STATUSCODE__OK,
+  STATUSCODE__UNAUTHORIZED,
+  TITLE,
+} from "../../../../../../constant";
 import { FINDSTATE, LOGINSTATE } from "../../../../../../enum";
 import { getFindId, getFindPw } from "../../../../../../Logic/API/GET/get";
 import { patchChangePw } from "../../../../../../Logic/API/PATCH/patch";
 import hashing from "../../../../../../Logic/hashing";
+import { RegexPw } from "../../../../../../Logic/Regex/regex";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Find/_find.module.scss";
+import Spinner from "../../../../../Reusable/Spinner/Spinner";
 
 interface Props {
   setCurrLoginState: React.Dispatch<React.SetStateAction<LOGINSTATE>>;
@@ -22,8 +33,18 @@ const Find = ({ setCurrLoginState }: Props) => {
    * pw_email: pw를 찾는데 쓰이는 email
    * pw_id: pw를 찾는데 쓰이는 id
    */
-  const [input, setInput] = useState({ id_email: "", pw_email: "", pw_id: "", pw_pw: "" });
+  const [input, setInput] = useState({
+    id_email: "",
+    pw_email: "",
+    pw_id: "",
+    pw_pw: "",
+  });
   const [findIdResult, setFindIdResult] = useState("");
+  /**
+   * isLoading: axios 응답을 기다릴 때 Spinner를 불러올 수 있는 state
+   */
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(0);
   const { id_email, pw_email, pw_id, pw_pw } = input;
 
   /** 아이디 찾기와 비밀번호 찾기를 선택하는 이벤트 핸들러 */
@@ -31,8 +52,15 @@ const Find = ({ setCurrLoginState }: Props) => {
     const target = e.target as HTMLDivElement;
     if (target.nodeName === "SPAN") {
       const inner = target.innerText;
-      if (inner === "아이디 찾기") setCurrFind(FINDSTATE.ID);
-      else if (inner === "비밀번호 찾기") setCurrFind(FINDSTATE.PW);
+      if (inner === "아이디 찾기") {
+        setIsError(0);
+        setCurrFind(FINDSTATE.ID);
+        setInput({ ...input, id_email: "" });
+      } else if (inner === "비밀번호 찾기") {
+        setIsError(0);
+        setCurrFind(FINDSTATE.PW);
+        setInput({ ...input, pw_email: "", pw_id: "" });
+      }
     }
   };
 
@@ -45,14 +73,23 @@ const Find = ({ setCurrLoginState }: Props) => {
    */
   const onClickFindId = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading((prev) => !prev);
     const res = await getFindId(id_email);
-    if(res instanceof AxiosError) {
-      window.alert("입력하신 이메일에 맞는 유저가 없습니다.");
+    if (res instanceof AxiosError) {
+      switch (res.response?.status) {
+        case STATUSCODE__UNAUTHORIZED:
+          setIsError(STATUSCODE__UNAUTHORIZED);
+          break;
+        default:
+          break;
+      }
     } else {
       const { data } = res;
       setFindIdResult(data);
+      setIsError(0);
       setCurrFind(FINDSTATE.RESULT__FINDID);
     }
+    setIsLoading((prev) => !prev);
   };
 
   /**
@@ -61,18 +98,49 @@ const Find = ({ setCurrLoginState }: Props) => {
    */
   const onClickFindPw = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading((prev) => !prev);
     const res = await getFindPw(pw_id, pw_email);
-    if(res instanceof AxiosError) {
-      window.alert("비밀번호가 틀렸습니다.");
+    if (res instanceof AxiosError) {
+      switch (res.response?.status) {
+        case STATUSCODE__UNAUTHORIZED:
+          setIsError(STATUSCODE__UNAUTHORIZED);
+          break;
+        default:
+          break;
+      }
     } else {
       setCurrFind(FINDSTATE.CHANGEPW);
     }
+    setIsLoading((prev) => !prev);
   };
 
   const onClickChangePw = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const hashing_pw = hashing(pw_pw);
-    const res = await patchChangePw(pw_id, hashing_pw);
+    // pw 정규표현식을 만족하는 지 확인하는 코드가 있어야 됨.
+    const isConfirmPw = RegexPw.test(pw_pw);
+    if (isConfirmPw) {
+      // 만족하면 밑의 코드가 실행됨.
+      setIsLoading((prev) => !prev);
+      const hashing_pw = hashing(pw_pw);
+      const res = await patchChangePw(pw_id, hashing_pw);
+
+      if (res instanceof AxiosError) {
+        // 혹시 에러가 발생할 수 있어서 남겨둠.
+        switch (res.response?.status) {
+          case STATUSCODE__UNAUTHORIZED:
+            break;
+          default:
+            break;
+        }
+      } else {
+        alert("성공적으로 비밀번호가 변경되었습니다.");
+        setCurrLoginState(LOGINSTATE.LOGIN);
+      }
+      setIsLoading((prev) => !prev);
+    } else {
+      alert("비밀번호가 형식을 만족하지 않습니다.");
+      setInput({ ...input, pw_pw: "" });
+    }
   };
 
   const onClickLogin = () => {
@@ -99,6 +167,11 @@ const Find = ({ setCurrLoginState }: Props) => {
               />
               <label htmlFor="id_email">{EMAIL}</label>
             </div>
+            {isError === STATUSCODE__UNAUTHORIZED && (
+              <span className={styles.error}>
+                입력하신 이메일에 맞는 유저가 없습니다.
+              </span>
+            )}
             <button>아이디 찾기</button>
           </form>
         );
@@ -127,6 +200,11 @@ const Find = ({ setCurrLoginState }: Props) => {
               />
               <label htmlFor="pw_email">{EMAIL}</label>
             </div>
+            {isError === STATUSCODE__UNAUTHORIZED && (
+              <span className={styles.error}>
+                입력하신 아이디와 이메일에 맞는 유저가 없습니다.
+              </span>
+            )}
             <button>비밀번호 찾기</button>
           </form>
         );
@@ -150,8 +228,15 @@ const Find = ({ setCurrLoginState }: Props) => {
       case FINDSTATE.RESULT__FINDID:
         return (
           <form onSubmit={onClickChangePw}>
-            <div className={styles.input_wrapper}>
-              <center>요청하신 아이디는 {findIdResult} 입니다.</center>
+            <div
+              className={styles.input_wrapper}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <span>요청하신 아이디는 {findIdResult} 입니다.</span>
             </div>
           </form>
         );
@@ -167,7 +252,9 @@ const Find = ({ setCurrLoginState }: Props) => {
                 value={pw_pw}
                 onChange={onChange}
               />
-              <label htmlFor="pw_pw">비밀번호 재설정을 완료하였습니다. 다시 로그인해주세요.</label>
+              <label htmlFor="pw_pw">
+                비밀번호 재설정을 완료하였습니다. 다시 로그인해주세요.
+              </label>
             </div>
           </form>
         );
@@ -180,14 +267,28 @@ const Find = ({ setCurrLoginState }: Props) => {
       </div>
       <div className={styles.main}>
         <div className={styles.choice_find} onClick={onClickNav}>
-          <span className={currFind === FINDSTATE.ID ? styles.focus : ""}>
+          <span
+            className={
+              currFind === FINDSTATE.ID || currFind === FINDSTATE.RESULT__FINDID
+                ? styles.focus
+                : ""
+            }
+          >
             아이디 찾기
           </span>
-          <span className={currFind === FINDSTATE.PW ? styles.focus : ""}>
+          <span
+            className={
+              currFind === FINDSTATE.PW || currFind === FINDSTATE.CHANGEPW
+                ? styles.focus
+                : ""
+            }
+          >
             비밀번호 찾기
           </span>
         </div>
-        <div className={styles.curr_find}>{condi_find(currFind)}</div>
+        <div className={styles.curr_find}>
+          {!isLoading ? condi_find(currFind) : <Spinner text="" />}
+        </div>
         <div className={styles.sub}>
           <span onClick={onClickLogin}>{LOGIN}</span>|
           <span onClick={onClickSignup}>{SINGNUP}</span>
