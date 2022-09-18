@@ -1,5 +1,6 @@
 import axios from "axios";
 import { API_URL } from "../../../env";
+import hashing from "../../hashing";
 import { RegexEmail, RegexId, RegexName, RegexPw } from "../../Regex/regex";
 
 interface SignUpProps {
@@ -19,9 +20,10 @@ export const post__signup = async ({ id, pw, name, email }: SignUpProps) => {
   if (isConfirmId && isConfirmPw && isConfirmName && isConfirmEmail) {
     console.log("정규표현식이 만족합니다.");
     try {
+      const hashing_pw = hashing(pw);
       const res = await axios.post(`${API_URL}/signup`, {
         id,
-        pw,
+        pw: hashing_pw,
         name,
         email,
       });
