@@ -50,7 +50,7 @@ const Login = ({ setCurrLoginState }: Props) => {
       // 민경호 작업할 곳 - 401번 에러 처리 TODO
       switch (res?.response?.status) {
         case STATUSCODE__UNAUTHORIZED:
-          setIsError(401);
+          setIsError(STATUSCODE__UNAUTHORIZED);
           break;
         default:
           break;
@@ -129,7 +129,7 @@ const Login = ({ setCurrLoginState }: Props) => {
                   <label htmlFor="auto_login">자동로그인</label>
                 </div>
               </div>
-              {isError === 401 && (
+              {isError === STATUSCODE__UNAUTHORIZED && (
                 <div style={{ color: "red", marginTop: "4px" }}>
                   아이디와 비밀번호를 확인 후 다시 입력해주세요.
                 </div>
