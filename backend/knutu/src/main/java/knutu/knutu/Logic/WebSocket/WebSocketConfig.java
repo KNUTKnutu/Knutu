@@ -29,6 +29,6 @@ public class WebSocketConfig implements WebMvcConfigurer {
                 .maxAge(3600)
                 .allowedHeaders("Accept", "Content-Type", "Origin", "Authorization", "X-Auth-Token")
                 .exposedHeaders("X-Auth-Token", "Authorization", "Content-Type", "UTF-8")
-                .allowedMethods("POST", "GET", "DELETE", "PUT", "OPTIONS");
+                .allowedMethods("POST", "GET", "DELETE", "PUT", "PATCH", "OPTIONS");
     }
 }

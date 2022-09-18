@@ -49,6 +49,12 @@ public class FirebaseService implements FirebaseServiceInterface {
     private final String COLLECTION__USER = "User";
     private final String COLLECTION__FILE = "File";
 
+    private final String KIND__USER = "user";
+    private final String KIND__NAME = "name";
+    private final String KIND__PW = "pw";
+    private final String KIND__EMAIL = "email";
+    private final String KIND__EXPERIENCE = "experience";
+
     public static final FirebaseService firebaseInstance = new FirebaseService();
     public static FirebaseService getFirebaseInstance() { return firebaseInstance; }
     
@@ -142,6 +148,19 @@ public class FirebaseService implements FirebaseServiceInterface {
         }
     }
 
+    public User findId(String email) throws Exception {
+        try {
+            DocumentSnapshot userSnapshot = getUserByEmail(email);
+            if(!userSnapshot.exists()) return null;
+
+            User user = userSnapshot.toObject(User.class);
+    
+            return user;
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
     public User getUserWithName(String name) throws Exception {
         try {
             DocumentSnapshot userSnapshot = this.getUserByName(name);
@@ -165,22 +184,46 @@ public class FirebaseService implements FirebaseServiceInterface {
     }
 
     // Update
-    public boolean updateUser(String id, User user) throws Exception {
-        Firestore fs = FirestoreClient.getFirestore();
-
-        // 1. 현재 저장되어있는 User 정보를 가져온다.
-        User currentUser = this.getUser(id);
-
-        // 2. 매개변수로 받은 id로 DB에 저장된 User 정보가 없으면 false를 return한다.
-        if(currentUser == null) return false;
-
-        // 3. currentUser 와 user를 비교하여, 다른 속성 값(프로퍼티)이 있으면 엎어쳐준다.
-
-        // 4. Firebase에 업데이트한다.
-        // ApiFuture<WriteResult> writeResult = fs.collection(COLLECTION__USER).document(id).update(currentUser);
-
-        // 5. 업데이트가 성공하면 true를 리턴, 실패했다면 false를 리턴한다.
-        return true;
+    public boolean updateUser(String id, User user, String kind) throws Exception {
+        try {
+            Firestore fs = FirestoreClient.getFirestore();
+    
+            User currentUser = this.getUser(id);
+    
+            switch(kind) {
+                case KIND__EXPERIENCE:
+                    currentUser.setTotalExperience(user.getTotalExperience());
+                    currentUser.setCurrentExperience(user.getCurrentExperience());
+                    currentUser.setRemainExperience(user.getRemainExperience());
+                    break;
+                case KIND__NAME:
+                    currentUser.setName(user.getName());
+                    break;
+                case KIND__EMAIL:
+                    currentUser.setEmail(user.getEmail());
+                    break;
+                case KIND__PW:
+                    currentUser.setPw(user.getPw());
+                    break;
+            }
+    
+            long now = Instant.now().toEpochMilli();
+    
+            currentUser.setUpdated_time(now);
+    
+            ApiFuture<WriteResult> apiFuture = 
+                fs
+                .collection(COLLECTION__USER)
+                .document(currentUser.getId())
+                .set(currentUser);
+    
+            log.info(apiFuture.get().getUpdateTime().toString());
+    
+            return true;
+        } catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // Delete
@@ -202,11 +245,20 @@ public class FirebaseService implements FirebaseServiceInterface {
         return docSnapshot;
     }
 
-    private DocumentSnapshot getUserByName(String name) throws Exception {
+    public DocumentSnapshot getUserByName(String name) throws Exception {
+        return this.getUser(this.KIND__NAME, name);
+    }
+
+    public DocumentSnapshot getUserByEmail(String email) throws Exception {
+        return this.getUser(this.KIND__EMAIL, email);
+    }
+
+    private DocumentSnapshot getUser(String kind, String info) throws Exception {
         Firestore fs = FirestoreClient.getFirestore();
 
         CollectionReference collectionRef = fs.collection(COLLECTION__USER);
-        Query query = collectionRef.whereEqualTo("name", name);
+
+        Query query = collectionRef.whereEqualTo(kind, info);
 
         ApiFuture<QuerySnapshot> apiFuture = query.get();
         
