@@ -62,3 +62,8 @@ export const channelsState = atom<ChannelProps[]>({
   key: "channelsState",
   default: [],
 });
+
+export const soundState = atom({
+  key: "soundState",
+  default: false,
+})
