@@ -1,18 +1,22 @@
-import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import {
-  ChannelProps,
-  ChannelSideProps,
-  Nullable,
-} from "../../../../../interface";
+import { ChannelProps } from "../../../../../interface";
 import { channelsState, userState } from "../../../../../Recoil/atom";
 import styles from "../../../../../Styles/Components/Main/Scenes/IntroScene/ChannelSide/_channelSide.module.scss";
 import Channel from "../../../../Reusable/Channel/Channel";
 
-// fetch된 채널 리스트를 보여주는 컴포넌트
+/**
+ * 채널 리스트를 보여주는 컴포넌트
+ */
 const ChannelSide = () => {
+  /**
+   * 현재 유저가 로그인해있는지를 알기 위한 atom
+   * user 값으로 glass_panel이 보일지 아닐지를 결정한다.
+   */
   const user = useRecoilValue(userState);
 
+  /**
+   * atom에 있는 채널 리스트를 보여주기 위해 가져온 atom
+   */
   const channelsList: ChannelProps[] = useRecoilValue(channelsState);
 
   return (

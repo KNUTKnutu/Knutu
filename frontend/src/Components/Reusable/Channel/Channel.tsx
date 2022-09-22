@@ -1,17 +1,10 @@
 import styles from "../../../Styles/Components/Reusable/Channel/_channel.module.scss";
-import { ChannelProps, User, Users } from "../../../interface";
-import {
-  useRecoilState,
-  useRecoilStoreID,
-  useRecoilValue,
-  useSetRecoilState,
-} from "recoil";
+import { ChannelProps, Users } from "../../../interface";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { currentSceneState, usersState, userState } from "../../../Recoil/atom";
 import { SCENE__LOBBYSCENE } from "../../../constant";
 import { put__enterChannel } from "../../../Logic/API/PUT/put";
 import { AxiosError } from "axios";
-
-// 최대 400명으로 제한을 둠.
 
 // bar관련 주석
 // 0 ~ 20: 게임이 잘 안되는 유저 수 -> 검은색
@@ -20,13 +13,16 @@ import { AxiosError } from "axios";
 // 301 ~ 350: 혼잡 -> 노란색
 // 351 ~ 400: 복잡 -> 빨간색
 
+/**
+ * 각 채널에 입장할 수 있는 최대 인원 수
+ * 나중에 constant에 저장하면 채널마다 두지 않아도 됨.
+ */
 const total = 400;
 
 const Channel = ({ name, userCount }: ChannelProps) => {
-  // const setCurrentScene = useSetRecoilState(currentSceneState);
-  // const onClickChannel = () => {
-  //   setCurrentScene(SCENE__LOBBYSCENE);
-  // };
+  /**
+   * 현재 접속해 있는 유저들의 수에 따라 색과 길이를 다르게 주기 위한 변수와 함수
+   */
   const bar_length: number = userCount === 0 ? 1 / total : userCount / total;
   const bar_color = (userCount: number) => {
     if (userCount <= 20) return "black";
@@ -36,28 +32,40 @@ const Channel = ({ name, userCount }: ChannelProps) => {
     else return "#c62828";
   };
 
+  /**
+   * 채널을 눌렀을 때 채널에 해당하는 LobbyScene으로 이동하게 하기 위한 atom
+   */
   const setCurrentScene = useSetRecoilState(currentSceneState);
+
+  /**
+   * 채널을 눌렀을 때 채널에 접속해있는 유저들의 목록을 저장할 atom
+   */
   const setUsersOnChannel = useSetRecoilState<Users>(usersState);
   const usersOnChannel = useRecoilValue<Users>(usersState);
 
-  const [user, _] = useRecoilState(userState);
+  /**
+   * 현재 유저가 채널에 접속하기 위해 서버에 정보를 보낼 때 필요
+   */
+  const user = useRecoilValue(userState);
 
   const onChannelClicked = async () => {
     const channelName = name;
 
-    const res = await put__enterChannel({ user, channelName });
+    if (user) {
+      const res = await put__enterChannel({ user, channelName });
 
-    if (res !== null && !(res instanceof AxiosError)) {
-      setCurrentScene(SCENE__LOBBYSCENE);
+      if (res !== null && !(res instanceof AxiosError)) {
+        setCurrentScene(SCENE__LOBBYSCENE);
 
-      const users = Object.values(res.data.onlineUsers);
-      const sortedUsers: any = users.sort((a: any, b: any) => {
-        return b.level - a.level;
-      });
+        const users = Object.values(res.data.onlineUsers);
+        const sortedUsers: any = users.sort((a: any, b: any) => {
+          return b.level - a.level;
+        });
 
-      setUsersOnChannel(sortedUsers);
-    } else {
-      window.alert("채널에 입장할 수 없습니다. 다시 시도해주세요.");
+        setUsersOnChannel(sortedUsers);
+      } else {
+        window.alert("채널에 입장할 수 없습니다. 다시 시도해주세요.");
+      }
     }
   };
 

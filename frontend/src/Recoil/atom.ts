@@ -47,23 +47,33 @@ export const readyState = atom({
   default: false,
 });
 
+/**
+ * 현재 사용자 정보를 담은 atom
+ */
 export const userState = atom<Nullable<User>>({
   key: "userState",
   default: null,
   effects: [localStorageEffect("user")],
 });
 
+/**
+ * LobbyScene에 유저 리스트를 보여줄 때 사용하는 atom
+ */
 export const usersState = atom<Users>({
   key: "usersState",
   default: [],
 });
 
+/**
+ * 현재 존재하는 채널들의 정보를 담은 atom
+ */
 export const channelsState = atom<ChannelProps[]>({
   key: "channelsState",
   default: [],
+  effects: [localStorageEffect("channels")],
 });
 
 export const soundState = atom({
   key: "soundState",
   default: false,
-})
+});

@@ -2,7 +2,7 @@ import { useSetRecoilState } from "recoil";
 import { LOGOUT, TITLE } from "../../../../../../constant";
 import { LOGINSTATE } from "../../../../../../enum";
 import { Nullable, User } from "../../../../../../interface";
-import { userState } from "../../../../../../Recoil/atom";
+import { channelsState, userState } from "../../../../../../Recoil/atom";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Profile/_profile.module.scss";
 import DEFAULT_PROFILE from "../../../../../../Assets/Images/default_profile.svg";
 
@@ -14,17 +14,33 @@ interface Props {
 const Profile = ({ setCurrLoginState, user }: Props) => {
   const { name, title, profilePicture, level, currentExperience } =
     user as User;
+
   const setUser = useSetRecoilState(userState);
 
+  /**
+   * 로그아웃하면 Channel List를 비워줘야 하기 때문에 선언
+   */
+  const setChannels = useSetRecoilState(channelsState);
+
+  /**
+   * 로그아웃 버튼을 눌렀을 때 실행
+   * 로그인 화면으로 바꿔줘야 함 -> LOGINSTATE를 LOGIN으로 교체
+   * user atom을 비워줘야 함 -> setUser(null)
+   * 채널 목록을 비워줘야 함 -> setChannel([])
+   */
   const onClickLogout = () => {
     setCurrLoginState(LOGINSTATE.LOGIN);
     setUser(null);
+    setChannels([]);
   };
 
-  // img가 엑박 뜰 경우 대체 이미지 설정
+  /**
+   * img가 엑박 뜰 경우 대체 이미지 설정
+   */
   const onErrorImg = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = DEFAULT_PROFILE;
   };
+
   return (
     <div className={styles.profile}>
       <div className={styles.title}>

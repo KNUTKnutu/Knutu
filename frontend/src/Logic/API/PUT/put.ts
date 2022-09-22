@@ -9,24 +9,29 @@ interface EnterChannelProps {
   channelName: string;
 }
 
-export const put__enterChannel = async ({ user, channelName }: EnterChannelProps): Promise<AxiosResponse | AxiosError> => {
+/**
+ * @returns 현재 채널에 들어와있는 유저 리스트를 리턴
+ */
+export const put__enterChannel = async ({
+  user,
+  channelName,
+}: EnterChannelProps): Promise<AxiosResponse | AxiosError> => {
+  try {
+    let endPoint;
 
-    try {
-        let endPoint;
+    endPoint = `${API_URL}/enterChannel/${channelName}`;
+    const res__enterChannel = await axios.put(endPoint, user);
 
-        endPoint = `${API_URL}/enterChannel/${channelName}`;
-        const res__enterChannel = await axios.put(endPoint, user);
+    if (res__enterChannel.status === 200) {
+      endPoint = `${API_URL}/getChannelInfo?channelName=${channelName}`;
+      const res__getChannelUsers = await axios.get(endPoint);
 
-        if(res__enterChannel.status === 200) {
-            endPoint = `${API_URL}/getChannelInfo?channelName=${channelName}`;
-            const res__getChannelUsers = await axios.get(endPoint);
-
-            return res__getChannelUsers;
-        }
-
-        return res__enterChannel;
-    } catch (err: any) {
-        const error: AxiosError = err;
-        return error;
+      return res__getChannelUsers;
     }
+
+    return res__enterChannel;
+  } catch (err: any) {
+    const error: AxiosError = err;
+    return error;
+  }
 };
