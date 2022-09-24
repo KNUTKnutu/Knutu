@@ -50,7 +50,7 @@ export const getFindId = async (email: string) => {
     return res;
   } catch (e: any) {
     const error: AxiosError = e;
-    console.error(e);
+    console.error(error);
     return e;
   }
 };
@@ -61,7 +61,18 @@ export const getFindPw = async (id: string, email: string) => {
     return res;
   } catch (e: any) {
     const error: AxiosError = e;
-    console.error(e);
+    console.error(error);
+    return e;
+  }
+};
+
+export const getConfirmAuth = async (authCode: string) => {
+  try {
+    const res = await axios.get(`${API_URL}/confirmAuth?authCode=${authCode}`);
+    return res;
+  } catch (e: any) {
+    const error: AxiosError = e;
+    console.error(error);
     return e;
   }
 };
