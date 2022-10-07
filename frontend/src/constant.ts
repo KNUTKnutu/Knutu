@@ -34,3 +34,22 @@ export const STATUSCODE__UNAUTHORIZED: ResponseStatusCode = 401; // 입력된 �
 export const STATUSCODE__PAGE_NOT_FOUND: ResponseStatusCode = 404; // 페이지를 찾을 수 없음
 export const STATUSCODE__INTERNAL_SERVER_ERROR: ResponseStatusCode = 500; // 서버가 다운된 상태
 export const STATUSCODE__BAD_GATEWAY: ResponseStatusCode = 502; // 서버의 프록시 설정이나 리다이렉션, nginx 등이 뭔가 문제가 있어서 Response를 줄라니 배배 꼬여 이상해져서 Response를 아싸리 안 주려고 결정한 상황
+
+// MAKE ROOM
+export const MAXIMUM = [2, 3, 4, 5, 6, 7, 8];
+export const LIMITTIME = [15, 30, 45, 60, 90, 120];
+export const LANGUAGE = [
+  { id: "kor", label: "한국어" },
+  { id: "eng", label: "English" },
+];
+export const GAMEMODE = [
+  { id: "end", label: "끝말잇기" },
+  { id: "start", label: "앞말잇기" },
+  { id: "323", label: "3-2-3" },
+  { id: "43234", label: "4-3-2-3-4" },
+];
+export const SPECIALMODE = [
+  { id: "manner", label: "매너" },
+  { id: "injeong", label: "어인정" },
+  { id: "knut", label: "교통대" },
+];

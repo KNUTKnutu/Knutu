@@ -15,6 +15,7 @@ const Dim = ({ children }: Props) => {
       portal!.style.display = "none";
     };
   });
+
   return (
     portal &&
     createPortal(

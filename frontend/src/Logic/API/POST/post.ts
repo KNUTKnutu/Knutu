@@ -36,3 +36,11 @@ export const post__signup = async ({ id, pw, name, email }: SignUpProps) => {
     console.log("정규표현식이 만족하지 않습니다.");
   }
 };
+
+export const post__makeRoom = async () => {
+  try {
+    console.log("MakeRoom");
+  } catch (e) {
+    console.error(e);
+  }
+};
