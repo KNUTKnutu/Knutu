@@ -29,7 +29,7 @@ KNUTU = KNUT(Korea National University of Transportation) + kkutu(끄투)
 ## 😋Participants
  Back-end | 신이종(Lee, Main Stakeholder), 황여진(Yeojin Hwang)
  
- Front-end | 민경호(Gyeongho Min, Main Stakeholder), 허강민(Harry)
+ Front-end | 민경호(Gyeongho Min, Main Stakeholder), 허강민(KangMin Huh)
  
  ## ☎️ How to contact
 E-mail : knutknutu@gmail.com
