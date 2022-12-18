@@ -60,7 +60,7 @@ export const getFindId = async (email: string) => {
   } catch (e: any) {
     const error: AxiosError = e;
     console.error(error);
-    return e;
+    return error;
   }
 };
 
@@ -71,7 +71,7 @@ export const getFindPw = async (id: string, email: string) => {
   } catch (e: any) {
     const error: AxiosError = e;
     console.error(error);
-    return e;
+    return error;
   }
 };
 
@@ -82,6 +82,30 @@ export const getConfirmAuth = async (authCode: string) => {
   } catch (e: any) {
     const error: AxiosError = e;
     console.error(error);
-    return e;
+    return error;
   }
 };
+
+export const getAvailableRoomId = async () => {
+  try {
+    const res = await axios.get(`${API_URL}/getAvailableRoomId`);
+    return res;
+  }
+  catch (e: any) {
+    const error: AxiosError = e;
+    console.error(error);
+    return error;
+  }
+}
+
+export const checkRoomEnterable = async (roomId: number) => {
+  try {
+    const res = await axios.get(`${API_URL}/checkRoomEnterable?roomId=${roomId}`);
+    return res;
+  }
+  catch (e: any) {
+    const error: AxiosError = e;
+    console.error(error);
+    return error;
+  }
+}

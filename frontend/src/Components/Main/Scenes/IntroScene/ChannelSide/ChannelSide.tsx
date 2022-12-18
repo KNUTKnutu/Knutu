@@ -1,5 +1,7 @@
-import { useRecoilValue } from "recoil";
+import { useEffect } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { ChannelProps } from "../../../../../interface";
+import { getChannelInfos } from "../../../../../Logic/API/GET/get";
 import { channelsState, userState } from "../../../../../Recoil/atom";
 import styles from "../../../../../Styles/Components/Main/Scenes/IntroScene/ChannelSide/_channelSide.module.scss";
 import Channel from "../../../../Reusable/Channel/Channel";
@@ -18,6 +20,26 @@ const ChannelSide = () => {
    * atom에 있는 채널 리스트를 보여주기 위해 가져온 atom
    */
   const channelsList: ChannelProps[] = useRecoilValue(channelsState);
+
+  const setChannels = useSetRecoilState(channelsState);
+
+  useEffect(() => {
+    const getChannelInfosForInit = async () => {
+      const channels = await getChannelInfos();
+      if (channels !== null) {
+        const channelsForRecoil = channels.map((val) => {
+          const { name, userCount } = val;
+          return {
+            name,
+            userCount,
+          };
+        });
+        setChannels(channelsForRecoil);
+      }
+      console.log(channels);
+    };
+    getChannelInfosForInit();
+  }, []);
 
   return (
     <div className={styles.channel_side} id="channel_side">

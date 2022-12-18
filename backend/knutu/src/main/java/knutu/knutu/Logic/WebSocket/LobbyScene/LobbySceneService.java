@@ -70,14 +70,15 @@ public class LobbySceneService {
 
     public boolean makeRoom(Room room) {
         try {
-            gameRooms.put(room.getTitle(), room);
+            System.out.println(room.getNumber());
+            gameRooms.put(Short.toString(room.getNumber()), room);
             return true;
         } catch (Exception e){
             return false;
         }
     }
 
-    public boolean enterRoom(Room room, User user) {
+    public Room enterRoom(User user, int roomId) {
         try {
             Player enteredPlayer = new Player();
             enteredPlayer.setName(user.getName());
@@ -87,16 +88,59 @@ public class LobbySceneService {
             enteredPlayer.setCurrentExperience(user.getCurrentExperience());
             enteredPlayer.setAccountgaemaeneo(false); // user.getAccountgaemaeneo 가 안돼서 일단 보류
 
-            Room gameRoom = gameRooms.get(room.getTitle());
+            Room gameRoom = gameRooms.get(Integer.toString(roomId));
             List<Player> gamers = gameRoom.getPlayers();
             gamers.add(enteredPlayer);
             gameRoom.setPlayers(gamers);
 
-            return true;
+            Short currEntry = Short.parseShort(Integer.toString(Integer.parseInt(gameRoom.getCurrEntry().toString()) + Integer.parseInt("1")));
+            gameRoom.setCurrEntry(currEntry);
 
+            return gameRoom;
         } catch (Exception e){
+            System.out.println("failed");
+            return null;
+        }
+    }
+
+    public boolean exitRoom(int roomId, String userName) {
+        try {
+            Room gameRoom = gameRooms.get(Integer.toString(roomId));
+            List<Player> Players = gameRoom.getPlayers();
+
+            for(Player player : Players) {
+                if(player.getName() == userName) {
+                    Players.remove(player);
+                }
+            }
+
+            Short currEntry = Short.parseShort(Integer.toString(Integer.parseInt(gameRoom.getCurrEntry().toString()) - Integer.parseInt("1")));
+            gameRoom.setCurrEntry(currEntry);
+
+            return true;
+        } catch (Exception e){
+            System.out.println("failed to exit room");
             return false;
         }
+    }
+
+    public int getAvailableRoomId() {
+        int idx = 1;
+        while(true) {
+            Room gameRoom = gameRooms.get(Integer.toString(idx));
+            if(gameRoom == null)
+                return idx;
+            idx++;
+        }
+    }
+
+    public boolean checkRoomEnterable(int roomId) throws Exception {
+        Room gameRoom = gameRooms.get(Integer.toString(roomId));
+        return gameRoom.getCurrEntry() != gameRoom.getMaxEntry() ? true : false;
+    }
+
+    public Map<String, Room> getCurrentRooms() throws Exception {
+        return this.gameRooms;
     }
 
     private void initialize() {

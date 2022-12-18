@@ -4,7 +4,7 @@ import {
   SCENE__INTROSCENE,
   SCENE__LOBBYSCENE,
 } from "../constant";
-import { ChannelProps, Nullable, User, Users } from "../interface";
+import { ChannelProps, Nullable, Room, User, Users } from "../interface";
 import KnutuWebSocketHandler from "../Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
 import KnutuAudioHandler from "../Logic/Library/KnutuAudio/KnutuAudioHandler";
 import localStorageEffect from "./effects/localStorageEffect";
@@ -80,4 +80,14 @@ export const channelsState = atom<ChannelProps[]>({
 export const soundState = atom({
   key: "soundState",
   default: false,
+});
+
+export const roomState = atom({
+  key: "roomState",
+  default: [],
+});
+
+export const roomsState = atom<Room[]>({
+  key: "roomsState",
+  default: [],
 });

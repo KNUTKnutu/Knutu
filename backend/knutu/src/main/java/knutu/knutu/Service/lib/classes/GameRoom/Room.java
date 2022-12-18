@@ -11,7 +11,8 @@ import lombok.Setter;
 public class Room {
     private Short       number;     // 방 번호
     private String      title;      // 방제
-    private String[]    modes;      // 방 모드들
+    private String      lang;       // 언어
+    private String      mode;      // 방 모드들
     private Short       rounds;     // 총 진행할 라운드
     private Short       limitTime;  // 제한 시간
     private Short       currEntry;  // 현재 방에 들어가있는 플레이어 인원 수(current entry)

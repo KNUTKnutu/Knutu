@@ -5,15 +5,15 @@ import { roomInfoInterface } from "./Interface/roomOption";
 import { useSetRecoilState } from 'recoil';
 import { currentSceneState } from "../../../../../../Recoil/atom";
 
-const Room = ({roomInfo}: roomInfoInterface): JSX.Element => {
+const Room = ({roomInfo}: any): JSX.Element => {
 
-    const {roomNumber, roomTitle, roomOption, roomRound, roomLimitTime, roomEntries, roomMaxEntry, roomIsPrivate} = roomInfo;
+    const {number: roomNumber, title: roomTitle, mode: roomOption, lang, rounds: roomRound, limitTime: roomLimitTime, pw, currEntry: roomEntries, maxEntry: roomMaxEntry} = roomInfo;
 
     const roomNumberString = RoomClass.getRoomNumberString(roomNumber);
-    const roomOptionString = RoomClass.getRoomOptionString(roomOption);
+    const roomOptionString = RoomClass.getRoomOptionString(roomOption, lang);
     const roomRoundString = RoomClass.getRoomRoundString(roomRound, roomLimitTime);
     const roomEntryString = RoomClass.getRoomEntryString(roomEntries, roomMaxEntry);
-    const roomIsPrivateString = RoomClass.getRoomIsPrivateString(roomIsPrivate);
+    const roomIsPrivateString = RoomClass.getRoomIsPrivateString(pw);
     const roomIsFull = RoomClass.getRoomIsFull(roomEntries, roomMaxEntry);
     
     const setCurrentScene = useSetRecoilState(currentSceneState);

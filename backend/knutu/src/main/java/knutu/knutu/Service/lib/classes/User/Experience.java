@@ -2,7 +2,7 @@ package knutu.knutu.Service.lib.classes.User;
 
 import java.util.ArrayList;
 
-import knutu.knutu.Logic.Fibonacci.Fibonacci;
+import knutu.knutu.Logic.Library.Fibonacci.Fibonacci;
 import lombok.Getter;
 import lombok.Setter;
 

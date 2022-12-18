@@ -9,9 +9,15 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import knutu.knutu.Logic.Library.JSONBeautifier;
 import knutu.knutu.Logic.WebSocket.WebSocketController;
+import knutu.knutu.Service.lib.classes.GameRoom.Room;
 import knutu.knutu.Service.lib.classes.User.User;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +33,13 @@ public class LobbySceneWSHandler {
     @OnMessage
     public void onMessage(String msg, Session session) throws Exception {
         WebSocketController.getInstance().WSController(msg, session);
+    }
+
+    @Scheduled(fixedDelay = 10000)
+    public void onPollingTime() throws Exception {
+        for(Session session : this.clients) {
+            if(!this.sendCurrentRooms(session)) log.info("error occured while broadcasting room infos");
+        }
     }
 	
 	@OnOpen
@@ -47,4 +60,16 @@ public class LobbySceneWSHandler {
         this.clients.remove(session);
         this.onlineUsers.remove(session.getId());
 	}
+
+    public boolean sendCurrentRooms(Session _session) {
+        try {
+            Map<String, Room> rooms = LobbySceneService.getInstance().getCurrentRooms();
+            Gson gson = new GsonBuilder().create();
+            String finalizedJSON = JSONBeautifier.finalizeJSON("currentRooms", gson.toJson(rooms));
+            _session.getBasicRemote().sendText(finalizedJSON);
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
+    }
 }

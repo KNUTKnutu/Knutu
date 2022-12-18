@@ -47,9 +47,9 @@ public class FirebaseService implements FirebaseServiceInterface {
     private FirebaseApp firebaseApp;
 
     private final String COLLECTION__USER = "User";
-    private final String COLLECTION__FILE = "File";
+    // private final String COLLECTION__FILE = "File";
 
-    private final String KIND__USER = "user";
+    // private final String KIND__USER = "user";
     private final String KIND__NAME = "name";
     private final String KIND__PW = "pw";
     private final String KIND__EMAIL = "email";
@@ -96,7 +96,11 @@ public class FirebaseService implements FirebaseServiceInterface {
     // Create
     public boolean addUser(User _user) throws Exception {
 
-        if(this.checkDuplicatedId(_user.getId())) return false;
+        // 황여진 TODO: 아래 메소드 구현(Validation)
+        String validationResult = this.validateUserForSignUp(_user);
+        if(validationResult != "") {
+            // throw new BadRequest(validationResult);
+        }
 
         Firestore fs = FirestoreClient.getFirestore();
         
@@ -105,6 +109,8 @@ public class FirebaseService implements FirebaseServiceInterface {
 
         Preference pref = new Preference();
         pref.setLanguage(Preference.LANGUAGE__DEFAULT);
+        pref.setAccountDisabled(false);
+        pref.setMasterVolume(1);
 
         user.setId(_user.getId());
         user.setPw(_user.getPw());
@@ -132,6 +138,11 @@ public class FirebaseService implements FirebaseServiceInterface {
         log.info(apiFuture.get().getUpdateTime().toString());
 
         return true;
+    }
+
+    private String validateUserForSignUp(User _user) throws Exception {
+        if(this.checkDuplicatedId(_user.getId())) return "Duplicated User";
+        return "";
     }
 
     // Read

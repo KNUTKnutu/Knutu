@@ -1,4 +1,4 @@
-package knutu.knutu.Logic.Fibonacci;
+package knutu.knutu.Logic.Library.Fibonacci;
 
 import java.util.HashMap;
 

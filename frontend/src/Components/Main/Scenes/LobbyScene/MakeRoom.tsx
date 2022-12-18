@@ -6,14 +6,18 @@ import {
   useEffect,
   useState,
 } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
+  SCENE__GAMESCENE,
   GAMEMODE,
   LANGUAGE,
   LIMITTIME,
   MAXIMUM,
   SPECIALMODE,
 } from "../../../../constant";
-import { post__makeRoom } from "../../../../Logic/API/POST/post";
+import { checkRoomEnterable, getAvailableRoomId } from "../../../../Logic/API/GET/get";
+import { postEnterRoom, post__makeRoom } from "../../../../Logic/API/POST/post";
+import { currentSceneState, userState } from "../../../../Recoil/atom";
 import styles from "../../../../Styles/Components/Main/Scenes/LobbyScene/_makeScene.module.scss";
 
 interface Props {
@@ -26,11 +30,15 @@ const MakeRoom = ({ setIsShow }: Props) => {
     isPw: false, // 비밀번호를 설정할 것인지 설정하지 않을 것인지
     pw: "", // 비밀번호
     maximum: 8, // 최대 인원
-    time_limit: "60s", // 제한 시간
+    time_limit: 60, // 제한 시간
     lang: "kor", // 언어
     mode: "end", // 게임 모드
     special: "", // 특수 규칙
   });
+  
+  const user = useRecoilValue(userState);
+  const setCurrentScene = useSetRecoilState(currentSceneState);
+  
   const { title, pw, isPw, maximum, time_limit, lang, mode, special } =
     roomInfo;
 
@@ -52,9 +60,34 @@ const MakeRoom = ({ setIsShow }: Props) => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // post
-    const res = post__makeRoom();
-    console.log(res);
+
+    getAvailableRoomId().then(res => {
+      let roomId = res.data;
+
+      const room = {
+        roomId,
+        ...roomInfo
+      };
+
+      post__makeRoom(room)
+        .then((res) => {
+          if(res?.status == 200) {
+            checkRoomEnterable(roomId)
+              .then((res) => {
+                if(res?.status == 200) {
+                  postEnterRoom(roomId, user)
+                    .then((res) => {
+                      console.log(res);
+                      setCurrentScene(SCENE__GAMESCENE);
+                    })
+                }
+              })
+          }
+        }).catch((e) => {
+          console.error("failed to make room");
+          console.error(e);
+        })
+    });
   };
 
   const onClickCancel = () => {
@@ -127,7 +160,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
                       id={`${cur}s`}
                       value={`${cur}s`}
                       onChange={onChange}
-                      checked={time_limit === `${cur}s` ? true : false}
+                      checked={time_limit === cur ? true : false}
                     />
                     <label htmlFor={`${cur}s`}>{cur}초</label>
                   </div>

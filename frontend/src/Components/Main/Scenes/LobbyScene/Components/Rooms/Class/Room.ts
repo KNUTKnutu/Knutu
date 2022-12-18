@@ -7,22 +7,42 @@ export class RoomClass {
         return `00${roomNumber}`;
     }
     
-    public static getRoomOptionString = (roomOption: roomOption): string => {
+    public static getRoomOptionString = (roomOption: string, roomLang: string): string => {
+        let lang, option;
+        
+        switch(roomLang) {
+            case "kor":
+                lang = "한국어";
+                break;
+            case "eng":
+                lang = "영어";
+                break;
+        }
 
-        const {majorMode, additionalAllowedMode} = roomOption;
+        switch(roomOption) {
+            case "start":
+                option = "앞말잇기";
+                break;
+            case "end":
+                option = "끝말잇기";
+                break;
+            case "323":
+                option = "3-2-3";
+                break;
+            case "43234":
+                option = "4-3-2-3-4";
+                break;
+        }
 
-        if (additionalAllowedMode)
-            return `${majorMode} / ${additionalAllowedMode}`;
-
-        return majorMode;
+        return `${lang} ${option}`;
     }
     
     public static getRoomRoundString = (roomRound: number, roomLimitTime: number): string => {
         return `라운드 ${roomRound} ${roomLimitTime}초`;
     }
 
-    public static getRoomIsPrivateString = (roomIsPrivate: boolean) => {
-        return roomIsPrivate ? "자물쇠" : "오픈방";
+    public static getRoomIsPrivateString = (password: string) => {
+        return password.length != 0 ? "자물쇠" : "오픈방";
     }
 
     public static getRoomIsFull = (roomEntries: number, roomMaxEntry: number) => {

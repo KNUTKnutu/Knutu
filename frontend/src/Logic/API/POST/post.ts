@@ -1,4 +1,5 @@
 import axios from "axios";
+import { title } from "process";
 import { API_URL } from "../../../env";
 import hashing from "../../hashing";
 import { RegexEmail, RegexId, RegexName, RegexPw } from "../../Regex/regex";
@@ -37,10 +38,39 @@ export const post__signup = async ({ id, pw, name, email }: SignUpProps) => {
   }
 };
 
-export const post__makeRoom = async () => {
+export const post__makeRoom = async (_roomInfo: any) => {
   try {
-    console.log("MakeRoom");
+    const {roomId, title, mode, lang, rounds, time_limit: limitTime, maximum: maxEntry, pw} = _roomInfo;
+    const roomInfo = {
+      number: roomId,
+      title,
+      lang,
+      mode,
+      rounds: 3,
+      limitTime,
+      currEntry: 0,
+      maxEntry,
+      pw,
+      players: [],
+    }
+    const res = await axios.post(`${API_URL}/makeRoom`, {
+      ...roomInfo
+    });
+    return res;
   } catch (e) {
     console.error(e);
   }
 };
+
+// TODO : any 를 타입 선언해야함
+export const postEnterRoom = async (roomId: any, user: any) => {
+  try {
+    const res = await axios.post(`${API_URL}/enterRoom?roomId=${roomId}`, {
+      ...user
+    });
+    return res;
+  } catch (e: any) {
+    console.error(e);
+    return e;
+  }
+}
