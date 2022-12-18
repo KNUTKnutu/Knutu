@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { SCENE__GAMESCENE } from "../../../../constant";
 import KnutuAudioHandler from "../../../../Logic/Library/KnutuAudio/KnutuAudioHandler";
 import styles from "../../../../Styles/Components/Main/Scenes/GameScene/_gameScene.module.scss";
 import GameScene__Gaming from "./GameScene__Gaming/GameScene__Gaming";

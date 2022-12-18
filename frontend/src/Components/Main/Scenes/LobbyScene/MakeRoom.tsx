@@ -17,7 +17,7 @@ import {
 } from "../../../../constant";
 import { checkRoomEnterable, getAvailableRoomId } from "../../../../Logic/API/GET/get";
 import { postEnterRoom, post__makeRoom } from "../../../../Logic/API/POST/post";
-import { currentSceneState, userState } from "../../../../Recoil/atom";
+import { currentSceneState, enteredRoomIdState, userState } from "../../../../Recoil/atom";
 import styles from "../../../../Styles/Components/Main/Scenes/LobbyScene/_makeScene.module.scss";
 
 interface Props {
@@ -37,6 +37,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
   });
   
   const user = useRecoilValue(userState);
+  const setEnteredRoomIdState = useSetRecoilState(enteredRoomIdState);
   const setCurrentScene = useSetRecoilState(currentSceneState);
   
   const { title, pw, isPw, maximum, time_limit, lang, mode, special } =
@@ -62,6 +63,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
     e.preventDefault();
 
     getAvailableRoomId().then(res => {
+      // TODO: 아래 res.data 에 있는 빨간 줄 치워야 함. build 불가
       let roomId = res.data;
 
       const room = {
@@ -77,7 +79,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
                 if(res?.status == 200) {
                   postEnterRoom(roomId, user)
                     .then((res) => {
-                      console.log(res);
+                      setEnteredRoomIdState(roomId);
                       setCurrentScene(SCENE__GAMESCENE);
                     })
                 }

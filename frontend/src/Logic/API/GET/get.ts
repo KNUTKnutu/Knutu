@@ -98,7 +98,7 @@ export const getAvailableRoomId = async () => {
   }
 }
 
-export const checkRoomEnterable = async (roomId: number) => {
+export const checkRoomEnterable = async (roomId: number): Promise<AxiosResponse<any, any> | AxiosError<unknown, any>> => {
   try {
     const res = await axios.get(`${API_URL}/checkRoomEnterable?roomId=${roomId}`);
     return res;

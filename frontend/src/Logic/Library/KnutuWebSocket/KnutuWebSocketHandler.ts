@@ -28,13 +28,9 @@ class KnutuWebSocketHandler {
     public getEnabledScene = (): availableScenes => KnutuWebSocketHandler.enabledScene;
 
     /** 
-     * Plays an AudioClip independent with default audioSource.  
-     *  
-     * Remove itself when audioclip is done.  
-     *   
-     * Could be useful when multiple audios need to be simultaneously played, but  
-     * you would be unable to handle those AudioClips you use as PlayOneShot().
-     * @param1 AudioClip to play. please give this parameter as AudioClip constants in KnutuWebSocketHandler such as clipSuspense.
+     * Send a message to server via WebSocket. Error will be returned if Websocket is not connected yet or you're on IntroScene.
+     * @param1 message to send.
+     * @param2 packet to send.
      * @returns void.
      * */
     public send = (message: string, _packet: WebSocketPacket): void => {
@@ -51,6 +47,8 @@ class KnutuWebSocketHandler {
 
         if(enabledWebSocket === null) 
             return shootError();
+        
+        console.log(stringifiedJSON);
         
         enabledWebSocket!.send(stringifiedJSON);
     };

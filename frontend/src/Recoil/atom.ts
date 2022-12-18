@@ -91,3 +91,22 @@ export const roomsState = atom<Room[]>({
   key: "roomsState",
   default: [],
 });
+
+export const enteredRoomIdState = atom<number>({
+  key: "enteredRoomIdState",
+  default: 0,
+});
+
+export const enteredRoomState = atom({
+  key: "enteredRoomState",
+  default: {
+    number: -1,
+    title: "",
+    lang: "",
+    mode: "",
+    rounds: -1,
+    limitTime: -1,
+    players: []
+  }
+  // { number, title, mode, rounds, limitTime, players }
+});

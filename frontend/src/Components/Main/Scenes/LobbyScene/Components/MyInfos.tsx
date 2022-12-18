@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 
 const MyInfos = (): JSX.Element => {
   // const [user, setUser] = useRecoilState<Nullable<User>>(userState);
+  // TODO : userState error 해결 필요. 이로 인해 build가 불가능
   const recoilValueUser = useRecoilValue<User>(userState);
   const user = recoilValueUser ?? {name: null, level: null};
   const { name, level, title, currentExperience, totalExperience } = user;

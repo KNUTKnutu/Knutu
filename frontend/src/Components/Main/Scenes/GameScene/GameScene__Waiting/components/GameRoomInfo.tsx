@@ -1,14 +1,19 @@
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useRecoilState } from "recoil";
-import { readyState } from "../../../../../../Recoil/atom";
+import { enteredRoomState, readyState } from "../../../../../../Recoil/atom";
 import styles from "../../../../../../styles/Components/Main/Scenes/GameScene/Wating/_gameWating.module.scss";
 import { currentSceneState } from "../../../../../../Recoil/atom";
 import { SCENE__LOBBYSCENE } from "../../../../../../constant";
+import { RoomClass } from "../../../LobbyScene/Components/Rooms/Class/Room";
 
 const GameRoomInfo = () => {
   const [readystate, setReadyState] = useRecoilState(readyState);
 
+  const roomState = useRecoilValue(enteredRoomState);
+
   const setCurrentScene = useSetRecoilState(currentSceneState);
+
+  const { number, title, lang, mode, rounds, limitTime, players } = roomState;
 
   const getout = (e: any) => {
     setCurrentScene(SCENE__LOBBYSCENE);
@@ -18,16 +23,17 @@ const GameRoomInfo = () => {
     setReadyState(!readystate);
   };
 
+  const modeInTotal = RoomClass.getRoomOptionString(mode, lang);
+
   return (
     <div className={styles.roominfo}>
       <div className={styles.room_title}>
-        [20] 나는 단수가 아니다 - 후치 네드발 레이디 제미니의 기사이자 헬턴트의
-        초장이 후보
+        [{number}] {title}
       </div>
       <div className={styles.room_condition}>
-        한국어 끝말잇기 / 어인정 / 미션
+        {modeInTotal}
       </div>
-      <div className={styles.room_time}>라운드 5 / 60초</div>
+      <div className={styles.room_time}>{rounds} / {limitTime}</div>
       <div className={styles.wating_button}>
         <div className={styles.ready_button} onClick={ready}>
           준비
