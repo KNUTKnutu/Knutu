@@ -7,7 +7,7 @@ const QuestionBoard = () => {
   const round_word = Array.from(round_suggestion);
 
   const create_round = round_word.map((_, i) => (
-    <label key={i}>{round_word[i]}</label>
+    <span key={i}>{round_word[i]}</span>
   ));
 
   const next_round = () => {

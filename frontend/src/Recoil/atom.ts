@@ -38,6 +38,13 @@ export const currentSceneState = atom<string>({
     },
   ],
 });
+/**
+ * 첫 마운트가 되었을 땐 투명도를 0으로 해주기 위함
+ */
+export const mountOpacity = atom({
+  key: "opacityState",
+  default: false
+})
 
 export const readyState = atom({
   key: "readyState",

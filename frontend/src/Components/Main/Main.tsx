@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 import GameScene from "./Scenes/GameScene/GameScene";
 import IntroScene from "./Scenes/IntroScene/IntroScene";
 import LobbyScene from "./Scenes/LobbyScene/LobbyScene";
@@ -31,6 +31,7 @@ const Main = (): JSX.Element => {
       {CONTENTS.map((content) => {
         const { key, component } = content;
         return (
+     
           <Scene id={key} key={key}>
             {component}
           </Scene>

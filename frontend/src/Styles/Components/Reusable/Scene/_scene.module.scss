@@ -5,7 +5,6 @@
   top: -200vh;
   width: 1720px;
   height: 88%;
-
   &.active {
     animation: scene-active 2s cubic-bezier(0.165, 0.84, 0.44, 1) both;
   }
@@ -13,6 +12,12 @@
   &.inactive {
     pointer-events: none;
     animation: scene-inactive 2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  }
+  &.visiable{
+    opacity: 1;
+  }
+  &.unvisiable{
+    opacity: 0;
   }
 }
 
