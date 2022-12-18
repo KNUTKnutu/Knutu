@@ -1,9 +1,10 @@
-import React, { Suspense } from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import { RecoilRoot } from "recoil";
-import App from "./App";
 import Splash from "./Components/Suspense/Splash";
 import "./index.css";
+
+const App = lazy(() => import("./App"));
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

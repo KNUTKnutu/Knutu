@@ -1,6 +1,6 @@
 import InitApplication from "../../../../Logic/InitApplication";
 import styles from "../../../../Styles/Components/Main/Scenes/IntroScene/_introScene.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ChannelSide from "./ChannelSide/ChannelSide";
 import LoginSide from "./LoginSide/LoginSide";
 import KnutuCommonLib from "../../../../Logic/Library/KnutuCommonLib/KnutuCommonLib";
@@ -11,7 +11,7 @@ import KnutuCommonLib from "../../../../Logic/Library/KnutuCommonLib/KnutuCommon
 const initialResource = InitApplication();
 
 const IntroScene = (): JSX.Element => {
-  // const [intro, setIntro] = useState(initialResource.intro.read());
+  const [intro, setIntro] = useState(initialResource.intro.read());
   KnutuCommonLib.getInstance().wakeUp();
 
   return (
