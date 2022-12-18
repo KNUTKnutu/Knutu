@@ -8,6 +8,8 @@ import { ChannelProps, Nullable, User, Users } from "../interface";
 import KnutuWebSocketHandler from "../Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
 import KnutuAudioHandler from "../Logic/Library/KnutuAudio/KnutuAudioHandler";
 import localStorageEffect from "./effects/localStorageEffect";
+import { AudioClip } from "../Logic/Library/KnutuAudio/KnutuAudioTypes"
+import { availableScenes } from "../Logic/Library/KnutuWebSocket/KnutuWebSocketTypes"
 
 // 어떤 Scene을 보여줄 지
 export const currentSceneState = atom<string>({
@@ -16,8 +18,8 @@ export const currentSceneState = atom<string>({
   effects: [
     ({ onSet }) => {
       onSet((currScene, prevScene) => {
-        let clip = KnutuAudioHandler.clipIntroScene;
-        let targetScene = "IntroScene";
+        let clip: AudioClip = KnutuAudioHandler.clipIntroScene;
+        let targetScene: availableScenes = "IntroScene";
         switch (currScene) {
           case SCENE__INTROSCENE:
             break;
