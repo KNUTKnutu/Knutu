@@ -68,6 +68,10 @@ public class LobbySceneService {
         }
     }
 
+    public Room getRoom(int roomId) {
+        return gameRooms.get(Integer.toString(roomId));
+    }
+
     public boolean makeRoom(Room room) {
         try {
             System.out.println(room.getNumber());

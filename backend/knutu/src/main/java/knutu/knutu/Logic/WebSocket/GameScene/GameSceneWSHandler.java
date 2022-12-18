@@ -11,6 +11,10 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.springframework.stereotype.Component;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import knutu.knutu.Logic.Library.JSONBeautifier;
 import knutu.knutu.Logic.WebSocket.WebSocketController;
 import knutu.knutu.Service.lib.classes.User.User;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +39,13 @@ public class GameSceneWSHandler {
             log.info(String.format("duplicated session id tried to connect through websocket: %s", session.getId()));
             return;
         }
+
+        try {
+            Gson gson = new GsonBuilder().create();
+            String finalizedJSON = JSONBeautifier.finalizeJSON("onGameWaitingEntrance", gson.toJson(""));
+            session.getBasicRemote().sendText(finalizedJSON);
+        } catch(Exception e) {}
+
         this.clients.add(session);
 	}
 	
