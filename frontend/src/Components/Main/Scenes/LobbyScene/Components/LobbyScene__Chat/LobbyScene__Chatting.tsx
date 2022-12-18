@@ -2,7 +2,6 @@
 import styles from "../../../../../../Styles/Components/Main/Scenes/LobbyScene/_lobbyScene.module.scss";
 import LobbyScene__Chat from "./LobbyScene__Chat";
 
-// 허강민 TODO: Phase 2. 적절하게 Blur처리 필요(IntroScene의 채널창 처럼)
 const LobbyScene__Chatting = (): JSX.Element => {
   // const [mode, setMode] = useState("전체");
   // const [chat, setChat] = useState("");
@@ -68,18 +67,22 @@ const LobbyScene__Chatting = (): JSX.Element => {
   // ));
 
   // 임시
-  const chatsList: any = [].map((chat) => <LobbyScene__Chat chatInfo={{chatter: "", chatMessage: "", chatTime: ""}}/>);
+  const chatsList: any = [].map((chat) => (
+    <LobbyScene__Chat
+      chatInfo={{ chatter: "", chatMessage: "", chatTime: "" }}
+    />
+  ));
   const onClickMode = () => {};
   const mode = "";
   const onChatChange = () => {};
   const chat = "";
   const sendChat = () => {};
 
-
   return (
     <div
       className={`${styles.lobby_scene_chatting} ${styles.lobby_scene_components}`}
     >
+      
       <div className={styles.lobby_scene_chatting__title}>채팅</div>
       <div className={styles.lobby_scene_chatting__body}>
         <div className={styles.lobby_scene_chatting__chattingScreen}>
@@ -108,6 +111,12 @@ const LobbyScene__Chatting = (): JSX.Element => {
             전송
           </div>
         </div>
+        <div className={styles.modal_container}>
+        <div className={styles.glass_panel}>
+          <span>아직은 채팅을</span>
+          <span>사용하실 수 없습니다!!</span>
+        </div>
+      </div>
       </div>
     </div>
   );

@@ -2,12 +2,16 @@
 
 .lobby_scene_container {
   // Inheritants
-  background: linear-gradient(to bottom right, $lobby-background-color, hsla(35, 25%, 90%, 0.92));
+  background: linear-gradient(
+    to bottom right,
+    $lobby-background-color,
+    hsla(35, 25%, 90%, 0.92)
+  );
   color: $lobby-font-color;
   height: 100%;
 
   // Blueprinted
-  padding: 60px 92px 60px 92px;
+  padding: 32px 92px 60px 92px;
   display: grid;
   grid-template-columns: 2fr 8fr;
   gap: 56px;
@@ -222,6 +226,39 @@
           grid-template-rows: 5.62fr 1.17fr;
           background-color: antiquewhite;
           border-radius: 14px;
+
+          .modal_container {
+            position: absolute;
+            top: 48.9%;
+            left: 49.8%;
+            translate: -50% -50%;
+            width: 100%;
+            height: 100%;
+
+            .glass_panel {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              gap: 20px;
+              padding: 30px;
+              height: 100%;
+              border-radius: 14px;
+              border: 2px solid white;
+              box-shadow: 5px 5px 5px 5px lightgray;
+
+              // glass
+              background: rgba(255, 255, 255, 0.5);
+              backdrop-filter: blur(6px);
+              -webkit-backdrop-filter: blur(6px);
+
+              & > span {
+                font-size: 1rem;
+                color: $accent_color;
+                font-weight: 700;
+              }
+            }
+          }
 
           .lobby_scene_chatting__chattingScreen {
             padding: 10px;
