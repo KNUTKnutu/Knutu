@@ -38,34 +38,6 @@ const Footer = (): JSX.Element => {
   };
 
   const audioInstance = KnutuAudioHandler.getInstance();
-  
-
-  const onClickAudioTest__PlayOneShot = () => {
-    audioInstance.setVolume(1);
-    audioInstance.playOneShot(KnutuAudioHandler.clipSuspense);
-  };
-
-  const onClickAudioTest__Play = () => {
-    audioInstance.setVolume(0.5);
-    audioInstance.play(KnutuAudioHandler.clipIntroScene);
-  };
-
-  const onClickAudioTest__Pause = () => {
-    if (audioInstance.isPlaying()) return audioInstance.pause();
-    audioInstance.unPause();
-  };
-
-  const onClickAudioTest__Stop = () => {
-    audioInstance.stop();
-  };
-
-  const onClickAudioTest__Loop = () => {
-    audioInstance.setLoop();
-  };
-
-  const onClickAudioTest__Unloop = () => {
-    audioInstance.setUnloop();
-  };
 
   // 효과음은 mute가 안되고 있음, 어디를 건드려야하는 거지
   const onClickAudioTest__Mute = () => {
@@ -87,19 +59,6 @@ const Footer = (): JSX.Element => {
         <button>{SCENE__LOBBYSCENE}</button>
         <button>{SCENE__GAMESCENE}</button>
       </div>
-      <span>Copyright</span>
-      <button onClick={onClickWebSocketTest}>websocket test</button>
-      <button onClick={onClickAudioTest__PlayOneShot}>
-        audio test - playOneShot
-      </button>
-      <button onClick={onClickAudioTest__Play}>audio test - play</button>
-      <button onClick={onClickAudioTest__Pause}>
-        audio test - pause / unpause
-      </button>
-      <button onClick={onClickAudioTest__Stop}>audio test - stop</button>
-      <button onClick={onClickAudioTest__Loop}>audio test - loop</button>
-      <button onClick={onClickAudioTest__Unloop}>audio test - unloop</button>
-      <button onClick={onClickAudioTest__Mute}>audio test - mute</button>
     </footer>
   );
 };
