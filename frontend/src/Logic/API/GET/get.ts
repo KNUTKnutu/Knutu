@@ -17,6 +17,15 @@ interface Channel {
 
 type Channels = Channel[];
 
+export const getCheckIfServerBooted = async (): Promise<Nullable<AxiosResponse | AxiosError>> => {
+  try {
+    return await axios.get(`${API_URL}/serverAlive`);
+  } catch (e: any) {
+    const axiosError: AxiosError = e;
+    return axiosError;
+  }
+};
+
 export const get__signin = async ({
   id,
   pw,

@@ -12,4 +12,9 @@ public class TesterController {
     public String testhyj1(@RequestParam("word") String word) throws Exception {
         return StdictLib.getstdictLibInstance().simpleQuery(word);
     }
+    @GetMapping("/serverAlive")
+    public boolean serverAlive() throws Exception {
+        Thread.sleep(1000);
+        return true;
+    }
 }

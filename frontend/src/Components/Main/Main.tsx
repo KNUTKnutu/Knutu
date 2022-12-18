@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import GameScene from "./Scenes/GameScene/GameScene";
 import IntroScene from "./Scenes/IntroScene/IntroScene";
 import LobbyScene from "./Scenes/LobbyScene/LobbyScene";
@@ -25,7 +25,7 @@ const CONTENTS = [
   },
 ];
 
-const Main = () => {
+const Main = (): JSX.Element => {
   return (
     <main className={styles.main_container}>
       {CONTENTS.map((content) => {
