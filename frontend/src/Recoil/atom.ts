@@ -16,27 +16,22 @@ export const currentSceneState = atom<string>({
   effects: [
     ({ onSet }) => {
       onSet((currScene, prevScene) => {
+        let clip = KnutuAudioHandler.clipIntroScene;
+        let targetScene = "IntroScene";
         switch (currScene) {
           case SCENE__INTROSCENE:
-            KnutuAudioHandler.getInstance().play(
-              KnutuAudioHandler.clipIntroScene
-            );
-            KnutuWebSocketHandler.getInstance().setEnabledScene("IntroScene");
             break;
           case SCENE__LOBBYSCENE:
-            KnutuAudioHandler.getInstance().play(
-              KnutuAudioHandler.clipLobbyScene
-            );
-            KnutuWebSocketHandler.getInstance().setEnabledScene("LobbyScene");
+            clip = KnutuAudioHandler.clipLobbyScene
+            targetScene = "LobbyScene";
             break;
           case SCENE__GAMESCENE:
-            KnutuAudioHandler.getInstance().play(
-              KnutuAudioHandler.clipGameSceneWaiting
-            );
-            // 아마도 GameSceneWaiting, GameScenePlaying 마다 브금 바꾸는 작업은 여기서 이루어져야 할 듯.
-            KnutuWebSocketHandler.getInstance().setEnabledScene("GameScene");
+            clip = KnutuAudioHandler.clipGameSceneWaiting;
+            targetScene = "GameScene"
             break;
         }
+        KnutuAudioHandler.getInstance().play(clip);
+        KnutuWebSocketHandler.getInstance().setEnabledScene(targetScene);
       });
     },
   ],
