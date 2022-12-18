@@ -18,6 +18,6 @@ export default () => {
 // 이 부분에 fetch logic 짜면됨. 아니면 Logic 폴더에 짜면 됨.
 const fetchIntro = async () => {
   console.log("fetching...");
-  const res = await axios.get(`${API_URL}/serverAlive`);
+  const res = await ServiceUnavailable();
   return console.log(res.status);
 };
