@@ -27,7 +27,7 @@ export const currentSceneState = atom<string>({
             break;
           case SCENE__GAMESCENE:
             clip = KnutuAudioHandler.clipGameSceneWaiting;
-            targetScene = "GameScene"
+            targetScene = "GameScene";
             break;
         }
         KnutuAudioHandler.getInstance().play(clip);
