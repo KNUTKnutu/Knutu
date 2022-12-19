@@ -5,11 +5,10 @@ import styles from "../../../../../../styles/Components/Main/Scenes/GameScene/Wa
 
 interface userInfoInterface {
   userinfo: {
-    userFull?: number;
-    userProfile?: string;
-    userLevel?: string;
-    userName?: string;
-    userTitle?: string;
+    userTitle?: string; // userTitle: 사용자 칭호
+    userProfile?: string; // userProfile: 사용자 프로필 src
+    userLevel: string; // userLevel: 사용자 레벨
+    userName: string; // userName: 사용자 이름
   };
 }
 
