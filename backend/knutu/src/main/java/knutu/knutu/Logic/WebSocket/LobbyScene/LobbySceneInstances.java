@@ -20,4 +20,5 @@ public class LobbySceneInstances {
     public Map<String, User> onlineUsers = new HashMap<String, User>();
     public Map<String, Room> gameRooms = new HashMap<String, Room>();
     public Map<String, Channel> availableChannels = new HashMap<String, Channel>();
+    public Map<String, String> gamingUsers = new HashMap<String, String>();
 }

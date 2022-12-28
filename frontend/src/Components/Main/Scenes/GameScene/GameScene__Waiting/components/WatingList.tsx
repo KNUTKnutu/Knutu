@@ -7,6 +7,8 @@ const WatingList = () => {
 
   const roomState = useRecoilValue(enteredRoomState);
 
+  console.log(roomState)
+
   const userlist = roomState.players.map((player) => {
     return <WatingUser key={player.name} userinfo={player} />
   });

@@ -12,12 +12,7 @@ import javax.websocket.server.ServerEndpoint;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import knutu.knutu.Logic.Library.JSONBeautifier;
 import knutu.knutu.Logic.WebSocket.WebSocketController;
-import knutu.knutu.Service.lib.classes.GameRoom.Room;
 import knutu.knutu.Service.lib.classes.User.User;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @ServerEndpoint(value="/ws/lobbyscene")
 public class LobbySceneWSHandler {
 
+    private LobbySceneService serviceInstance = LobbySceneService.getInstance();
     private LobbySceneInstances instances = LobbySceneInstances.getInstance();
     private Set<Session> clients = instances.clients;
     private Map<String, User> onlineUsers = instances.onlineUsers;
@@ -38,7 +34,7 @@ public class LobbySceneWSHandler {
     @Scheduled(fixedDelay = 10000)
     public void onPollingTime() throws Exception {
         for(Session session : this.clients) {
-            if(!this.sendCurrentRooms(session)) log.info("error occured while broadcasting room infos");
+            if(!this.serviceInstance.sendCurrentRooms(session)) log.info("error occured while broadcasting room infos");
         }
     }
 	
@@ -60,16 +56,4 @@ public class LobbySceneWSHandler {
         this.clients.remove(session);
         this.onlineUsers.remove(session.getId());
 	}
-
-    public boolean sendCurrentRooms(Session _session) {
-        try {
-            Map<String, Room> rooms = LobbySceneService.getInstance().getCurrentRooms();
-            Gson gson = new GsonBuilder().create();
-            String finalizedJSON = JSONBeautifier.finalizeJSON("currentRooms", gson.toJson(rooms));
-            _session.getBasicRemote().sendText(finalizedJSON);
-            return true;
-        } catch(Exception e) {
-            return false;
-        }
-    }
 }

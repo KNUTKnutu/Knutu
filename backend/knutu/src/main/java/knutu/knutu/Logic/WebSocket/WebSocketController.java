@@ -38,15 +38,20 @@ public class WebSocketController {
             case "onLobbyEntrance":
                 type = "onLobbyEntrance";
                 payload = this.lobbySceneInstances.onLobbyEntrance(session, requestPacket);
+                break;
             case "requestRoomInfo":
                 System.out.println("requested");
                 type = "requestRoomInfo";
                 payload = this.gameSceneInstances.onRequestRoomInfo(session, requestPacket);
+                break;
+            case "currentRooms":
+                this.lobbySceneInstances.sendCurrentRooms(session);
+                return;
             default:
-                lock.unlock();
-                this.setAndRespond(type, payload, session);
                 break;
         }
+        lock.unlock();
+        this.setAndRespond(type, payload, session);
     }
 
     private void setAndRespond(String type, String payload, Session session) throws Exception {

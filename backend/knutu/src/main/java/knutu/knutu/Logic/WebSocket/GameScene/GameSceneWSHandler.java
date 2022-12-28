@@ -1,5 +1,6 @@
 package knutu.knutu.Logic.WebSocket.GameScene;
 
+import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,6 +17,7 @@ import com.google.gson.GsonBuilder;
 
 import knutu.knutu.Logic.Library.JSONBeautifier;
 import knutu.knutu.Logic.WebSocket.WebSocketController;
+import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneService;
 import knutu.knutu.Service.lib.classes.User.User;
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,6 +58,7 @@ public class GameSceneWSHandler {
             return;
         }
         this.clients.remove(session);
+        LobbySceneService.getInstance().exitRoomByUserName(this.onlineUsers.get(session.getId()).getName());
         this.onlineUsers.remove(session.getId());
 	}
     

@@ -81,6 +81,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
                     .then((res) => {
                       setEnteredRoomIdState(roomId);
                       setCurrentScene(SCENE__GAMESCENE);
+                      setIsShow((prev) => !prev);
                     })
                 }
               })

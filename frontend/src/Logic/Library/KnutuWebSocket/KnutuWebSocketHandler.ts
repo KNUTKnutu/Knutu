@@ -53,6 +53,16 @@ class KnutuWebSocketHandler {
         enabledWebSocket!.send(stringifiedJSON);
     };
 
+    public wrapPacket = (type: string, body?: any) => {
+        return {
+            header: {
+              type,
+              date: new Date().getTime()
+            },
+            payload: body
+        }
+    };
+
     // Private Methods Below
     private onSceneChanged = (): void => {
         this.webSocketCloser();
@@ -118,6 +128,7 @@ class KnutuWebSocketHandler {
             case "IntroScene":
                 return;
             case "LobbyScene":
+                this.send("currentRooms", this.wrapPacket("currentRooms", {}));
                 return;
             case "GameScene":
                 return;
