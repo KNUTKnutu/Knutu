@@ -3,19 +3,21 @@ import { useRecoilState } from "recoil";
 import { readyState } from "../../../../../../Recoil/atom";
 import styles from "../../../../../../styles/Components/Main/Scenes/GameScene/Wating/_gameWating.module.scss";
 
-// interface userInfoInterface {
-//   userinfo: {
-//     userTitle?: string; // userTitle: 사용자 칭호
-//     userProfile?: string; // userProfile: 사용자 프로필 src
-//     userLevel: string; // userLevel: 사용자 레벨
-//     userName: string; // userName: 사용자 이름
-//   };
-// }
+type userInfoType = {
+  title?: string; // userTitle: 사용자 칭호
+  profileFicture?: string; // userProfile: 사용자 프로필 src
+  level: string; // userLevel: 사용자 레벨
+  name: string; // userName: 사용자 이름
+}
 
-const WatingUser = ({ userinfo }: any) => {
+interface userInfoInterface {
+  userinfo: userInfoType
+}
+
+const WatingUser = ({ userinfo }: userInfoInterface) => {
   const [readystate, setReadyState] = useRecoilState(readyState);
 
-  const { name, title, profileFicture, level }: any = userinfo;
+  const { name, title, profileFicture, level }: userInfoType = userinfo;
 
   return (
     <div className={styles.wating_user_container}>

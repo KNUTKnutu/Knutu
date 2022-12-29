@@ -35,7 +35,7 @@ const GameRoomInfo = () => {
       <div className={styles.room_condition}>
         {modeInTotal}
       </div>
-      <div className={styles.room_time}>{rounds} / {limitTime}</div>
+      <div className={styles.room_time}>라운드 {rounds} / {limitTime} 초</div>
       <div className={styles.wating_button}>
         <div className={styles.ready_button} onClick={ready}>
           준비

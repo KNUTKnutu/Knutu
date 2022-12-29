@@ -58,6 +58,10 @@ public class GameSceneWSHandler {
             return;
         }
         this.clients.remove(session);
+        Method[] method = LobbySceneService.class.getMethods();
+        for (Method _method : method) {
+            System.out.println(_method);
+        }
         LobbySceneService.getInstance().exitRoomByUserName(this.onlineUsers.get(session.getId()).getName());
         this.onlineUsers.remove(session.getId());
 	}

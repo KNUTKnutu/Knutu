@@ -34,7 +34,6 @@ const Room = ({roomInfo}: any): JSX.Element => {
                     });
                 }
             });
-        setCurrentScene(SCENE__GAMESCENE);
     }
 
     return (
