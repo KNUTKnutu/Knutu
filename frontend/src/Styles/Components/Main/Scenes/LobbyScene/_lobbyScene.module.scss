@@ -104,8 +104,7 @@
         .lobby_scene_myInfos__expFillColor {
           position: absolute;
           z-index: 1;
-          left: 3px; // 경험치 %만 조절. 임시로 테스트용으로 40%만
-          width: calc(40% - 3px);
+          left: 3px;
           height: 87%;
           background-color: green;
         }
