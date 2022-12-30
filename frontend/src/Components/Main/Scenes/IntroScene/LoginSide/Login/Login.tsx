@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {
   ID,
   LOGIN,
@@ -15,8 +15,8 @@ import {
   get__signin,
 } from "../../../../../../Logic/API/GET/get";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Login/_login.module.scss";
-import { useSetRecoilState } from "recoil";
-import { channelsState, userState } from "../../../../../../Recoil/atom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { channelsState, isLoggedOutRecently, userState } from "../../../../../../Recoil/atom";
 import { unwatchFile } from "fs";
 import { AxiosError } from "axios";
 import Spinner from "../../../../../Reusable/Spinner/Spinner";
@@ -29,22 +29,68 @@ const VISIBILITY_ON = <span className="material-icons">visibility</span>;
 const VISIBILITY_OFF = <span className="material-icons">visibility_off</span>;
 
 const Login = ({ setCurrLoginState }: Props) => {
+  
   const [input, setInput] = useState({ id: "", pw: "" });
-  const { id, pw } = input;
   const [isPwVisi, setIsPwVisi] = useState(false);
   const [isError, setIsError] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRememberId, setIsRememberId]: any = useState(false);
+  const [isAutoLogin, setIsAutoLogin]: any = useState(false);
+
   const setUser = useSetRecoilState(userState);
   const setChannels = useSetRecoilState(channelsState);
+
+  const isLoggedOut = useRecoilValue(isLoggedOutRecently);
+
+  let { id, pw } = input;
+
+  useEffect(() => {
+    // 게임을 실행하여 인트로씬에 들어온 최초 1회에 한해서만 자동 로그인이 시도되어야 함.
+    if(isLoggedOut === true) return;
+
+    // Auto Login 체크박스가 체크되어 있는 경우, 자동 로그인을 시도.
+    const userFromLocalStorage = localStorage.getItem("user")!;
+    if(userFromLocalStorage != "null" && userFromLocalStorage != null) {
+      const userAccountJSON = JSON.parse(userFromLocalStorage);
+      const {id: ID, pw: PW, rememberId, autoLogin} = userAccountJSON;
+      input.id = ID;
+      if(autoLogin) {
+        input.pw = PW;
+        setIsAutoLogin(true);
+        onSubmit();
+      }
+      if(rememberId) {
+        // 조건문은 타는데, UI 상의 체크박스에 checked가 들어가지 않음.
+        // 자동로그인도 마찬가지임. 체크 필요.
+        setIsRememberId(true);
+      }
+    }
+  }, []);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onIsRememberIdChange = (): void => setIsRememberId((curr: any) => !curr);
+  const onIsAutoLoginChange = (): void => setIsAutoLogin((curr: any) => !curr);
+
+  const onSubmit = async (e?: FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
     setIsLoading((prev) => !prev);
     const res = await get__signin(input);
+
+    if (isAutoLogin) {
+      localStorage.setItem("user", JSON.stringify({
+        id,
+        pw,
+        autoLogin: true
+      }));
+    } else if (isRememberId) {
+      localStorage.setItem("user", JSON.stringify({
+        id,
+        rememberId: true
+      }));
+    }
 
     if (res instanceof AxiosError) {
       // 민경호 작업할 곳 - 401번 에러 처리 TODO
@@ -121,11 +167,11 @@ const Login = ({ setCurrLoginState }: Props) => {
               </div>
               <div className={styles.remember}>
                 <div>
-                  <input type="checkbox" name="" id="remember_id" />
+                  <input type="checkbox" name="" id="remember_id" value={isRememberId} onChange={onIsRememberIdChange} />
                   <label htmlFor="remember_id">아이디 기억하기</label>
                 </div>
                 <div>
-                  <input type="checkbox" name="" id="auto_login" />
+                  <input type="checkbox" name="" id="auto_login" value={isAutoLogin} onChange={onIsAutoLoginChange} />
                   <label htmlFor="auto_login">자동로그인</label>
                 </div>
               </div>

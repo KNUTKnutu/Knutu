@@ -1,8 +1,8 @@
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { LOGOUT, TITLE } from "../../../../../../constant";
 import { LOGINSTATE } from "../../../../../../enum";
 import { Nullable, User } from "../../../../../../interface";
-import { channelsState, userState } from "../../../../../../Recoil/atom";
+import { channelsState, isLoggedOutRecently, userState } from "../../../../../../Recoil/atom";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Profile/_profile.module.scss";
 import DEFAULT_PROFILE from "../../../../../../Assets/Images/default_profile.svg";
 
@@ -19,6 +19,7 @@ const Profile = ({ setCurrLoginState, user }: Props) => {
     user as User;
 
   const setUser = useSetRecoilState(userState);
+  const setIsLoggedOut = useSetRecoilState(isLoggedOutRecently);
 
   /**
    * 로그아웃하면 Channel List를 비워줘야 하기 때문에 선언
@@ -32,6 +33,7 @@ const Profile = ({ setCurrLoginState, user }: Props) => {
    * 채널 목록을 비워줘야 함 -> setChannel([])
    */
   const onClickLogout = () => {
+    setIsLoggedOut(true);
     setCurrLoginState(LOGINSTATE.LOGIN);
     setUser(null);
     setChannels([]);

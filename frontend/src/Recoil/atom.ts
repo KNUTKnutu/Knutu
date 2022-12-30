@@ -110,3 +110,8 @@ export const enteredRoomState = atom({
   }
   // { number, title, mode, rounds, limitTime, players }
 });
+
+export const isLoggedOutRecently = atom({
+  key: "isLoggedOutRecently",
+  default: false
+});

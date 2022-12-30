@@ -7,17 +7,17 @@ const localStorageEffect =
   (key: string) =>
   ({ setSelf, onSet }: any) => {
     // key에 저장되어 있는지 먼저 확인
-    const savedValue = localStorage.getItem(key);
+    // const savedValue = localStorage.getItem(key);
 
-    if (savedValue !== null) {
-      setSelf(JSON.parse(savedValue));
-    }
+    // if (savedValue !== null) {
+    //   console.warn(savedValue);
+    // }
 
-    onSet((newValue: any, _: any, isReset: boolean) => {
-      isReset
-        ? localStorage.removeItem(key)
-        : localStorage.setItem(key, JSON.stringify(newValue));
-    });
+    // onSet((newValue: any, _: any, isReset: boolean) => {
+    //   isReset
+    //     ? localStorage.removeItem(key)
+    //     : localStorage.setItem(key, JSON.stringify(newValue));
+    // });
   };
 
 export default localStorageEffect;

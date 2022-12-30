@@ -11,13 +11,13 @@ import { userState } from "../../../../../Recoil/atom";
 
 const LoginSide = () => {
   const user = useRecoilValue(userState);
+
   const [currLoginState, setCurrLoginState] = useState(
     user ? LOGINSTATE.PROFILE : LOGINSTATE.LOGIN
   );
 
   useEffect(() => {
-    setCurrLoginState(user ? LOGINSTATE.PROFILE : LOGINSTATE.LOGIN);
-    console.log(user, currLoginState);
+    setCurrLoginState(user?.name != undefined ? LOGINSTATE.PROFILE : LOGINSTATE.LOGIN);
   }, [user]);
 
   const condi_render = (currLoginState: LOGINSTATE) => {
