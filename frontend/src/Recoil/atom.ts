@@ -56,7 +56,7 @@ export const readyState = atom({
  */
 export const userState = atom<Nullable<User>>({
   key: "userState",
-  default: null,
+  default: {},
   effects: [localStorageEffect("user")],
 });
 
