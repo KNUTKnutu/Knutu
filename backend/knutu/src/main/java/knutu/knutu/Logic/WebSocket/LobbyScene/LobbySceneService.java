@@ -198,6 +198,11 @@ public class LobbySceneService {
         }
     }
 
+    public boolean isUserLoggedIn(String userName) {
+        if(onlineUsers.get(userName) != null) return true;
+        return false;
+    }
+
     private boolean checkAllPlayerReady(List<Player> players) {
         for (Player player: players) {
             if(!player.isReady())
