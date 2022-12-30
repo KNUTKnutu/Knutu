@@ -12,6 +12,9 @@ interface Props {
 }
 
 const Profile = ({ setCurrLoginState, user }: Props) => {
+
+  if(user == null) return <></>;
+
   const { name, title, profilePicture, level, currentExperience } =
     user as User;
 

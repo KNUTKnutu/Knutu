@@ -11,6 +11,8 @@ const UserInfo = () => {
 
   const user = useRecoilValue(userState);
 
+  if(user == null) return <></>;
+
   const { name, level, title, profilePicture, currentExperience, totalExperience }: any = user;
 
   if(profilePicture) {
