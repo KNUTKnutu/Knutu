@@ -75,7 +75,7 @@
   padding: $game-roominfo-padding;
   border: $game-border-color $game-border-size solid;
   border-radius: $game-border-radius;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 0.7fr 0.7fr 1fr;
   grid-row-gap: 10px;
   align-items: center;
@@ -86,18 +86,20 @@
   }
   .user_name {
     grid-row: 2;
+    grid-column: 2 / span 2;
     justify-self: center;
   }
 
   .user_level {
     grid-row: 1;
+    grid-column: 2 / span 2;
     justify-self: center;
   }
   // lobbyScene의 경험치바와 똑같이
   .expbar {
     position: relative;
     z-index: 0;
-    grid-column: 1 / span 2;
+    grid-column: 1 / span 3;
     grid-row: 3;
 
     display: flex;
@@ -144,27 +146,31 @@
       border: $game-border-color $game-border-size solid;
       border-radius: $game-border-radius;
       padding: 20px;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: .8fr 1.7fr .5fr;
       grid-template-rows: 1fr 1fr 1fr;
-      align-items: flex-end;
+      align-items: center;
+
       .user_level {
-        justify-self: center;
-        grid-row: 3;
-        grid-column: 1;
+        justify-self: flex-start;
+        padding-left: 1.5rem;
+        grid-row: 1;
+        grid-column: 2;
       }
       .user_profile {
         justify-self: center;
-        grid-row: 1 / span 2;
+        grid-row: 1 / span 3;
       }
       .user_name {
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
+        padding-left: 1.5rem;
         grid-row: 3;
         grid-column: 2;
       }
       .user_title {
         display: flex;
-        justify-content: space-around;
+        justify-content: flex-start;
+        padding-left: 1.5rem;
         grid-row: 2;
         grid-column: 2;
       }
@@ -182,8 +188,8 @@
   }
   .room_owner {
     position: absolute;
-    left: 837px;
-    top: 73px;
+    left: 823px;
+    top: 83px;
   }
 
   .wating_chatting {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { readyState } from "../../../../../../Recoil/atom";
+import knutu from "/src/Assets/Images/Knutu_64x64.jpg";
 import styles from "../../../../../../styles/Components/Main/Scenes/GameScene/Wating/_gameWating.module.scss";
 
 type userInfoType = {
@@ -19,12 +20,14 @@ const WatingUser = ({ userinfo }: userInfoInterface) => {
 
   const { name, title, profileFicture, level }: userInfoType = userinfo;
 
+  let profilePicture = profileFicture || knutu;
+
   return (
     <div className={styles.wating_user_container}>
-      <img src={profileFicture} className={styles.user_profile} />
+      <img src={profilePicture} className={styles.user_profile} />
       <div className={styles.user_level}>레벨 {level}</div>
-      <div className={styles.user_name}>{name}</div>
       <div className={styles.user_title}>{title}</div>
+      <div className={styles.user_name}>{name}</div>
       <div
         className={
           readystate === true
