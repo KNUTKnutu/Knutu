@@ -5,7 +5,7 @@
   background: linear-gradient(
     to bottom right,
     $lobby-background-color,
-    hsla(35, 25%, 90%, 0.92)
+    hsla(60, 25%, 90%, 0.96)
   );
   color: $lobby-font-color;
   height: 100%;
@@ -146,6 +146,7 @@
           height: 112px;
           border: 2px solid black;
           border-radius: 16px;
+          background: rgba(255, 255, 255, 0.4);
 
           display: grid;
           gap: 8px;
