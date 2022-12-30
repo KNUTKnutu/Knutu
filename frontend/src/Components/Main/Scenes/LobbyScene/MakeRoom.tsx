@@ -12,6 +12,7 @@ import {
   GAMEMODE,
   LANGUAGE,
   LIMITTIME,
+  ROUNDS,
   MAXIMUM,
   SPECIALMODE,
 } from "../../../../constant";
@@ -31,6 +32,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
     pw: "", // 비밀번호
     maximum: 8, // 최대 인원
     time_limit: 60, // 제한 시간
+    rounds: 4, // 총 라운드 수
     lang: "kor", // 언어
     mode: "end", // 게임 모드
     special: "", // 특수 규칙
@@ -40,7 +42,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
   const setEnteredRoomIdState = useSetRecoilState(enteredRoomIdState);
   const setCurrentScene = useSetRecoilState(currentSceneState);
   
-  const { title, pw, isPw, maximum, time_limit, lang, mode, special } =
+  const { title, pw, isPw, maximum, time_limit, rounds, lang, mode, special } =
     roomInfo;
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -56,12 +58,12 @@ const MakeRoom = ({ setIsShow }: Props) => {
   };
 
   useEffect(() => {
-    console.log(time_limit);
-  }, [time_limit]);
+    console.log(rounds);
+  }, [rounds]);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    
     getAvailableRoomId().then(res => {
       // TODO: 아래 res.data 에 있는 빨간 줄 치워야 함. build 불가
       let roomId = res.data;
@@ -153,23 +155,35 @@ const MakeRoom = ({ setIsShow }: Props) => {
           </div>
           <div className={styles.each}>
             <label htmlFor="time_limit">제한 시간</label>
-            <div className={styles.time_limit}>
-              {LIMITTIME.map((cur, idx) => {
-                return (
-                  <div key={idx}>
-                    <input
-                      type="radio"
-                      name="time_limit"
-                      id={`${cur}s`}
-                      value={`${cur}s`}
-                      onChange={onChange}
-                      checked={time_limit === cur ? true : false}
-                    />
-                    <label htmlFor={`${cur}s`}>{cur}초</label>
-                  </div>
-                );
-              })}
-            </div>
+            <select
+              name="time_limit"
+              id="time_limit"
+              className={styles.time_limit}
+              value={time_limit}
+              onChange={onChangeSelect}
+            >
+              {LIMITTIME.map((cur, idx) => (
+                <option key={idx} value={cur}>
+                  <label htmlFor={`${cur}s`}>{cur}초</label>
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className={styles.each}>
+            <label htmlFor="rounds">총 라운드</label>
+            <select
+              name="rounds"
+              id="rounds"
+              className={styles.rounds}
+              value={rounds}
+              onChange={onChangeSelect}
+            >
+              {ROUNDS.map((cur, idx) => (
+                <option key={idx} value={cur}>
+                 {cur}
+                </option>
+              ))}
+            </select>
           </div>
           <div className={styles.each}>
             <label htmlFor="lang">언어</label>

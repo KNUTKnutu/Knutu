@@ -52,13 +52,10 @@
         }
 
         .time_limit {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 10px;
-          & > div {
-            display: flex;
-            align-items: center;
-          }
+          font-size: 1.25rem;
+        }
+        .rounds{
+          font-size: 1.25rem;
         }
 
         .lang {

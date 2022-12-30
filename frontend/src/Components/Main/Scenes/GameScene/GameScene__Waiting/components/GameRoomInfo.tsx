@@ -11,8 +11,6 @@ const GameRoomInfo = () => {
 
   const roomState = useRecoilValue(enteredRoomState);
 
-  console.log(roomState);
-
   const setCurrentScene = useSetRecoilState(currentSceneState);
 
   const { number, title, lang, mode, rounds, limitTime, players } = roomState;

@@ -10,7 +10,7 @@ import { postEnterRoom } from "../../../../../../Logic/API/POST/post";
 const Room = ({roomInfo}: any): JSX.Element => {
 
     const {number: roomNumber, title: roomTitle, mode: roomOption, lang, rounds: roomRound, limitTime: roomLimitTime, pw, currEntry: roomEntries, maxEntry: roomMaxEntry} = roomInfo;
-
+    console.log(roomInfo)
     const user = useRecoilValue(userState);
 
     const roomNumberString = RoomClass.getRoomNumberString(roomNumber);

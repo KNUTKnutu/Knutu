@@ -46,7 +46,7 @@ export const post__makeRoom = async (_roomInfo: any) => {
       title,
       lang,
       mode,
-      rounds: 3,
+      rounds,
       limitTime,
       currEntry: 0,
       maxEntry,

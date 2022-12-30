@@ -43,6 +43,7 @@ export const STATUSCODE__LOOP_DETECTED: ResponseStatusCode = 508; // 서버가 �
 // MAKE ROOM
 export const MAXIMUM = [2, 3, 4, 5, 6, 7, 8];
 export const LIMITTIME = [15, 30, 45, 60, 90, 120];
+export const ROUNDS = [2, 3, 4, 5, 6, 7, 8, 9];
 export const LANGUAGE = [
   { id: "kor", label: "한국어" },
   { id: "eng", label: "English" },
