@@ -35,6 +35,7 @@
     .lobby_scene_onlineUsersContainer {
       display: grid;
       grid-template-rows: 9fr 1fr;
+      box-shadow: -1px -1px 4px 0px black;
 
       .lobby_scene_onlineUsers {
         padding: 20px;
@@ -67,6 +68,7 @@
       padding: 40px;
       display: grid;
       grid-template-rows: 1fr 1fr;
+      box-shadow: -1px 1px 4px black;
 
       .lobby_scene_myInfos__top {
         position: relative;
@@ -132,7 +134,7 @@
 
     .lobby_scene_right_top_container {
       .lobby_scene_rooms {
-        box-shadow: 1px 2px 8px rgb(170, 205, 245);
+        box-shadow: 0px 0px 10px hsl(212, 80%, 80%);
         padding: 30px;
         display: grid;
         height: 441px;
@@ -333,6 +335,7 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr;
+        box-shadow: 1px 1px 4px black;
 
         > * {
           padding: 12px;
