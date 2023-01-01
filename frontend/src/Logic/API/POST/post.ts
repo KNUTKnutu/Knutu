@@ -40,7 +40,7 @@ export const post__signup = async ({ id, pw, name, email }: SignUpProps) => {
 
 export const post__makeRoom = async (_roomInfo: any) => {
   try {
-    const {roomId, title, mode, lang, rounds, time_limit: limitTime, maximum: maxEntry, pw} = _roomInfo;
+    const {roomId, title, mode, lang, rounds, time_limit: limitTime, maximum: maxEntry, pw, roundWord, currWord} = _roomInfo;
     const roomInfo = {
       number: roomId,
       title,
@@ -52,6 +52,8 @@ export const post__makeRoom = async (_roomInfo: any) => {
       maxEntry,
       pw,
       players: [],
+      roundWord,
+      currWord
     }
     const res = await axios.post(`${API_URL}/makeRoom`, {
       ...roomInfo

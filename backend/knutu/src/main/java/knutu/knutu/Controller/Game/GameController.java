@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import knutu.knutu.Controller.Exceptions.Conflict;
 import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneService;
 import knutu.knutu.Service.lib.classes.GameRoom.Room;
 import knutu.knutu.Service.lib.classes.User.User;
@@ -25,7 +26,9 @@ public class GameController {
 
     @GetMapping("/checkRoomEnterable")
     public boolean checkRoomEnterable(@RequestParam int roomId) throws Exception {
-        return LobbySceneService.getInstance().checkRoomEnterable(roomId);
+        boolean isRoomEnterable = LobbySceneService.getInstance().checkRoomEnterable(roomId);
+        if(!isRoomEnterable) throw new Conflict("The room is not enterable now.");
+        return true;
     }
 
     @PostMapping("/enterRoom")

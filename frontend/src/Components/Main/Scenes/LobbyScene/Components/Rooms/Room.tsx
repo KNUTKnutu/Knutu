@@ -10,7 +10,6 @@ import { postEnterRoom } from "../../../../../../Logic/API/POST/post";
 const Room = ({roomInfo}: any): JSX.Element => {
 
     const {number: roomNumber, title: roomTitle, mode: roomOption, lang, rounds: roomRound, limitTime: roomLimitTime, pw, currEntry: roomEntries, maxEntry: roomMaxEntry} = roomInfo;
-    console.log(roomInfo)
     const user = useRecoilValue(userState);
 
     const roomNumberString = RoomClass.getRoomNumberString(roomNumber);
@@ -32,8 +31,11 @@ const Room = ({roomInfo}: any): JSX.Element => {
                         setEnteredRoomIdState(roomNumber);
                         setCurrentScene(SCENE__GAMESCENE);
                     });
-                }
-            });
+            }
+            else {
+                window.alert("방에 입장할 수 없습니다. 잠시 후 다시 시도해주세요.");
+            }
+        });
     }
 
     return (

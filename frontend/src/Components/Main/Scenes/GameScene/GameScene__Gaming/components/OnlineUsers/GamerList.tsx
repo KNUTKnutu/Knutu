@@ -1,33 +1,18 @@
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
+import { enteredRoomState } from "../../../../../../../Recoil/atom";
 import styles from "../../../../../../../Styles/Components/Main/Scenes/GameScene/Gamming/_gameGamming.module.scss";
 import OnGamer from "./OnGamer";
 
-interface testuser {
-  userinfo: {
-    username: string;
-    userprofile: string;
-    userlevel: number;
-    userscore: number;
-  };
-}
-
 const GamerList = () => {
-  const [member, setMember] = useState(7);
+  const room = useRecoilValue(enteredRoomState);
+  const players = room.players;
 
-  const testuserinfo: testuser = {
-    userinfo: {
-      username: "허강민",
-      userprofile: "/src/Assets/Images/Knutu_64x64.jpg",
-      userlevel: 22,
-      userscore: 0,
-    },
-  };
+  const playersMap = players.map(ele => <OnGamer key={ele.name} userinfo={ele} />)
 
   return (
     <div className={styles.gamer_list}>
-      {Array.from(Array(member)).map((_, i) => (
-        <OnGamer key={i} userinfo={testuserinfo} />
-      ))}
+      {playersMap}
     </div>
   );
 };

@@ -80,7 +80,6 @@ public class LobbySceneService {
 
     public boolean makeRoom(Room room) {
         try {
-            System.out.println(room.getNumber());
             gameRooms.put(Short.toString(room.getNumber()), room);
             return true;
         } catch (Exception e){
@@ -98,6 +97,7 @@ public class LobbySceneService {
             enteredPlayer.setCurrentExperience(user.getCurrentExperience());
             enteredPlayer.setAccountgaemaeneo(false); // user.getAccountgaemaeneo 가 안돼서 일단 보류
             enteredPlayer.setReady(false);
+            enteredPlayer.setScore(0);
 
             Room gameRoom = gameRooms.get(Integer.toString(roomId));
             List<Player> gamers = gameRoom.getPlayers();
@@ -111,7 +111,8 @@ public class LobbySceneService {
 
             return gameRoom;
         } catch (Exception e){
-            System.out.println("failed");
+            e.getCause();
+            e.printStackTrace();
             return null;
         }
     }
@@ -140,7 +141,6 @@ public class LobbySceneService {
 
             return true;
         } catch (Exception e){
-            System.out.println("failed to exit room");
             e.getCause();
             e.printStackTrace();
             return false;
@@ -169,6 +169,7 @@ public class LobbySceneService {
     public boolean checkRoomEnterable(int roomId) throws Exception {
         try {
             Room gameRoom = gameRooms.get(Integer.toString(roomId));
+            if(gameRoom == null) return false;
             return gameRoom.getCurrEntry() != gameRoom.getMaxEntry() ? true : false;
         } catch (Exception e) {
             throw new Exception(e);

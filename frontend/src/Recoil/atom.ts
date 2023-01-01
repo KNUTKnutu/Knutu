@@ -107,7 +107,12 @@ export const enteredRoomState = atom({
     mode: "",
     rounds: -1,
     limitTime: -1,
-    players: []
+    currEntry: -1,
+    maxEntry: -1,
+    pw: "",
+    players: [],
+    roundWord: "",
+    currWord: ""
   }
   // { number, title, mode, rounds, limitTime, players }
 });
@@ -116,3 +121,8 @@ export const isLoggedOutRecently = atom({
   key: "isLoggedOutRecently",
   default: false
 });
+
+export const isGameInProgress = atom({
+  key: "isGameInProgress",
+  default: false
+})

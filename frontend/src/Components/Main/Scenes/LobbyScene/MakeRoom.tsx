@@ -36,6 +36,8 @@ const MakeRoom = ({ setIsShow }: Props) => {
     lang: "kor", // 언어
     mode: "end", // 게임 모드
     special: "", // 특수 규칙
+    roundWord: "", // 게임 씬에서 각 라운드의 시작 단어(게임 중 상단에 뜨는)
+    currWord: "" // 게임 씬에서 가장 최근에 입력된 단어
   });
   
   const user = useRecoilValue(userState);
@@ -72,6 +74,8 @@ const MakeRoom = ({ setIsShow }: Props) => {
         roomId,
         ...roomInfo
       };
+
+      console.log(room);
 
       post__makeRoom(room)
         .then((res) => {

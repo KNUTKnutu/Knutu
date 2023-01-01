@@ -36,7 +36,6 @@ const ChannelSide = () => {
         });
         setChannels(channelsForRecoil);
       }
-      console.log(channels);
     };
     getChannelInfosForInit();
   }, []);

@@ -7,8 +7,6 @@ const WatingList = () => {
 
   const roomState = useRecoilValue(enteredRoomState);
 
-  console.log(roomState)
-
   if(roomState?.players == null) return <></>;
 
   const userlist = roomState.players.map((player) => {

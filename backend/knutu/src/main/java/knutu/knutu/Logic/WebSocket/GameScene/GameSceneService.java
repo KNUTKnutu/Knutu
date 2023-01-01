@@ -13,21 +13,25 @@ import org.json.simple.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneInstances;
 import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneService;
 import knutu.knutu.Service.lib.classes.GameRoom.Room;
 import knutu.knutu.Service.lib.classes.Player.Player;
 import knutu.knutu.Service.lib.classes.User.User;
+import knutu.knutu.Service.lib.classes.stdictLib.StdictLib;
 
 public class GameSceneService {
 
     public static GameSceneService service = new GameSceneService();
     public static GameSceneService getInstance() { return service; }
 
+    private StdictLib libInstance = StdictLib.getstdictLibInstance();
+
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private GameSceneInstances instances = GameSceneInstances.getInstance();
 
     private Map<String, User> onlineUsers = instances.onlineUsers;
-    private Map<String, Room> gameRooms = instances.gameRooms;
+    private Map<String, Room> gameRooms = LobbySceneInstances.getInstance().gameRooms;
     
     private Map<String, Collection<Session>> sessionsInRoom = instances.sessionsInRoom;
     private Map<String, String> userLocationMapWithName = instances.userLocationMapWithName;
@@ -78,10 +82,6 @@ public class GameSceneService {
         if(sessions.add(_session)) {
             this.sessionsInRoom.put(roomId, sessions);
         }
-
-        for(Session session : this.sessionsInRoom.get(roomId)) {
-            System.out.println(session.getId());
-        }
     }
 
     public Collection<Session> getSessionsInRoom(String roomId) {
@@ -108,19 +108,51 @@ public class GameSceneService {
                 this.broadCastAllPlayerReady(roomId);
             }
 
-            for(Session session : this.getSessionsInRoom(roomId)) {
-                System.out.println(session.getId());
-            }
-
             return this.getSessionsInRoom(roomId);
         } catch(Exception e) {
+            e.getCause();
+            e.printStackTrace();
             return null;
         }
     }
 
     private void broadCastAllPlayerReady(String roomId) throws Exception {
         Collection<Session> sessions = this.getSessionsInRoom(roomId);
-        String packet = "{\"header\": {\"type\": \"" + "allPlayerReady" + "\", \"timestamp\": \"" + Instant.now().toEpochMilli() + "\"}, \"payload\": {\"data\": {allPlayerReady: true}}";
+
+        Room room = this.gameRooms.get(roomId);
+        Short rounds = room.getRounds();
+
+        String roundWord = "";
+
+        switch(rounds.toString()) {
+            case "2":
+                roundWord = "안녕";
+                break;
+            case "3":
+                roundWord = "민경호";
+                break;
+            case "4":
+                roundWord = "강민공주";
+                break;
+            case "5":
+                roundWord = "소프트웨어";
+                break;
+            case "6":
+                roundWord = "황여진학회장";
+                break;
+            case "7":
+                roundWord = "한국교통대학교";
+                break;
+            case "8":
+                roundWord = "충북충주대소원면";
+                break;
+            case "9":
+                roundWord = "서울고속버스터미널";
+                break;
+        }
+
+        String packet = "{\"header\": {\"type\": \"" + "allPlayerReady" + "\", \"timestamp\": \"" + Instant.now().toEpochMilli() + "\"}, \"payload\": {\"data\": {\"allPlayerReady\": true, \"roundWord\": \"" + roundWord + "\"}}}";
+        
         for(Session session : sessions) {
             session.getBasicRemote().sendText(packet);
         }
