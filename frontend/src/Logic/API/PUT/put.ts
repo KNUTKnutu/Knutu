@@ -35,3 +35,20 @@ export const put__enterChannel = async ({
     return error;
   }
 };
+
+export const put__exitRoom = 
+  async (roomId: number, userName: string)
+  : Promise<AxiosResponse | AxiosError> => {
+    try {
+      let endPoint;
+  
+      endPoint = `${API_URL}/exitRoom?roomId=${roomId}&userName=${userName}`;
+      const res_exitRoom = await axios.put(endPoint);
+  
+      return res_exitRoom;
+    } catch (err: any) {
+      const error: AxiosError = err;
+      return error;
+    }
+}
+;

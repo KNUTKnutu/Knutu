@@ -125,7 +125,11 @@ public class LobbySceneService {
             }
 
             Short currEntry = Short.parseShort(Integer.toString(Integer.parseInt(gameRoom.getCurrEntry().toString()) - Integer.parseInt("1")));
-            gameRoom.setCurrEntry(currEntry);    
+            gameRoom.setCurrEntry(currEntry);
+
+            if(currEntry == 0) {
+                gameRooms.remove(Integer.toString(roomId));
+            }
 
             return true;
         } catch (Exception e){
@@ -204,6 +208,7 @@ public class LobbySceneService {
     }
 
     private boolean checkAllPlayerReady(List<Player> players) {
+        if(players.size() <= 1) return false;
         for (Player player: players) {
             if(!player.isReady())
                 return false;
