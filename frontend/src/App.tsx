@@ -3,7 +3,7 @@ import Main from "./Components/Main/Main";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
-import { enteredRoomIdState, enteredRoomState, mountOpacity, roomsState } from "./Recoil/atom";
+import { enteredRoomIdState, enteredRoomState, mountOpacity, roomsState, userState } from "./Recoil/atom";
 import KnutuWebSocketHandler from "./Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
 import { WebSocketPacket } from "./Logic/Library/KnutuWebSocket/KnutuWebSocketTypes";
 import KnutuAudioHandler from "./Logic/Library/KnutuAudio/KnutuAudioHandler";
@@ -13,6 +13,7 @@ const App = () => {
   KnutuAudioHandler.getInstance().setLoop();
 
   const roomId = useRecoilValue(enteredRoomIdState);
+  const user = useRecoilValue(userState);
 
   const setCurrentRoomsState = useSetRecoilState(roomsState);
   const setEnteredRoomState = useSetRecoilState(enteredRoomState);
@@ -27,14 +28,14 @@ const App = () => {
     return () => clearTimeout(timeout);
   }, []);
   const messageListener = (msg: any) => {
-    console.log(msg);
-    console.log(msg.data);
 
     const json = JSON.parse(msg.data);
     const { body } = json;
     const { type } = json.header;
 
     console.log(json);
+
+    const webSocketHandler: KnutuWebSocketHandler = KnutuWebSocketHandler.getInstance();
 
     switch(type) {
       case "currentRooms":
@@ -50,10 +51,20 @@ const App = () => {
             roomId
           }
         };
-        KnutuWebSocketHandler.getInstance().send("requestRoomInfo", packet);
+        webSocketHandler.send("requestRoomInfo", packet);
         break;
       case "requestRoomInfo":
         setEnteredRoomState(json.payload.data);
+        webSocketHandler.send("submitSessionInfo", webSocketHandler.wrapPacket("submitSessionInfo", {
+          userName: user?.name,
+          roomId
+        }));
+        break;
+      case "submitSessionInfo":
+      case "requestExitRoom":
+      case "requestToggleReady":
+        setEnteredRoomState(json.payload.data);
+        break;
     }
   };
 

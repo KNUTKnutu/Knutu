@@ -1,6 +1,5 @@
 package knutu.knutu.Logic.WebSocket.GameScene;
 
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Set;
 
@@ -52,14 +51,12 @@ public class GameSceneWSHandler {
 	}
 	
 	@OnClose
-	public void onClose(Session session) {
+	public void onClose(Session session) throws Exception {
         if(!this.clients.contains(session)) {
             log.info(String.format("already closed session: %s", session.getId()));
             return;
         }
         this.clients.remove(session);
-        // error here
-        // LobbySceneService.getInstance().exitRoomByUserName(this.onlineUsers.get(session.getId()).getName());
         this.onlineUsers.remove(session.getId());
 	}
     

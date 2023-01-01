@@ -1,4 +1,4 @@
-import { atom, useSetRecoilState } from "recoil";
+import { atom, useRecoilValue, useSetRecoilState } from "recoil";
 import {
   SCENE__GAMESCENE,
   SCENE__INTROSCENE,
@@ -17,6 +17,7 @@ export const currentSceneState = atom<string>({
   default: SCENE__INTROSCENE,
   effects: [
     ({ onSet }) => {
+      const webSocketHandler: KnutuWebSocketHandler = KnutuWebSocketHandler.getInstance();
       onSet((currScene, prevScene) => {
         let clip: AudioClip = KnutuAudioHandler.clipIntroScene;
         let targetScene: availableScenes = "IntroScene";
@@ -33,7 +34,7 @@ export const currentSceneState = atom<string>({
             break;
         }
         KnutuAudioHandler.getInstance().play(clip);
-        KnutuWebSocketHandler.getInstance().setEnabledScene(targetScene);
+        webSocketHandler.setEnabledScene(targetScene);
       });
     },
   ],

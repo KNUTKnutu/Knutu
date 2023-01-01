@@ -74,6 +74,10 @@ public class LobbySceneService {
         return gameRooms.get(Integer.toString(roomId));
     }
 
+    public Room getRoom(String roomId) {
+        return gameRooms.get(roomId);
+    }
+
     public boolean makeRoom(Room room) {
         try {
             System.out.println(room.getNumber());
@@ -118,10 +122,13 @@ public class LobbySceneService {
             List<Player> Players = gameRoom.getPlayers();
 
             for(Player player : Players) {
-                if(player.getName() == userName) {
-                    Players.remove(player);
-                    gamingUsers.remove(player.getName());    
-                }
+                if(!player.getName().equals(userName)) continue;
+
+                Players.remove(player);
+                gameRoom.setPlayers(Players);
+                gameRooms.put(Integer.toString(roomId), gameRoom);
+                gamingUsers.remove(player.getName());
+                break;
             }
 
             Short currEntry = Short.parseShort(Integer.toString(Integer.parseInt(gameRoom.getCurrEntry().toString()) - Integer.parseInt("1")));
@@ -134,6 +141,8 @@ public class LobbySceneService {
             return true;
         } catch (Exception e){
             System.out.println("failed to exit room");
+            e.getCause();
+            e.printStackTrace();
             return false;
         }
     }
@@ -144,26 +153,6 @@ public class LobbySceneService {
             this.exitRoom(Integer.parseInt(roomId), userName);
         } catch (Exception e) {
             e.getCause();
-        }
-    }
-
-    public boolean onPlayerReady(boolean isReady, int roomId, String userName) {
-        try {
-            Room gameRoom = gameRooms.get(Integer.toString(roomId));
-            List<Player> gamers = gameRoom.getPlayers();
-
-            for(Player player: gamers) {
-                if(player.getName() != userName) continue;
-                player.setReady(isReady); 
-            }
-
-            if(this.checkAllPlayerReady(gamers)) {
-                // 웹 소켓을 방 플레이어 전체에게 전달: 게임 시작되었음을 알려줘야함.
-            }
-
-            return true;
-        } catch(Exception e) {
-            return false;
         }
     }
 
@@ -205,15 +194,6 @@ public class LobbySceneService {
     public boolean isUserLoggedIn(String userName) {
         if(onlineUsers.get(userName) != null) return true;
         return false;
-    }
-
-    private boolean checkAllPlayerReady(List<Player> players) {
-        if(players.size() <= 1) return false;
-        for (Player player: players) {
-            if(!player.isReady())
-                return false;
-        }
-        return true;
     }
 
     private void initialize() {

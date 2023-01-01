@@ -9,6 +9,8 @@ const WatingList = () => {
 
   console.log(roomState)
 
+  if(roomState?.players == null) return <></>;
+
   const userlist = roomState.players.map((player) => {
     return <WatingUser key={player.name} userinfo={player} />
   });
