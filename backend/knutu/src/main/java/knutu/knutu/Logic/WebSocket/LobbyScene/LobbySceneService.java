@@ -192,6 +192,19 @@ public class LobbySceneService {
         }
     }
 
+    public boolean sendCurrentChannelInfo(Session _session) {
+        try {
+            Channel channel = this.getChannelInfo("K");
+            Gson gson = new GsonBuilder().create();
+            String finalizedJSON = JSONBeautifier.finalizeJSON("currentChannelInfo", gson.toJson(channel));
+            _session.getBasicRemote().sendText(finalizedJSON);
+            return true;
+        } catch(Exception e) {
+            return false;
+        }
+    }
+
+
     public boolean isUserLoggedIn(String userName) {
         if(onlineUsers.get(userName) != null) return true;
         return false;

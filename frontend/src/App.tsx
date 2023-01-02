@@ -3,7 +3,7 @@ import Main from "./Components/Main/Main";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
-import { enteredRoomIdState, enteredRoomState, isGameInProgress, mountOpacity, roomsState, userState } from "./Recoil/atom";
+import { enteredRoomIdState, enteredRoomState, isGameInProgress, mountOpacity, roomsState, usersState, userState } from "./Recoil/atom";
 import KnutuWebSocketHandler from "./Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
 import { WebSocketPacket } from "./Logic/Library/KnutuWebSocket/KnutuWebSocketTypes";
 import KnutuAudioHandler from "./Logic/Library/KnutuAudio/KnutuAudioHandler";
@@ -17,6 +17,7 @@ const App = () => {
   const [enteredRoom, setEnteredRoom] = useRecoilState(enteredRoomState);
 
   const setCurrentRoomsState = useSetRecoilState(roomsState);
+  const setUsersState = useSetRecoilState(usersState);
   const setIsGameInProgress = useSetRecoilState(isGameInProgress);
 
   // mount 시 Scene에 opacity:0 부여
@@ -41,6 +42,13 @@ const App = () => {
     switch(type) {
       case "currentRooms":
         setCurrentRoomsState(body);
+        break;
+      case "currentChannelInfo":
+      const users = Object.values(body.onlineUsers);
+      const sortedUsers: any = users.sort((a: any, b: any) => {
+        return b.level - a.level;
+      });
+      setUsersState(sortedUsers);
         break;
       case "onGameWaitingEntrance":
         const packet: WebSocketPacket = {
