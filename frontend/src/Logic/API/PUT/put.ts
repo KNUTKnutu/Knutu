@@ -50,5 +50,19 @@ export const put__exitRoom =
       const error: AxiosError = err;
       return error;
     }
+};
+
+export const put__logOut = 
+  async (userName: string): Promise<AxiosResponse | AxiosError> => {
+    try {
+      let endPoint;
+  
+      endPoint = `${API_URL}/logout?userName=${userName}`;
+      const res_logout = await axios.put(endPoint);
+  
+      return res_logout;
+    } catch (err: any) {
+      const error: AxiosError = err;
+      return error;
+    }
 }
-;

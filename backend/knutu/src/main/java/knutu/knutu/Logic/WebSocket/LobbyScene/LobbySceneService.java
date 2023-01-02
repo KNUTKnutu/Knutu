@@ -27,6 +27,7 @@ public class LobbySceneService {
     private LobbySceneInstances instances = LobbySceneInstances.getInstance();
     private Map<String, User> onlineUsers = instances.onlineUsers;
     private Map<String, Room> gameRooms = instances.gameRooms;
+    public Map<String, String> userNameBySession = instances.userNameBySession;
     public Map<String, String> gamingUsers = instances.gamingUsers;
     public Map<String, Channel> availableChannels = instances.availableChannels;
 
@@ -36,6 +37,8 @@ public class LobbySceneService {
         JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
         JSONObject requestedUser = (JSONObject) requestedPayload.get("user");
         String name = requestedUser.get("name").toString();
+
+        this.userNameBySession.put(_session.getId(), name);
 
         User user = FirebaseService.getFirebaseInstance().getUserWithName(name);
         onlineUsers.put(user.getName(), user);
@@ -99,6 +102,8 @@ public class LobbySceneService {
             enteredPlayer.setReady(false);
             enteredPlayer.setScore(0);
 
+            user.setInGame(true);
+
             Room gameRoom = gameRooms.get(Integer.toString(roomId));
             List<Player> gamers = gameRoom.getPlayers();
             gamers.add(enteredPlayer);
@@ -131,6 +136,9 @@ public class LobbySceneService {
                 gamingUsers.remove(player.getName());
                 break;
             }
+
+            User user = FirebaseService.getFirebaseInstance().getUserWithName(userName);
+            user.setInGame(false);
 
             Short currEntry = Short.parseShort(Integer.toString(Integer.parseInt(gameRoom.getCurrEntry().toString()) - Integer.parseInt("1")));
             gameRoom.setCurrEntry(currEntry);
@@ -208,6 +216,37 @@ public class LobbySceneService {
     public boolean isUserLoggedIn(String userName) {
         if(onlineUsers.get(userName) != null) return true;
         return false;
+    }
+
+    public boolean logOut(String userName) {
+        try {
+            for(User user : this.onlineUsers.values()) {
+                if(user.getName().equals(userName))
+                    this.onlineUsers.remove(userName);
+            }
+
+            Channel K =  this.availableChannels.get("K");
+            K.getOnlineUsers().remove(userName);
+            this.availableChannels.put("K", K);
+
+            this.gamingUsers.remove(userName);
+
+            return true;
+        } catch (Exception e) {
+            e.getCause();
+            return false;
+        }
+    }
+
+    public boolean onSessionClosed(String userName) {
+        try {
+            Channel K =  this.availableChannels.get("K");
+            K.setUserCount(K.getUserCount() - 1);
+            return true;
+        } catch (Exception e) {
+            e.getCause();
+            return false;
+        }
     }
 
     private void initialize() {

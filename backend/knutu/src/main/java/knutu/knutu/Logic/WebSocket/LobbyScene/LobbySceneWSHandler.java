@@ -36,6 +36,7 @@ public class LobbySceneWSHandler {
         for(Session session : this.clients) {
             if(!this.serviceInstance.sendCurrentRooms(session)) log.info("error occured while broadcasting room infos");
             if(!this.serviceInstance.sendCurrentChannelInfo(session)) log.info("error occured while broadcasting users list on the room");
+            /* if(){} // Heartbeat Logic Needed Here */
         }
     }
 	
@@ -56,5 +57,15 @@ public class LobbySceneWSHandler {
         }
         this.clients.remove(session);
         this.onlineUsers.remove(session.getId());
+        
+        try {
+            LobbySceneService instance = LobbySceneService.getInstance();
+            String userName = instance.userNameBySession.get(session.getId());
+            if(!instance.onSessionClosed(userName)) {
+                log.info("failed to logout on onClose method from LobbySceneWSHandler");
+            }
+        } catch (Exception e) {
+            e.getCause();
+        }
 	}
 }
