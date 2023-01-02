@@ -128,6 +128,7 @@ public class FirebaseService implements FirebaseServiceInterface {
         user.setReportedCount(0);
         user.setAccountGaemaeneo(false);
         user.setAccountSuspended(false);
+        user.setInGame(false);
 
         ApiFuture<WriteResult> apiFuture = 
             fs

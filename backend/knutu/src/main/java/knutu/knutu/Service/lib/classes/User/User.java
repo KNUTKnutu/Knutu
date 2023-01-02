@@ -23,4 +23,5 @@ public class User {
     private int         reportedCount;      // 유저가 신고당한 수
     private boolean     isAccountGaemaeneo; // 개매너 유저인지
     private boolean     isAccountSuspended; // 블락 당한 유저인지
+    private boolean     isInGame;           // 방에 들어가있는 상태인지
 }
