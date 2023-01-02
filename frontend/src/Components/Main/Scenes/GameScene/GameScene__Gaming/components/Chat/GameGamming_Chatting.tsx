@@ -8,8 +8,8 @@ const GameGamming_Chatting = () => {
     const [chats, setChats] = useState([]);
 
     const onChatChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
-      console.log(e.target.value);
       setChat(e.target.value);
+      if(chat.length >= 43) setChat(chat.substring(0, 42));
     };
   
     const sendChat = (): void => {
