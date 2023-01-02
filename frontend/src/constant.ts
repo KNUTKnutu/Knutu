@@ -35,6 +35,7 @@ export const STATUSCODE__FORBIDDEN: ResponseStatusCode = 403; // 리소스에 �
 export const STATUSCODE__PAGE_NOT_FOUND: ResponseStatusCode = 404; // 페이지를 찾을 수 없음
 export const STATUSCODE__METHOD_NOT_ALLOWED: ResponseStatusCode = 405; // 허가 되지 않은 방식의 요청
 export const STATUSCODE__REQUEST_TIMEOUT: ResponseStatusCode = 408; // 요청 대기시간이 지난 상태
+export const STATUSCODE__CONFLICT: ResponseStatusCode = 409; // 이미 로그인 중인 계정에 로그인을 시도하는 등
 export const STATUSCODE__INTERNAL_SERVER_ERROR: ResponseStatusCode = 500; // 서버가 다운된 상태
 export const STATUSCODE__BAD_GATEWAY: ResponseStatusCode = 502; // 서버의 프록시 설정이나 리다이렉션, nginx 등이 뭔가 문제가 있어서 Response를 줄라니 배배 꼬여 이상해져서 Response를 아싸리 안 주려고 결정한 상황
 export const STATUSCODE__SERVICE_UNAVAILABLE: ResponseStatusCode = 503; // 서비스가 이용 불가능함

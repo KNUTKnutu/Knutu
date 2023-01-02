@@ -61,7 +61,7 @@ public class LobbySceneWSHandler {
         try {
             LobbySceneService instance = LobbySceneService.getInstance();
             String userName = instance.userNameBySession.get(session.getId());
-            if(!instance.onSessionClosed(userName)) {
+            if(!instance.onSessionClosed(userName, session.getId())) {
                 log.info("failed to logout on onClose method from LobbySceneWSHandler");
             }
         } catch (Exception e) {

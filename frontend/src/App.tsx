@@ -47,7 +47,7 @@ const App = () => {
         }));
         break;
       case "onLobbyEntrance":
-        setUser(body);
+        setUser(json.payload.data);
         break;
       case "currentChannelInfo":
         const users = Object.values(body.onlineUsers);
