@@ -214,23 +214,14 @@ public class LobbySceneService {
 
 
     public boolean isUserLoggedIn(String userName) {
+        System.out.println(onlineUsers.get(userName));
         if(onlineUsers.get(userName) != null) return true;
         return false;
     }
 
     public boolean logOut(String userName) {
         try {
-            for(User user : this.onlineUsers.values()) {
-                if(user.getName().equals(userName))
-                    this.onlineUsers.remove(userName);
-            }
-
-            Channel K =  this.availableChannels.get("K");
-            K.getOnlineUsers().remove(userName);
-            this.availableChannels.put("K", K);
-
-            this.gamingUsers.remove(userName);
-
+            // do nothing
             return true;
         } catch (Exception e) {
             e.getCause();
@@ -238,10 +229,15 @@ public class LobbySceneService {
         }
     }
 
-    public boolean onSessionClosed(String userName) {
+    public boolean onSessionClosed(String userName, String sessionId) {
         try {
             Channel K =  this.availableChannels.get("K");
+            K.getOnlineUsers().remove(userName);
+            this.availableChannels.put("K", K);
             K.setUserCount(K.getUserCount() - 1);
+            this.onlineUsers.remove(userName);
+            this.gamingUsers.remove(userName);
+            this.userNameBySession.remove(sessionId);
             return true;
         } catch (Exception e) {
             e.getCause();

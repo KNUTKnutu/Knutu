@@ -4,6 +4,7 @@ import {
   LOGIN,
   PW,
   SINGNUP,
+  STATUSCODE__CONFLICT,
   STATUSCODE__INTERNAL_SERVER_ERROR,
   STATUSCODE__OK,
   STATUSCODE__UNAUTHORIZED,
@@ -15,7 +16,7 @@ import {
   get__signin,
 } from "../../../../../../Logic/API/GET/get";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Login/_login.module.scss";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { channelsState, isLoggedOutRecently, userState } from "../../../../../../Recoil/atom";
 import { unwatchFile } from "fs";
 import { AxiosError } from "axios";
@@ -37,7 +38,7 @@ const Login = ({ setCurrLoginState }: Props) => {
   const [isRememberId, setIsRememberId]: any = useState(false);
   const [isAutoLogin, setIsAutoLogin]: any = useState(false);
 
-  const setUser = useSetRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
   const setChannels = useSetRecoilState(channelsState);
 
   const isLoggedOut = useRecoilValue(isLoggedOutRecently);
@@ -97,6 +98,9 @@ const Login = ({ setCurrLoginState }: Props) => {
       switch (res?.response?.status) {
         case STATUSCODE__UNAUTHORIZED:
           setIsError(STATUSCODE__UNAUTHORIZED);
+          break;
+        case STATUSCODE__CONFLICT:
+          setIsError(STATUSCODE__CONFLICT);
           break;
         default:
           break;
@@ -178,6 +182,11 @@ const Login = ({ setCurrLoginState }: Props) => {
               {isError === STATUSCODE__UNAUTHORIZED && (
                 <div style={{ color: "red", marginTop: "4px" }}>
                   아이디와 비밀번호를 확인 후 다시 입력해주세요.
+                </div>
+              )}
+              {isError === STATUSCODE__CONFLICT && (
+                <div style={{ color: "red", marginTop: "4px" }}>
+                  이미 로그인 중인 아이디입니다.
                 </div>
               )}
               <button>{LOGIN}</button>
