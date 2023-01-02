@@ -33,9 +33,10 @@ public class GameSceneService {
     private Map<String, User> onlineUsers = instances.onlineUsers;
     private Map<String, Room> gameRooms = LobbySceneInstances.getInstance().gameRooms;
     
-    private Map<String, Collection<Session>> sessionsInRoom = instances.sessionsInRoom;
-    private Map<String, String> userLocationMapWithName = instances.userLocationMapWithName;
-    private Map<String, String> userLocationMapWithSessionID = instances.userLocationMapWithName;
+    public Map<String, Collection<Session>> sessionsInRoom = instances.sessionsInRoom;
+    public Map<String, String> userLocationMapWithName = instances.userLocationMapWithName;
+    public Map<String, String> userLocationMapWithSessionID = instances.userLocationMapWithName;
+    public Map<String, String> userNameBySession = instances.userNameBySession;
 
     public String onRequestRoomInfo(Session _session, JSONObject _requestPacket) throws Exception  {
         return simpleRoomReturn(_session, _requestPacket);
@@ -73,6 +74,8 @@ public class GameSceneService {
 
         this.userLocationMapWithName.put(userName, roomId);
         this.userLocationMapWithSessionID.put(_session.getId(), roomId);
+        this.userNameBySession.put(_session.getId(), userName);
+
         Collection<Session> sessions = this.sessionsInRoom.get(roomId);
 
         if(sessions == null) {

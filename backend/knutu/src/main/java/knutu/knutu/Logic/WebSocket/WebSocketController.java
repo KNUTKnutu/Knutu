@@ -27,6 +27,7 @@ public class WebSocketController {
     private GameSceneService gameSceneInstances = GameSceneService.getInstance();
 
     public void WSController(String msg, Session session) throws Exception {
+        System.out.println(msg);
         requestPacket = (JSONObject) this.jsonParser.parse(msg);
         JSONObject requestHeader = (JSONObject) requestPacket.get("header");
         String headerType = requestHeader.get("type").toString();
@@ -41,6 +42,7 @@ public class WebSocketController {
         Collection<Session> sessions = new LinkedList<Session>();
         String roomId;
     
+        // TODO case별로 호출 메소드를 따로 파서 정리하기. 이대로는 switch문 내부가 너무 굵어져, 점점 복잡해짐.
         switch(headerType) {
             case "onLobbyEntrance":
                 type = "onLobbyEntrance";
@@ -96,5 +98,4 @@ public class WebSocketController {
             this.setAndRespond(type, payload, session);
         }
     }
-
 }

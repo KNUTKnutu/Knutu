@@ -22,4 +22,5 @@ public class GameSceneInstances {
     public Map<String, Collection<Session>> sessionsInRoom = new HashMap<String, Collection<Session>>();
     public Map<String, String> userLocationMapWithName = new HashMap<String, String>();
     public Map<String, String> userLocationMapWithSessionID = new HashMap<String, String>();
+    public Map<String, String> userNameBySession = new HashMap<String, String>();
 }

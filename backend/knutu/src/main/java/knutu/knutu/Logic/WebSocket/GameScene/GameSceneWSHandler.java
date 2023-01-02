@@ -1,5 +1,7 @@
 package knutu.knutu.Logic.WebSocket.GameScene;
 
+import java.net.http.WebSocket;
+import java.time.Instant;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,6 +18,7 @@ import com.google.gson.GsonBuilder;
 
 import knutu.knutu.Logic.Library.JSONBeautifier;
 import knutu.knutu.Logic.WebSocket.WebSocketController;
+import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneService;
 import knutu.knutu.Service.lib.classes.User.User;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,7 +60,18 @@ public class GameSceneWSHandler {
         }
         this.clients.remove(session);
         this.onlineUsers.remove(session.getId());
+        this.exitRoomOnSocketClose(session);
 	}
     
     // private methods
+    private void exitRoomOnSocketClose(Session session) throws Exception {
+        GameSceneService gameSceneServiceInstance = GameSceneService.getInstance();
+        String userName = gameSceneServiceInstance.userNameBySession.get(session.getId());
+        String roomId = gameSceneServiceInstance.userLocationMapWithName.get(userName);
+
+        LobbySceneService.getInstance().exitRoomByUserName(userName);
+        
+        String msg = "{\"header\":{\"type\":\"requestExitRoom\",\"date\":" + Instant.now().toEpochMilli() + "},\"payload\":{\"roomId\":" + roomId + ",\"userName\":\"" + userName + "\"}}";
+        WebSocketController.getInstance().WSController(msg, session);
+    }
 }
