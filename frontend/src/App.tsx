@@ -13,7 +13,7 @@ const App = () => {
   KnutuAudioHandler.getInstance().setLoop();
 
   const roomId = useRecoilValue(enteredRoomIdState);
-  const user = useRecoilValue(userState);
+  const [user, setUser] = useRecoilState(userState);
   const [enteredRoom, setEnteredRoom] = useRecoilState(enteredRoomState);
 
   const setCurrentRoomsState = useSetRecoilState(roomsState);
@@ -42,13 +42,19 @@ const App = () => {
     switch(type) {
       case "currentRooms":
         setCurrentRoomsState(body);
+        webSocketHandler.send("onLobbyEntrance", webSocketHandler.wrapPacket("onLobbyEntrance", {
+          user
+        }));
+        break;
+      case "onLobbyEntrance":
+        setUser(body);
         break;
       case "currentChannelInfo":
-      const users = Object.values(body.onlineUsers);
-      const sortedUsers: any = users.sort((a: any, b: any) => {
-        return b.level - a.level;
-      });
-      setUsersState(sortedUsers);
+        const users = Object.values(body.onlineUsers);
+        const sortedUsers: any = users.sort((a: any, b: any) => {
+          return b.level - a.level;
+        });
+        setUsersState(sortedUsers);
         break;
       case "onGameWaitingEntrance":
         const packet: WebSocketPacket = {
