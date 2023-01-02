@@ -9,7 +9,7 @@ const GameGamming_Chatting = () => {
 
     const onChatChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
       setChat(e.target.value);
-      if(chat.length >= 43) setChat(chat.substring(0, 42));
+      if(chat.length >= 43) setChat(chat.substring(0, 43));
     };
   
     const sendChat = (): void => {

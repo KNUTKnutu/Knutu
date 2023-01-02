@@ -214,7 +214,6 @@ public class LobbySceneService {
 
 
     public boolean isUserLoggedIn(String userName) {
-        System.out.println(onlineUsers.get(userName));
         if(onlineUsers.get(userName) != null) return true;
         return false;
     }

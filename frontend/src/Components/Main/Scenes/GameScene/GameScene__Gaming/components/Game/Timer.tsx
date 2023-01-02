@@ -3,16 +3,12 @@ import styles from "../../../../../../../Styles/Components/Main/Scenes/GameScene
 const Timer = () => {
   return (
     <div className={styles.timer}>
-      <div>
-        <div>
-          <div>10초</div>
-        </div>
-      </div>
-      <div>
-        <div>
-          <div>120초</div>
-        </div>
-      </div>
+      <span>
+        10초
+      </span>
+      <span>
+        120초
+      </span>
     </div>
   );
 };

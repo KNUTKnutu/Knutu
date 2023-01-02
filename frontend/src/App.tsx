@@ -47,6 +47,7 @@ const App = () => {
         }));
         break;
       case "onLobbyEntrance":
+        // TODO. 로비에 들어가면서 이미 로그인 된 유저인지 한 번 더 체크하는 로직 필요.
         setUser(json.payload.data);
         break;
       case "currentChannelInfo":

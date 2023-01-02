@@ -31,7 +31,7 @@ public class LobbySceneWSHandler {
         WebSocketController.getInstance().WSController(msg, session);
     }
 
-    @Scheduled(fixedDelay = 6000)
+    @Scheduled(fixedDelay = 500)
     public void onPollingTime() throws Exception {
         for(Session session : this.clients) {
             if(!this.serviceInstance.sendCurrentRooms(session)) log.info("error occured while broadcasting room infos");

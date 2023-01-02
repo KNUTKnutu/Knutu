@@ -27,7 +27,6 @@ public class WebSocketController {
     private GameSceneService gameSceneInstances = GameSceneService.getInstance();
 
     public void WSController(String msg, Session session) throws Exception {
-        System.out.println(msg);
         requestPacket = (JSONObject) this.jsonParser.parse(msg);
         JSONObject requestHeader = (JSONObject) requestPacket.get("header");
         String headerType = requestHeader.get("type").toString();
