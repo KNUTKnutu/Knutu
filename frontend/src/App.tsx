@@ -39,6 +39,7 @@ const App = () => {
 
     const webSocketHandler: KnutuWebSocketHandler = KnutuWebSocketHandler.getInstance();
 
+    // TODO. switch문 따로 함수 구비 필요. 너무 굵어져 유지보수 힘듦
     switch(type) {
       case "currentRooms":
         setCurrentRoomsState(body);

@@ -20,8 +20,6 @@ public class Fibonacci {
         return a3;
     }
 
-    // 황여진 TODO: Experience Table을 만들고, 거기에 Hash 필요
-    // 황여진 TODO: 직접 Fibonacci를 Brute Force로 10 내지는 20정도까지 구해보고 아래 함수가 참인지 판별 요청.
     public static double getTotalExperience(int level) {
     	if(experienceTable.containsKey(level)) return experienceTable.get(level);
 
