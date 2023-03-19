@@ -25,15 +25,14 @@ export const currentSceneState = atom<string>({
           case SCENE__INTROSCENE:
             break;
           case SCENE__LOBBYSCENE:
-            clip = KnutuAudioHandler.clipLobbyScene
+            clip = KnutuAudioHandler.clipLobbyScene;
+            KnutuAudioHandler.audio.play(clip);
             targetScene = "LobbyScene";
             break;
           case SCENE__GAMESCENE:
-            clip = KnutuAudioHandler.clipGameSceneWaiting;
             targetScene = "GameScene";
             break;
         }
-        KnutuAudioHandler.getInstance().play(clip);
         webSocketHandler.setEnabledScene(targetScene);
       });
     },
