@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { enteredRoomState } from "../../../../../../../Recoil/atom";
+import KnutuWebSocketHandler from "../../../../../../../Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
+import { enteredRoomState, userState, wordState } from "../../../../../../../Recoil/atom";
 import styles from "../../../../../../../Styles/Components/Main/Scenes/GameScene/Gamming/_gameGamming.module.scss";
 
 const QuestionBoard = () => {
 
   const [boardInput, setBoardInput] = useState("");
+  const user = useRecoilValue(userState);
   const room = useRecoilValue(enteredRoomState);
+  const word = useRecoilValue(wordState);
+
+  useEffect(() => {
+    /* todo */
+  }, [word]);
 
   // 이부분은 방 설정에 따른 정해진 길이의 랜덤 단어가 처음에 주어질 것
   const {roundWord: round_suggestion, startWord} = room;
@@ -21,12 +28,25 @@ const QuestionBoard = () => {
     if(boardInput.length >= 17) setBoardInput(boardInput.substring(0, 17));
   }
 
+  const onKeyUp = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if(e.code === "Enter") {
+      console.log("test");
+      const webSocketHandler: KnutuWebSocketHandler = KnutuWebSocketHandler.getInstance();
+      const payload = webSocketHandler.wrapPacket("requestSubmitWord", {
+        word: boardInput,
+        userName: user?.name,
+        roomId: room?.number
+      });
+      webSocketHandler.send("requestSubmitWord", payload);
+    }
+  }
+
   return (
     <div className={styles.questionboard}>
       <div className={styles.board_suggestion}>{create_round}</div>
       <div className={styles.board_question}>{startWord}</div>
       <div className={styles.board_input_container}>
-        <input className={styles.board_input} placeholder="여기에 입력해주세요" value={boardInput} onChange={onInputChange} />
+        <input className={styles.board_input} placeholder="여기에 입력해주세요" value={boardInput} onChange={onInputChange} onKeyUp={onKeyUp}/>
       </div>
     </div>
   );

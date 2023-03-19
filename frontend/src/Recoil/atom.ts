@@ -97,6 +97,11 @@ export const enteredRoomIdState = atom<number>({
   default: 0,
 });
 
+export const wordState = atom<String>({
+  key: "wordState",
+  default: ""
+})
+
 export const enteredRoomState = atom({
   key: "enteredRoomState",
   default: {

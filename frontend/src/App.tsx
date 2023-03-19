@@ -31,6 +31,7 @@ const App = () => {
   }, []);
   const messageListener = (msg: any) => {
 
+    console.log(msg);
     const json = JSON.parse(msg.data);
     const { payload } = json;
     const { type } = json.header;
@@ -108,6 +109,19 @@ const App = () => {
         KnutuAudioHandler.audio.play(KnutuAudioHandler.clipGameSceneGaming);
         KnutuAudioHandler.audio.setPlaybackRate(1); // 추후, 턴 남은 시간과 라운드 남은 시간을 적절히 조합하여, Playback Rate를 조절하여 긴장감을 증폭시켜야 함.
         break;
+      case "requestSubmitWord":
+        const {validation, correct, inputWord, queryResult} = json.payload.data;
+        if(validation == "passed") {
+          if(correct) {
+            window.alert(`correct word - ${queryResult}, input word - ${inputWord}`);
+            
+          }
+          else {
+            window.alert(`wrong word - ${queryResult}, input word - ${inputWord}`);
+          }
+        }
+        // KnutuAudioHandler.audio.play()
+        // KnutuAudioHandler.audio.setPlaybackRate(1); // 추후, 턴 남은 시간과 라운드 남은 시간을 적절히 조합하여, Playback Rate를 조절하여 긴장감을 증폭시켜야 함.
     }
   };
 

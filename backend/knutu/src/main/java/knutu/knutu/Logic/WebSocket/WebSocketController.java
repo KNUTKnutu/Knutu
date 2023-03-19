@@ -87,6 +87,14 @@ public class WebSocketController {
                 type = "requestRoundStart";
                 payload = this.gameSceneInstances.onRequestRoundStart(session, requestPacket);
                 break;
+            case "requestSubmitWord":
+                type = "requestSubmitWord";
+                roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
+                sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
+                payload = this.gameSceneInstances.onRequestSubmitWord(session, requestPacket);
+                lock.unlock();
+                this.setAndRespond(type, payload, sessions);
+                return;
             default:
                 break;
         }

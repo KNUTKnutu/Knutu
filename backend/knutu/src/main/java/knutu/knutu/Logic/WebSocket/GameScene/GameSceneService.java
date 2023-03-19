@@ -8,7 +8,9 @@ import java.util.Map;
 
 import javax.websocket.Session;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -165,7 +167,7 @@ public class GameSceneService {
 
                 // 2) logically start game
                 room.setExpireTimeToken(timestamp + room.getRemainTime());
-
+                /* todo */
             }
 
             return "{}";
@@ -174,6 +176,46 @@ public class GameSceneService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public String onRequestSubmitWord(Session _session, JSONObject _requestPacket) throws Exception {
+        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
+        String word = (String) requestedPayload.get("word");
+        String userName = (String) requestedPayload.get("userName");
+        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+
+        // 해당 턴을 진행 중인 유저가 맞는 지 Validate
+        Room room = this.gameRooms.get(roomId);
+        if(!room.getPlayers().get(room.getTurn()).getName().equals(userName))
+        return "{\"validation\": \"passed\", \"correct\": \"" + null + "\", \"inputWord\": \"" + word + "\", \"queryResult\": \"" + null + "\"}";
+
+        // 그런 단어가 표준국어대사전에 있는 지 확인
+        JSONParser jsonParser = new JSONParser();
+
+        String queryWord = StdictLib.getstdictLibInstance().simpleQuery(word);
+        boolean isCorrect = !queryWord.isEmpty();
+
+        // 단어가 존재하지 않으면
+        if(isCorrect == false) {
+            return "{\"validation\": \"passed\", \"correct\": \"" + isCorrect + "\", \"inputWord\": \"" + word + "\", \"queryResult\": \"" + null + "\"}";
+        }
+
+        // 단어가 존재하면
+        JSONObject queryJSON = (JSONObject) jsonParser.parse(queryWord);
+        JSONObject channel = (JSONObject) queryJSON.get("channel");
+        JSONArray items = (JSONArray) channel.get("item");
+
+        JSONObject item = (JSONObject) items.get(0);
+        String confirmedWord = (String) item.get("word");
+
+        // 최근에 입력된 단어와, 단어의 첫 글자를 room 정보에 저장
+        room.setCurrWord(confirmedWord);
+        room.setStartWord(confirmedWord.substring(0, 1));
+        if(room.getTurn() + 1 == room.getPlayers().size()) 
+            room.setTurn(Short.parseShort("0"));
+        else room.setTurn(Short.parseShort(Integer.toString(room.getTurn() + 1)));
+
+        return "{\"validation\": \"passed\", \"correct\": \"" + isCorrect + "\", \"inputWord\": \"" + word + "\", \"queryResult\": \"" + confirmedWord + "\"}";
     }
 
     private void broadCastAllPlayerReady(String roomId) throws Exception {
