@@ -69,6 +69,7 @@ public class GameSceneWSHandler {
         String userName = gameSceneServiceInstance.userNameBySession.get(session.getId());
         String roomId = gameSceneServiceInstance.userLocationMapWithName.get(userName);
 
+        log.info("testing 1");
         LobbySceneService.getInstance().exitRoomByUserName(userName);
         
         String msg = "{\"header\":{\"type\":\"requestExitRoom\",\"date\":" + Instant.now().toEpochMilli() + "},\"payload\":{\"roomId\":" + roomId + ",\"userName\":\"" + userName + "\"}}";

@@ -31,7 +31,7 @@ public class LobbySceneWSHandler {
         WebSocketController.getInstance().WSController(msg, session);
     }
 
-    @Scheduled(fixedDelay = 500)
+    @Scheduled(fixedDelay = 2000)
     public void onPollingTime() throws Exception {
         for(Session session : this.clients) {
             if(!this.serviceInstance.sendCurrentRooms(session)) log.info("error occured while broadcasting room infos");
@@ -42,6 +42,7 @@ public class LobbySceneWSHandler {
 	
 	@OnOpen
 	public void onOpen(Session session) {
+        log.info("testing 2");
         if(this.clients.contains(session)) {
             log.info(String.format("duplicated session id tried to connect through websocket: %s", session.getId()));
             return;

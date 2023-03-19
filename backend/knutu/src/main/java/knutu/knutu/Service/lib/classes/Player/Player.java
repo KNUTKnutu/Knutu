@@ -14,4 +14,5 @@ public class Player {
     private boolean isAccountgaemaeneo; // 개매너 유저인지
     private boolean isReady;            // 레디를 박았는 지(gaming으로 들어가면 모두 false로 변경됨)
     private int score;
+    private boolean isReadyToProcessRound;   // 라운드를 진행할 준비가 되었는 지
 }

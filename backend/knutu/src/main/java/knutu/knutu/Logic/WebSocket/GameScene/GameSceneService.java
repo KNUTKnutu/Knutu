@@ -61,7 +61,16 @@ public class GameSceneService {
             }
         }
 
-        Room room = LobbySceneService.getInstance().getRoom(roomId);
+        LobbySceneService lobbySceneInstance = LobbySceneService.getInstance();
+
+        User user = lobbySceneInstance.getUserByUserName(userName);
+        System.out.println(userName);
+        System.out.println(user);
+        if(user != null)
+            lobbySceneInstance.enterChannel(user, "K");
+        
+        Room room = lobbySceneInstance.getRoom(roomId);
+
         String ret = gson.toJson(room);
 
         return ret;
@@ -119,6 +128,54 @@ public class GameSceneService {
         }
     }
 
+    public String onRequestRoundStart(Session _session, JSONObject _requestPacket) {
+        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
+        String userName = (String) requestedPayload.get("userName");
+        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+
+        try {
+            Room room = this.gameRooms.get(this.getRoomIdSessionBelongs(_session));
+            if(room != null) {
+                List<Player> players = room.getPlayers();
+
+                for(Player player : players) {
+                    if(player.getName().equals(userName)) {
+                        player.setReadyToProcessRound(true);
+                        break;
+                    }
+                }
+
+                for(Player player : players) {
+                    if(!player.isReadyToProcessRound()) {
+                        return "{}";
+                    }
+                }
+                
+                // 위 리턴에 걸리지 않았다면 모든 플레이어가 라운드를 진행할 준비가 된 것으로 간주.
+                // 방 내에 있는 모든 세션에 round Start 되었다는 broadcast를 돌리고, 라운드를 시작.
+
+                // 1) broadcasting
+                long timestamp = Instant.now().toEpochMilli();
+                Collection<Session> sessions = this.getSessionsInRoom(roomId);
+                String packet = "{\"header\": {\"type\": \"" + "onRoundStart" + "\", \"timestamp\": \"" + timestamp + "\"}, \"payload\": {\"data\": {}}}";
+
+                for (Session session : sessions) {
+                    session.getBasicRemote().sendText(packet);
+                }
+
+                // 2) logically start game
+                room.setExpireTimeToken(timestamp + room.getRemainTime());
+
+            }
+
+            return "{}";
+        } catch(Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private void broadCastAllPlayerReady(String roomId) throws Exception {
         Collection<Session> sessions = this.getSessionsInRoom(roomId);
 
@@ -153,6 +210,9 @@ public class GameSceneService {
                 roundWord = "서울고속버스터미널";
                 break;
         }
+
+        room.setRoundWord(roundWord);
+        room.setStartWord(roundWord.substring(0, 1));
 
         String packet = "{\"header\": {\"type\": \"" + "allPlayerReady" + "\", \"timestamp\": \"" + Instant.now().toEpochMilli() + "\"}, \"payload\": {\"data\": {\"allPlayerReady\": true, \"roundWord\": \"" + roundWord + "\"}}}";
         

@@ -32,7 +32,7 @@ const App = () => {
   const messageListener = (msg: any) => {
 
     const json = JSON.parse(msg.data);
-    const { body } = json;
+    const { payload } = json;
     const { type } = json.header;
 
     console.log(json);
@@ -42,7 +42,7 @@ const App = () => {
     // TODO. switch문 따로 함수 구비 필요. 너무 굵어져 유지보수 힘듦
     switch(type) {
       case "currentRooms":
-        setCurrentRoomsState(body);
+        setCurrentRoomsState(payload);
         webSocketHandler.send("onLobbyEntrance", webSocketHandler.wrapPacket("onLobbyEntrance", {
           user
         }));
@@ -52,7 +52,7 @@ const App = () => {
         setUser(json.payload.data);
         break;
       case "currentChannelInfo":
-        const users = Object.values(body.onlineUsers);
+        const users = Object.values(payload.onlineUsers);
         const sortedUsers: any = users.sort((a: any, b: any) => {
           return b.level - a.level;
         });
@@ -90,7 +90,20 @@ const App = () => {
           roundWord,
           currWord: roundWord
         });
+        webSocketHandler.send("requestGameState", webSocketHandler.wrapPacket("requestGameState", {
+          roomId
+        }));
+        setTimeout(() => {
+          webSocketHandler.send("requestRoundStart", webSocketHandler.wrapPacket("requestRoundStart", {
+            userName: user?.name,
+            roomId
+          }));
+        }, 4000);
         break;
+      case "requestGameState":
+        setEnteredRoom(json.payload.data);
+      case "onRoundStart":
+        /* 라운드 시작. */
     }
   };
 

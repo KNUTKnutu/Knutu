@@ -13,6 +13,8 @@ const WatingList = () => {
     return <WatingUser key={player.name} userinfo={player} />
   });
 
+  console.log(roomState);
+
   return (
     <div>
       <div className={styles.wating_list}>{userlist}</div>

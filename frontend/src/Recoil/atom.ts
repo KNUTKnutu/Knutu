@@ -112,7 +112,12 @@ export const enteredRoomState = atom({
     pw: "",
     players: [],
     roundWord: "",
-    currWord: ""
+    currWord: "",
+    remainTime: -1,
+    currRound: -1,
+    turn: -1,
+    turnRemainTime: -1,
+    startWord: "",
   }
   // { number, title, mode, rounds, limitTime, players }
 });
