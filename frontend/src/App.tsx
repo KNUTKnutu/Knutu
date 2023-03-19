@@ -98,12 +98,16 @@ const App = () => {
             userName: user?.name,
             roomId
           }));
-        }, 4000);
+        }, 3500);
         break;
       case "requestGameState":
         setEnteredRoom(json.payload.data);
+        KnutuAudioHandler.audio.playOneShot(KnutuAudioHandler.clipGameStart);
+        break;
       case "onRoundStart":
-        /* 라운드 시작. */
+        KnutuAudioHandler.audio.play(KnutuAudioHandler.clipGameSceneGaming);
+        KnutuAudioHandler.audio.setPlaybackRate(1); // 추후, 턴 남은 시간과 라운드 남은 시간을 적절히 조합하여, Playback Rate를 조절하여 긴장감을 증폭시켜야 함.
+        break;
     }
   };
 
