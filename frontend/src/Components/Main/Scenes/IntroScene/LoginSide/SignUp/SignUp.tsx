@@ -129,7 +129,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
             />
             <label htmlFor="email">{EMAIL}</label>
           </div>
-          {(id && pw && confirm_pw && name && email) && <button>{SINGNUP}</button>}
+          <button>{SINGNUP}</button>
           <div className={styles.sub}>
             <span onClick={onClickLogin}>{LOGIN}</span>|
             <span onClick={onClickFind}>아이디/비밀번호 찾기</span>
