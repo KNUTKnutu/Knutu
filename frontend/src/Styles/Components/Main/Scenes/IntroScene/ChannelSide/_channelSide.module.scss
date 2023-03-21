@@ -14,10 +14,25 @@
 
     .title {
       border-bottom: 1px solid black;
+      display: flex;
+      justify-content: space-between;
       h2 {
         margin: 20px;
         margin-left: 52px;
         font-size: 2rem;
+      }
+      .auto_button {
+        left: 0;
+        top: 0;
+        border: 1px solid black;
+        padding: 10px;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 1.25rem;
+
+        background-color: white;
+        margin: 10px 52px 10px;
+        cursor: pointer;
       }
     }
 
