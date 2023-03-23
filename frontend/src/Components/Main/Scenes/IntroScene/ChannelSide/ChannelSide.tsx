@@ -45,6 +45,7 @@ const ChannelSide = () => {
       <div className={`${styles.channel_main} ${!user && styles.yet}`}>
         <div className={styles.title}>
           <h2>채널 선택</h2>
+          <button className={styles.auto_button}>Auto Enter</button>
         </div>
         <div className={styles.channels}>
           {channelsList.map((channel, idx) => (
