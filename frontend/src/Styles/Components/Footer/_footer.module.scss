@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   background-color: $header-footer-bg-color;
   color: $header-footer-color;
   padding: 0 $header-footer-gutter-x;
@@ -12,5 +13,10 @@
 
   & > button:hover {
     cursor: pointer;
+  }
+
+  .clock {
+    font-size: 40px;
+    display: inline-block;
   }
 }
