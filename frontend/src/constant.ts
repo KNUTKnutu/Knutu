@@ -8,7 +8,7 @@ export const SCENE__LOBBYSCENE: SceneNameType = "LobbyScene";
 export const SCENE__GAMESCENE: SceneNameType = "GameScene";
 
 export const LOGO: string = "끄누투 코리아";
-export const TITLE: string = "CCONAC";
+export const TITLE: string = "KNUTU";
 
 // IntroScene Constant
 export const LOGIN: UserInformation = "로그인";
