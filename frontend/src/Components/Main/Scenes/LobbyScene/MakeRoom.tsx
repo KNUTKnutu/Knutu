@@ -18,7 +18,7 @@ import {
 } from "../../../../constant";
 import { checkRoomEnterable, getAvailableRoomId } from "../../../../Logic/API/GET/get";
 import { postEnterRoom, post__makeRoom } from "../../../../Logic/API/POST/post";
-import { currentSceneState, enteredRoomIdState, userState } from "../../../../Recoil/atom";
+import { currentSceneState, enteredRoomIdState, fallState, userState } from "../../../../Recoil/atom";
 import styles from "../../../../Styles/Components/Main/Scenes/LobbyScene/_makeScene.module.scss";
 
 interface Props {
@@ -30,7 +30,8 @@ const MakeRoom = ({ setIsShow }: Props) => {
   const user = useRecoilValue(userState);
   const setEnteredRoomIdState = useSetRecoilState(enteredRoomIdState);
   const setCurrentScene = useSetRecoilState(currentSceneState);
-  
+  const setFallScene = useSetRecoilState(fallState);
+
   const [roomInfo, setRoomInfo] = useState({
     title: "", // 방 이름
     isPw: false, // 비밀번호를 설정할 것인지 설정하지 않을 것인지
@@ -71,7 +72,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+    setFallScene(true);
     getAvailableRoomId().then(res => {
       // TODO: 아래 res.data 에 있는 빨간 줄 치워야 함. build 불가
       let roomId = res.data;
@@ -88,6 +89,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
           if(res?.status == 200) {
             checkRoomEnterable(roomId)
               .then((res) => {
+                setTimeout(()=> setFallScene(false), 2000);
                 if(res?.status == 200) {
                   postEnterRoom(roomId, user)
                     .then((res) => {

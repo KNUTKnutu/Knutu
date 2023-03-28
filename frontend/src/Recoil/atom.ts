@@ -135,3 +135,8 @@ export const isGameInProgress = atom({
   key: "isGameInProgress",
   default: false
 })
+
+export const fallState = atom({
+  key: "fallState",
+  default: false
+})

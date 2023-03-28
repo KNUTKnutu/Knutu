@@ -3,7 +3,7 @@ import Main from "./Components/Main/Main";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
-import { enteredRoomIdState, enteredRoomState, isGameInProgress, mountOpacity, roomsState, usersState, userState } from "./Recoil/atom";
+import { enteredRoomIdState, enteredRoomState, fallState, isGameInProgress, mountOpacity, roomsState, usersState, userState } from "./Recoil/atom";
 import KnutuWebSocketHandler from "./Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
 import { WebSocketPacket } from "./Logic/Library/KnutuWebSocket/KnutuWebSocketTypes";
 import KnutuAudioHandler from "./Logic/Library/KnutuAudio/KnutuAudioHandler";
@@ -19,6 +19,7 @@ const App = () => {
   const setCurrentRoomsState = useSetRecoilState(roomsState);
   const setUsersState = useSetRecoilState(usersState);
   const setIsGameInProgress = useSetRecoilState(isGameInProgress);
+  const setFallScene = useSetRecoilState(fallState);
 
   // mount 시 Scene에 opacity:0 부여
   const [opacity, setOpacity] = useRecoilState(mountOpacity);
@@ -84,8 +85,10 @@ const App = () => {
         setEnteredRoom(json.payload.data);
         break;
       case "allPlayerReady":
+        setFallScene(true);
         setIsGameInProgress(true);
         const {payload: {data: {roundWord}}} = json;
+        setTimeout(()=> setFallScene(false), 2000);
         setEnteredRoom({
           ...enteredRoom,
           roundWord,
