@@ -5,7 +5,7 @@ const Footer = (): JSX.Element => {
   const [clockText, setClockText]: [string, React.Dispatch<React.SetStateAction<string>>] = useState<string>("");
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
+    setInterval(() => {
       setClockText(getClockText());
     }, 1000);
   }, []);
@@ -19,14 +19,19 @@ const Footer = (): JSX.Element => {
 
 const getClockText = (): string => {
   const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const hour = date.getHours();
-  const minute = date.getMinutes();
-  const second = date.getSeconds();
-  return `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분 ${second}초`;
-}
+  const dateString = date.toLocaleString("ko-KR", {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hourCycle: 'h24',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
 
+  const replacedString = dateString.replace(/(\d{4})\. (\d{2})\. (\d{2})\. (\d{2}):(\d{2}):(\d{2})/, '$1년 $2월 $3일 $4시 $5분 $6초');
+
+  return replacedString;
+}
 
 export default Footer;
