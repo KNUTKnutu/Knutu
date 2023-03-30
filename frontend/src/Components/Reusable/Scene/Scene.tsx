@@ -1,8 +1,6 @@
 import { useRecoilValue } from "recoil";
 import { currentSceneState, mountOpacity } from "../../../Recoil/atom";
 import styles from "../../../Styles/Components/Reusable/Scene/_scene.module.scss";
-import React from "react";
-
 
 interface SceneProps {
   id: string;
@@ -12,14 +10,17 @@ interface SceneProps {
 const Scene = ({ id, children }: SceneProps) => {
   const currentScene = useRecoilValue(currentSceneState);
   const opacity = useRecoilValue(mountOpacity);
+
   return (
-    <div
-      className={`${styles.scene_container} ${
-        id === currentScene ? styles.active : styles.inactive
-      } ${opacity === true ? styles.visiable : styles.unvisiable }` }
-    >
-      {children}
-    </div>
+    <>
+      <div
+        className={`${styles.scene_container} ${
+          id === currentScene ? styles.active : styles.inactive
+        } ${opacity === true ? styles.visiable : styles.unvisiable}`}
+      >
+        {children}
+      </div>
+    </>
   );
 };
 

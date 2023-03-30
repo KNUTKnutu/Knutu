@@ -3,7 +3,7 @@ import styles from "../../../../../../Styles/Components/Main/Scenes/LobbyScene/_
 import { RoomClass } from "./Class/Room";
 import { roomInfoInterface } from "./Interface/roomOption";
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import { currentSceneState, enteredRoomIdState, userState } from "../../../../../../Recoil/atom";
+import { currentSceneState, enteredRoomIdState, fallState, userState } from "../../../../../../Recoil/atom";
 import { checkRoomEnterable } from "../../../../../../Logic/API/GET/get";
 import { postEnterRoom } from "../../../../../../Logic/API/POST/post";
 
@@ -21,13 +21,16 @@ const Room = ({roomInfo}: any): JSX.Element => {
     
     const setEnteredRoomIdState = useSetRecoilState(enteredRoomIdState);
     const setCurrentScene = useSetRecoilState(currentSceneState);
+    const setFallScene = useSetRecoilState(fallState);
 
-    const onRoomClicked = (e: React.MouseEvent<HTMLDivElement>) => {
+    const onRoomClicked = async (e: React.MouseEvent<HTMLDivElement>) => {
+        setFallScene(true);
         checkRoomEnterable(roomNumber)
             .then((res) => {
-            if(res?.status == 200) {
+                if(res?.status == 200) {
                 postEnterRoom(roomNumber, user)
                     .then((res) => {
+                        setTimeout(()=> setFallScene(false), 2000);
                         setEnteredRoomIdState(roomNumber);
                         setCurrentScene(SCENE__GAMESCENE);
                     });
