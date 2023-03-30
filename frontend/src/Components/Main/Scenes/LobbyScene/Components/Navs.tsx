@@ -3,16 +3,18 @@ import styles from "../../../../../Styles/Components/Main/Scenes/LobbyScene/_lob
 import Dim from "../../../../Dim/Dim";
 import Dialog from "../../../../Reusable/Popup/Dialog/Dialog";
 import MakeRoom from "../MakeRoom";
+import QuickSearchRoom from "../QuickSearchRoom";
 
 const Navs = (): JSX.Element => {
-  const [isShow, setIsShow] = useState(false);
+  const [isMakeRoomShow, setIsMakeRoomShow] = useState(false);
+  const [isQuickSearchShow, setIsQuickSearchShow] = useState(false);
 
   const onClickMakeRoom = (): void => {
-    setIsShow((prev) => !prev);
+    setIsMakeRoomShow((prev) => !prev);
   };
 
   const onClickQuickSearch = (): void => {
-    console.log("onClickQuickSearch");
+    setIsQuickSearchShow((prev) => !prev);
   };
 
   const onClickFriend = (): void => {
@@ -41,7 +43,8 @@ const Navs = (): JSX.Element => {
           <span>상점</span>
         </div>
       </div>
-      {isShow && <Dim children={<MakeRoom setIsShow={setIsShow} />} />}
+      {isMakeRoomShow && <Dim children={<MakeRoom setIsShow={setIsMakeRoomShow} />} />}
+      {isQuickSearchShow && <Dim children={<QuickSearchRoom setIsShow={setIsQuickSearchShow} />} />}
     </>
   );
 };
