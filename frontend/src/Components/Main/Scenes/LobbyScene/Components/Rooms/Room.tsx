@@ -1,6 +1,7 @@
 import { SCENE__GAMESCENE } from "../../../../../../constant";
 import styles from "../../../../../../Styles/Components/Main/Scenes/LobbyScene/_lobbyScene.module.scss";
 import { RoomClass } from "./Class/Room";
+import { roomInfoInterface } from "./Interface/roomOption";
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { currentSceneState, enteredRoomIdState, userState } from "../../../../../../Recoil/atom";
 import { checkRoomEnterable } from "../../../../../../Logic/API/GET/get";

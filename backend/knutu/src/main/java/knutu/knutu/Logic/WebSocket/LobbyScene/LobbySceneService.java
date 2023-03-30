@@ -63,7 +63,6 @@ public class LobbySceneService {
 
     public boolean enterChannel(User user, String channelName) {
         try {
-            System.out.println("testing 3");
             Channel channel = this.availableChannels.get(channelName);
             channel.addUserOnline(user);
             channel.setUserCount(channel.getUserCount() + 1);
@@ -84,7 +83,6 @@ public class LobbySceneService {
 
     public boolean makeRoom(Room room) {
         try {
-            room = this.initRoom(room);
             gameRooms.put(Short.toString(room.getNumber()), room);
             return true;
         } catch (Exception e){
@@ -103,7 +101,6 @@ public class LobbySceneService {
             enteredPlayer.setAccountgaemaeneo(false); // user.getAccountgaemaeneo 가 안돼서 일단 보류
             enteredPlayer.setReady(false);
             enteredPlayer.setScore(0);
-            enteredPlayer.setReadyToProcessRound(false);
 
             user.setInGame(true);
 
@@ -145,8 +142,6 @@ public class LobbySceneService {
 
             Short currEntry = Short.parseShort(Integer.toString(Integer.parseInt(gameRoom.getCurrEntry().toString()) - Integer.parseInt("1")));
             gameRoom.setCurrEntry(currEntry);
-
-            System.out.println(gameRoom.getCurrEntry());
 
             if(currEntry == 0) {
                 gameRooms.remove(Integer.toString(roomId));
@@ -205,34 +200,6 @@ public class LobbySceneService {
         }
     }
 
-    public Room initRoom(Room _room) {
-        _room.setRemainTime(Float.parseFloat(_room.getLimitTime().toString()) * 1000);
-        _room.setCurrRound(Short.parseShort("1"));
-        _room.setTurn(Short.parseShort("0"));
-        _room.setTurnRemainTime(this.getTurnRemainTime(Float.parseFloat(Integer.toString((Short.toUnsignedInt(_room.getLimitTime()) * 1000)))));
-        return _room;
-    }
-
-    public Room processRound(Room _room) {
-        _room.setCurrRound(Short.parseShort(Integer.toString(_room.getCurrRound() + Short.parseShort("1"))));
-        _room.setRemainTime(Float.parseFloat(_room.getLimitTime().toString()) * 1000);
-        _room.setTurnRemainTime(this.getTurnRemainTime(Float.parseFloat(Integer.toString((Short.toUnsignedInt(_room.getLimitTime()) * 1000)))));
-        return _room;
-    }
-
-    public Float getTurnRemainTime(Float _remainTime) {
-        if(_remainTime >= 60_000f)   // 60초 이상 남았을 경우 남은 턴 시간은 10초
-            return 10_000f;
-            
-        if(_remainTime >= 30_000f)   // 30초 이상 남았을 경우 남은 턴 시간은 10초 ~ 8초
-            return 8_000f + ((_remainTime - 30_000f) / 15f);
-
-        if(_remainTime >= 10_000f)   // 10초 이상 남았을 경우 남은 턴 시간은 8초 ~ 3초
-            return 3_000f + ((_remainTime - 10_000f) / 4f);
-
-        return _remainTime / 3_333f;    // 10초 미만 남았을 경우 남은 턴 시간은 3초 미만
-    }
-
     public boolean sendCurrentChannelInfo(Session _session) {
         try {
             Channel channel = this.getChannelInfo("K");
@@ -245,9 +212,6 @@ public class LobbySceneService {
         }
     }
 
-    public User getUserByUserName(String userName) {
-        return onlineUsers.get(userName);
-    }
 
     public boolean isUserLoggedIn(String userName) {
         if(onlineUsers.get(userName) != null) return true;

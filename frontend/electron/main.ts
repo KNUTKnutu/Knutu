@@ -15,7 +15,6 @@ const createWindow = async () => {
   win.setResizable(false);
 
   win.loadURL("http://localhost:3000");
-  win.openDevTools();
 };
 
 app.whenReady().then(() => {

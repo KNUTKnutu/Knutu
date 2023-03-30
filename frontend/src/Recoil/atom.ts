@@ -25,14 +25,15 @@ export const currentSceneState = atom<string>({
           case SCENE__INTROSCENE:
             break;
           case SCENE__LOBBYSCENE:
-            clip = KnutuAudioHandler.clipLobbyScene;
-            KnutuAudioHandler.audio.play(clip);
+            clip = KnutuAudioHandler.clipLobbyScene
             targetScene = "LobbyScene";
             break;
           case SCENE__GAMESCENE:
+            clip = KnutuAudioHandler.clipGameSceneWaiting;
             targetScene = "GameScene";
             break;
         }
+        KnutuAudioHandler.getInstance().play(clip);
         webSocketHandler.setEnabledScene(targetScene);
       });
     },
@@ -97,11 +98,6 @@ export const enteredRoomIdState = atom<number>({
   default: 0,
 });
 
-export const wordState = atom<String>({
-  key: "wordState",
-  default: ""
-})
-
 export const enteredRoomState = atom({
   key: "enteredRoomState",
   default: {
@@ -116,12 +112,7 @@ export const enteredRoomState = atom({
     pw: "",
     players: [],
     roundWord: "",
-    currWord: "",
-    remainTime: -1,
-    currRound: -1,
-    turn: -1,
-    turnRemainTime: -1,
-    startWord: "",
+    currWord: ""
   }
   // { number, title, mode, rounds, limitTime, players }
 });

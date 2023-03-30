@@ -31,9 +31,8 @@ const App = () => {
   }, []);
   const messageListener = (msg: any) => {
 
-    console.log(msg);
     const json = JSON.parse(msg.data);
-    const { payload } = json;
+    const { body } = json;
     const { type } = json.header;
 
     console.log(json);
@@ -43,7 +42,7 @@ const App = () => {
     // TODO. switch문 따로 함수 구비 필요. 너무 굵어져 유지보수 힘듦
     switch(type) {
       case "currentRooms":
-        setCurrentRoomsState(payload);
+        setCurrentRoomsState(body);
         webSocketHandler.send("onLobbyEntrance", webSocketHandler.wrapPacket("onLobbyEntrance", {
           user
         }));
@@ -53,7 +52,7 @@ const App = () => {
         setUser(json.payload.data);
         break;
       case "currentChannelInfo":
-        const users = Object.values(payload.onlineUsers);
+        const users = Object.values(body.onlineUsers);
         const sortedUsers: any = users.sort((a: any, b: any) => {
           return b.level - a.level;
         });
@@ -91,37 +90,7 @@ const App = () => {
           roundWord,
           currWord: roundWord
         });
-        webSocketHandler.send("requestGameState", webSocketHandler.wrapPacket("requestGameState", {
-          roomId
-        }));
-        setTimeout(() => {
-          webSocketHandler.send("requestRoundStart", webSocketHandler.wrapPacket("requestRoundStart", {
-            userName: user?.name,
-            roomId
-          }));
-        }, 3500);
         break;
-      case "requestGameState":
-        setEnteredRoom(json.payload.data);
-        KnutuAudioHandler.audio.playOneShot(KnutuAudioHandler.clipGameStart);
-        break;
-      case "onRoundStart":
-        KnutuAudioHandler.audio.play(KnutuAudioHandler.clipGameSceneGaming);
-        KnutuAudioHandler.audio.setPlaybackRate(1); // 추후, 턴 남은 시간과 라운드 남은 시간을 적절히 조합하여, Playback Rate를 조절하여 긴장감을 증폭시켜야 함.
-        break;
-      case "requestSubmitWord":
-        const {validation, correct, inputWord, queryResult} = json.payload.data;
-        if(validation == "passed") {
-          if(correct) {
-            window.alert(`correct word - ${queryResult}, input word - ${inputWord}`);
-            
-          }
-          else {
-            window.alert(`wrong word - ${queryResult}, input word - ${inputWord}`);
-          }
-        }
-        // KnutuAudioHandler.audio.play()
-        // KnutuAudioHandler.audio.setPlaybackRate(1); // 추후, 턴 남은 시간과 라운드 남은 시간을 적절히 조합하여, Playback Rate를 조절하여 긴장감을 증폭시켜야 함.
     }
   };
 

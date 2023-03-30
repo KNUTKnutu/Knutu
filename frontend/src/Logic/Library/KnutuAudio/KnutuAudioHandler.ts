@@ -15,7 +15,6 @@ class KnutuAudioHandler {
     public static readonly clipAllUserReady: AudioClip = "AllUserReady.mp3";
     public static readonly clipGameSceneGaming: AudioClip = "GameScene_Gaming.mp3";
     public static readonly clipGameSceneWaiting: AudioClip = "GameScene_Waiting.mp3";
-    public static readonly clipGameStart: AudioClip = "GameStart.mp3";
     public static readonly clipIntroScene: AudioClip = "IntroScene.mp3";
     public static readonly clipLobbyScene: AudioClip = "LobbyScene.mp3";
     public static readonly clipOnButtonClick: AudioClip = "OnButtonClick.mp3";

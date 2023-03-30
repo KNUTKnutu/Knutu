@@ -1,6 +1,6 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useRecoilState } from "recoil";
-import { channelsState, enteredRoomIdState, enteredRoomState, readyState, userState } from "../../../../../../Recoil/atom";
+import { enteredRoomIdState, enteredRoomState, readyState, userState } from "../../../../../../Recoil/atom";
 import styles from "../../../../../../styles/Components/Main/Scenes/GameScene/Wating/_gameWating.module.scss";
 import { currentSceneState } from "../../../../../../Recoil/atom";
 import { SCENE__LOBBYSCENE } from "../../../../../../constant";
@@ -15,7 +15,6 @@ const GameRoomInfo = () => {
   const roomState = useRecoilValue(enteredRoomState);
   const roomId = useRecoilValue(enteredRoomIdState);
   const user = useRecoilValue(userState);
-  const channel = useRecoilValue(channelsState);
 
   const setCurrentScene = useSetRecoilState(currentSceneState);
 
@@ -29,7 +28,7 @@ const GameRoomInfo = () => {
     const res = await put__exitRoom(number, user!.name);
     const payload = webSocketHandler.wrapPacket("requestExitRoom", {
       roomId,
-      userName: user?.name,
+      userName: user?.name
     });
     webSocketHandler.send("requestExitRoom", payload);
 
