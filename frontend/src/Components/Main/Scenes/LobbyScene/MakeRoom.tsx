@@ -18,7 +18,7 @@ import {
 } from "../../../../constant";
 import { checkRoomEnterable, getAvailableRoomId } from "../../../../Logic/API/GET/get";
 import { postEnterRoom, post__makeRoom } from "../../../../Logic/API/POST/post";
-import { currentSceneState, enteredRoomIdState, userState } from "../../../../Recoil/atom";
+import { currentSceneState, enteredRoomIdState, fallState, userState } from "../../../../Recoil/atom";
 import styles from "../../../../Styles/Components/Main/Scenes/LobbyScene/_makeScene.module.scss";
 
 interface Props {
@@ -26,6 +26,12 @@ interface Props {
 }
 
 const MakeRoom = ({ setIsShow }: Props) => {
+  
+  const user = useRecoilValue(userState);
+  const setEnteredRoomIdState = useSetRecoilState(enteredRoomIdState);
+  const setCurrentScene = useSetRecoilState(currentSceneState);
+  const setFallScene = useSetRecoilState(fallState);
+
   const [roomInfo, setRoomInfo] = useState({
     title: "", // 방 이름
     isPw: false, // 비밀번호를 설정할 것인지 설정하지 않을 것인지
@@ -37,12 +43,13 @@ const MakeRoom = ({ setIsShow }: Props) => {
     mode: "end", // 게임 모드
     special: "", // 특수 규칙
     roundWord: "", // 게임 씬에서 각 라운드의 시작 단어(게임 중 상단에 뜨는)
-    currWord: "" // 게임 씬에서 가장 최근에 입력된 단어
+    currWord: "", // 게임 씬에서 가장 최근에 입력된 단어
+    startWord: "", // 현재 턴에서 플레이어가 입력해야 할 첫 글자
+    remainTime: 0, // 게임 씬에서 현재 라운드에 남은 시간
+    currRound: 1, // 게임 씬에서 현재 진행 중인 라운드
+    turn: 0,      // 현재 라운드에서 어떤 플레이어가 단어를 입력할 차례인지에 대한 배열 인덱스
+    turnRemainTime: 0 // 현재 라운드에서 턴을 진행 중인 플레이어의 남은 턴 시간
   });
-  
-  const user = useRecoilValue(userState);
-  const setEnteredRoomIdState = useSetRecoilState(enteredRoomIdState);
-  const setCurrentScene = useSetRecoilState(currentSceneState);
   
   const { title, pw, isPw, maximum, time_limit, rounds, lang, mode, special } =
     roomInfo;
@@ -65,7 +72,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+    setFallScene(true);
     getAvailableRoomId().then(res => {
       // TODO: 아래 res.data 에 있는 빨간 줄 치워야 함. build 불가
       let roomId = res.data;
@@ -82,6 +89,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
           if(res?.status == 200) {
             checkRoomEnterable(roomId)
               .then((res) => {
+                setTimeout(()=> setFallScene(false), 2000);
                 if(res?.status == 200) {
                   postEnterRoom(roomId, user)
                     .then((res) => {
@@ -168,7 +176,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
             >
               {LIMITTIME.map((cur, idx) => (
                 <option key={idx} value={cur}>
-                  <label htmlFor={`${cur}s`}>{cur}초</label>
+                  {cur}초
                 </option>
               ))}
             </select>

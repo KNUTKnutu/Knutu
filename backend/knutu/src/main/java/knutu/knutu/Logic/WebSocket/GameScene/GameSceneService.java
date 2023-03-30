@@ -8,7 +8,9 @@ import java.util.Map;
 
 import javax.websocket.Session;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -61,7 +63,16 @@ public class GameSceneService {
             }
         }
 
-        Room room = LobbySceneService.getInstance().getRoom(roomId);
+        LobbySceneService lobbySceneInstance = LobbySceneService.getInstance();
+
+        User user = lobbySceneInstance.getUserByUserName(userName);
+        System.out.println(userName);
+        System.out.println(user);
+        if(user != null)
+            lobbySceneInstance.enterChannel(user, "K");
+        
+        Room room = lobbySceneInstance.getRoom(roomId);
+
         String ret = gson.toJson(room);
 
         return ret;
@@ -119,6 +130,94 @@ public class GameSceneService {
         }
     }
 
+    public String onRequestRoundStart(Session _session, JSONObject _requestPacket) {
+        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
+        String userName = (String) requestedPayload.get("userName");
+        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+
+        try {
+            Room room = this.gameRooms.get(this.getRoomIdSessionBelongs(_session));
+            if(room != null) {
+                List<Player> players = room.getPlayers();
+
+                for(Player player : players) {
+                    if(player.getName().equals(userName)) {
+                        player.setReadyToProcessRound(true);
+                        break;
+                    }
+                }
+
+                for(Player player : players) {
+                    if(!player.isReadyToProcessRound()) {
+                        return "{}";
+                    }
+                }
+                
+                // 위 리턴에 걸리지 않았다면 모든 플레이어가 라운드를 진행할 준비가 된 것으로 간주.
+                // 방 내에 있는 모든 세션에 round Start 되었다는 broadcast를 돌리고, 라운드를 시작.
+
+                // 1) broadcasting
+                long timestamp = Instant.now().toEpochMilli();
+                Collection<Session> sessions = this.getSessionsInRoom(roomId);
+                String packet = "{\"header\": {\"type\": \"" + "onRoundStart" + "\", \"timestamp\": \"" + timestamp + "\"}, \"payload\": {\"data\": {}}}";
+
+                for (Session session : sessions) {
+                    session.getBasicRemote().sendText(packet);
+                }
+
+                // 2) logically start game
+                room.setExpireTimeToken(timestamp + room.getRemainTime());
+                /* todo */
+            }
+
+            return "{}";
+        } catch(Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String onRequestSubmitWord(Session _session, JSONObject _requestPacket) throws Exception {
+        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
+        String word = (String) requestedPayload.get("word");
+        String userName = (String) requestedPayload.get("userName");
+        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+
+        // 해당 턴을 진행 중인 유저가 맞는 지 Validate
+        Room room = this.gameRooms.get(roomId);
+        if(!room.getPlayers().get(room.getTurn()).getName().equals(userName))
+        return "{\"validation\": \"passed\", \"correct\": \"" + null + "\", \"inputWord\": \"" + word + "\", \"queryResult\": \"" + null + "\"}";
+
+        // 그런 단어가 표준국어대사전에 있는 지 확인
+        JSONParser jsonParser = new JSONParser();
+
+        String queryWord = StdictLib.getstdictLibInstance().simpleQuery(word);
+        boolean isCorrect = !queryWord.isEmpty();
+
+        // 단어가 존재하지 않으면
+        if(isCorrect == false) {
+            return "{\"validation\": \"passed\", \"correct\": \"" + isCorrect + "\", \"inputWord\": \"" + word + "\", \"queryResult\": \"" + null + "\"}";
+        }
+
+        // 단어가 존재하면
+        JSONObject queryJSON = (JSONObject) jsonParser.parse(queryWord);
+        JSONObject channel = (JSONObject) queryJSON.get("channel");
+        JSONArray items = (JSONArray) channel.get("item");
+
+        JSONObject item = (JSONObject) items.get(0);
+        String confirmedWord = (String) item.get("word");
+
+        // 최근에 입력된 단어와, 단어의 첫 글자를 room 정보에 저장
+        room.setCurrWord(confirmedWord);
+        room.setStartWord(confirmedWord.substring(0, 1));
+        if(room.getTurn() + 1 == room.getPlayers().size()) 
+            room.setTurn(Short.parseShort("0"));
+        else room.setTurn(Short.parseShort(Integer.toString(room.getTurn() + 1)));
+
+        return "{\"validation\": \"passed\", \"correct\": \"" + isCorrect + "\", \"inputWord\": \"" + word + "\", \"queryResult\": \"" + confirmedWord + "\"}";
+    }
+
     private void broadCastAllPlayerReady(String roomId) throws Exception {
         Collection<Session> sessions = this.getSessionsInRoom(roomId);
 
@@ -153,6 +252,9 @@ public class GameSceneService {
                 roundWord = "서울고속버스터미널";
                 break;
         }
+
+        room.setRoundWord(roundWord);
+        room.setStartWord(roundWord.substring(0, 1));
 
         String packet = "{\"header\": {\"type\": \"" + "allPlayerReady" + "\", \"timestamp\": \"" + Instant.now().toEpochMilli() + "\"}, \"payload\": {\"data\": {\"allPlayerReady\": true, \"roundWord\": \"" + roundWord + "\"}}}";
         

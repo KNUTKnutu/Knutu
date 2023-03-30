@@ -1,7 +1,12 @@
 import styles from "../../../Styles/Components/Reusable/Channel/_channel.module.scss";
 import { ChannelProps, Users } from "../../../interface";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { currentSceneState, usersState, userState } from "../../../Recoil/atom";
+import {
+  currentSceneState,
+  fallState,
+  usersState,
+  userState,
+} from "../../../Recoil/atom";
 import { SCENE__LOBBYSCENE } from "../../../constant";
 import { put__enterChannel } from "../../../Logic/API/PUT/put";
 import { AxiosError } from "axios";
@@ -48,14 +53,20 @@ const Channel = ({ name, userCount }: ChannelProps) => {
    */
   const user = useRecoilValue(userState);
 
+  /**
+   * 채널 이동시 애니메이션 시작을 위한 atom
+   */
+  const setFallScene = useSetRecoilState(fallState);
+
   const onChannelClicked = async () => {
     const channelName = name;
-
+    setFallScene(true);
     if (user) {
       const res = await put__enterChannel({ user, channelName });
-
+      setTimeout(()=> setFallScene(false), 2000);
       if (res !== null && !(res instanceof AxiosError)) {
         setCurrentScene(SCENE__LOBBYSCENE);
+        
 
         const users = Object.values(res.data.onlineUsers);
         const sortedUsers: any = users.sort((a: any, b: any) => {
