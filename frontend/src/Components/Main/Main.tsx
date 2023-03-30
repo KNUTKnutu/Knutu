@@ -9,7 +9,6 @@ import {
   SCENE__INTROSCENE,
   SCENE__LOBBYSCENE,
 } from "../../constant";
-import FallAni from "../Reusable/Animation/FallAni";
 
 const CONTENTS = [
   {
@@ -36,10 +35,8 @@ const Main = (): JSX.Element => {
           <Scene id={key} key={key}>
             {component}
           </Scene>
-          
         );
       })}
-      <FallAni />
     </main>
   );
 };
