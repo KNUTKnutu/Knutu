@@ -1,6 +1,5 @@
 package knutu.knutu.Logic.WebSocket.GameScene;
 
-import java.net.http.WebSocket;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Set;
@@ -18,7 +17,6 @@ import com.google.gson.GsonBuilder;
 
 import knutu.knutu.Logic.Library.JSONBeautifier;
 import knutu.knutu.Logic.WebSocket.WebSocketController;
-import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneService;
 import knutu.knutu.Service.lib.classes.User.User;
 import lombok.extern.slf4j.Slf4j;
 
