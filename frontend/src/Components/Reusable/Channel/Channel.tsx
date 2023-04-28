@@ -66,8 +66,8 @@ const Channel = ({ name, userCount }: ChannelProps) => {
       setTimeout(()=> setFallScene(false), 2000);
       if (res !== null && !(res instanceof AxiosError)) {
         setCurrentScene(SCENE__LOBBYSCENE);
-        
-
+      
+        console.error(res);
         const users = Object.values(res.data.onlineUsers);
         const sortedUsers: any = users.sort((a: any, b: any) => {
           return b.level - a.level;

@@ -46,10 +46,6 @@ const MakeRoom = ({ setIsShow }: Props) => {
     currWord: "" // 게임 씬에서 가장 최근에 입력된 단어
   });
   
-  const user = useRecoilValue(userState);
-  const setEnteredRoomIdState = useSetRecoilState(enteredRoomIdState);
-  const setCurrentScene = useSetRecoilState(currentSceneState);
-  
   const { title, pw, isPw, maximum, time_limit, rounds, lang, mode, special } =
     roomInfo;
 

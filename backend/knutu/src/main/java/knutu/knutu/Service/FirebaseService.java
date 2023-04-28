@@ -56,7 +56,7 @@ public class FirebaseService implements FirebaseServiceInterface {
     private final String KIND__EXPERIENCE = "experience";
 
     public static final FirebaseService firebaseInstance = new FirebaseService();
-    public static FirebaseService getFirebaseInstance() { return firebaseInstance; }
+    public static FirebaseService accessFirebaseInstance() { return firebaseInstance; }
     
     @PostConstruct
     public void initFirebaseApp() {

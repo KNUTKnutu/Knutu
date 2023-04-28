@@ -18,16 +18,16 @@ public class LobbyController {
 
     @GetMapping("/getChannelInfos")
     public Collection<Channel> getChannelInfos() {
-        return LobbySceneService.getInstance().getChannelInfos();
+        return LobbySceneService.accessInstance().getChannelInfos();
     }
 
     @GetMapping("/getChannelInfo")
-    public Channel getChannelInfo(@RequestParam("channelName") String channelName) {
-        return LobbySceneService.getInstance().getChannelInfo(channelName);
+    public Collection<User> getChannelInfo(@RequestParam("channelName") String channelName) throws Exception {
+        return LobbySceneService.accessInstance().getChannelInfo(channelName);
     }
 
     @PutMapping("/enterChannel/{channelName}")
     public boolean enterChannel(@RequestBody User user, @PathVariable String channelName) {
-        return LobbySceneService.getInstance().enterChannel(user, channelName);
+        return LobbySceneService.accessInstance().enterChannel(user, channelName);
     }
 }

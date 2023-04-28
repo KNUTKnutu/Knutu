@@ -53,7 +53,8 @@ const App = () => {
         setUser(json.payload.data);
         break;
       case "currentChannelInfo":
-        const users = Object.values(body.onlineUsers);
+        // const users = Object.values(body.onlineUsers);
+        const users = json.body;
         const sortedUsers: any = users.sort((a: any, b: any) => {
           return b.level - a.level;
         });

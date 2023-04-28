@@ -20,13 +20,13 @@ public class SigningController {
 
     @GetMapping("/signin")
     public User signIn(@RequestParam("id") String id, @RequestParam("pw") String pw) throws Exception {
-        User user = FirebaseService.getFirebaseInstance().getUserForLogin(id, pw);
+        User user = FirebaseService.accessFirebaseInstance().getUserForLogin(id, pw);
         
         if(user == null) {
             throw new Unauthorized("Wrong user information given.");
         }
 
-        if(LobbySceneService.getInstance().isUserLoggedIn(user.getName())) {
+        if(LobbySceneService.accessInstance().isUserLoggedIn(user.getName())) {
             throw new Conflict("This User Has Already Logged In.");
         }
 
@@ -35,11 +35,11 @@ public class SigningController {
 
     @PostMapping("/signup")
     public boolean signUp(@RequestBody User user) throws Exception {
-        return FirebaseService.getFirebaseInstance().addUser(user);
+        return FirebaseService.accessFirebaseInstance().addUser(user);
     }
 
     @PutMapping("/logout")
     public boolean logOut(@RequestParam String userName) throws Exception {
-        return LobbySceneService.getInstance().logOut(userName);
+        return LobbySceneService.accessInstance().logOut(userName);
     }
 }

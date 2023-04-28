@@ -17,13 +17,13 @@ import javax.websocket.Session;
 public class WebSocketController {
 
     public static WebSocketController Controller = new WebSocketController();
-    public static WebSocketController getInstance() { return Controller; }
+    public static WebSocketController accessInstance() { return Controller; }
 
     private JSONParser jsonParser = new JSONParser();
     private JSONObject requestPacket;
 
-    private LobbySceneService lobbySceneInstances = LobbySceneService.getInstance();
-    private GameSceneService gameSceneInstances = GameSceneService.getInstance();
+    private LobbySceneService lobbySceneInstances = LobbySceneService.accessInstance();
+    private GameSceneService gameSceneInstances = GameSceneService.accessInstance();
 
     public void WSController(String msg, Session session) throws Exception {
         requestPacket = (JSONObject) this.jsonParser.parse(msg);

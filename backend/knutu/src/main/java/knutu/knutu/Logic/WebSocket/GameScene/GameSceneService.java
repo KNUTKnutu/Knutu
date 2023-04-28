@@ -23,15 +23,15 @@ import knutu.knutu.Service.lib.classes.stdictLib.StdictLib;
 public class GameSceneService {
 
     public static GameSceneService service = new GameSceneService();
-    public static GameSceneService getInstance() { return service; }
+    public static GameSceneService accessInstance() { return service; }
 
     private StdictLib libInstance = StdictLib.getstdictLibInstance();
 
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private GameSceneInstances instances = GameSceneInstances.getInstance();
+    private GameSceneInstances instances = GameSceneInstances.accessInstance();
 
     private Map<String, User> onlineUsers = instances.onlineUsers;
-    private Map<String, Room> gameRooms = LobbySceneInstances.getInstance().gameRooms;
+    private Map<String, Room> gameRooms = LobbySceneInstances.accessInstance().gameRooms;
     
     public Map<String, Collection<Session>> sessionsInRoom = instances.sessionsInRoom;
     public Map<String, String> userLocationMapWithName = instances.userLocationMapWithName;
@@ -61,7 +61,7 @@ public class GameSceneService {
             }
         }
 
-        Room room = LobbySceneService.getInstance().getRoom(roomId);
+        Room room = LobbySceneService.accessInstance().getRoom(roomId);
         String ret = gson.toJson(room);
 
         return ret;
@@ -187,7 +187,7 @@ public class GameSceneService {
         JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
         int roomId = Integer.parseInt(Long.toString((long) requestedPayload.get("roomId")));
 
-        Room room = LobbySceneService.getInstance().getRoom(roomId);
+        Room room = LobbySceneService.accessInstance().getRoom(roomId);
         String ret = gson.toJson(room);
 
         return ret;

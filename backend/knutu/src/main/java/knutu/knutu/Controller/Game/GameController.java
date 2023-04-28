@@ -16,28 +16,28 @@ import knutu.knutu.Service.lib.classes.User.User;
 public class GameController {
     @PostMapping("/makeRoom")
     public boolean makeRoom(@RequestBody Room room) throws Exception {
-        return LobbySceneService.getInstance().makeRoom(room);
+        return LobbySceneService.accessInstance().makeRoom(room);
     }
 
     @GetMapping("/getAvailableRoomId")
     public int getAvailableRoomId() throws Exception {
-        return LobbySceneService.getInstance().getAvailableRoomId();
+        return LobbySceneService.accessInstance().getAvailableRoomId();
     }
 
     @GetMapping("/checkRoomEnterable")
     public boolean checkRoomEnterable(@RequestParam int roomId) throws Exception {
-        boolean isRoomEnterable = LobbySceneService.getInstance().checkRoomEnterable(roomId);
+        boolean isRoomEnterable = LobbySceneService.accessInstance().checkRoomEnterable(roomId);
         if(!isRoomEnterable) throw new Conflict("The room is not enterable now.");
         return true;
     }
 
     @PostMapping("/enterRoom")
     public Room enterRoom(@RequestParam int roomId, @RequestBody User user) {
-        return LobbySceneService.getInstance().enterRoom(user, roomId);
+        return LobbySceneService.accessInstance().enterRoom(user, roomId);
     }
 
     @PutMapping("/exitRoom")
     public boolean exitRoom(@RequestParam int roomId, @RequestParam String userName) {
-        return LobbySceneService.getInstance().exitRoom(roomId, userName);
+        return LobbySceneService.accessInstance().exitRoom(roomId, userName);
     }
 }

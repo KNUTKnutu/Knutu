@@ -27,13 +27,13 @@ import lombok.extern.slf4j.Slf4j;
 @ServerEndpoint(value="/ws/gamescene")
 public class GameSceneWSHandler {
     
-    private GameSceneInstances instances = GameSceneInstances.getInstance();
+    private GameSceneInstances instances = GameSceneInstances.accessInstance();
     private Set<Session> clients = instances.clients;
     private Map<String, User> onlineUsers = instances.onlineUsers;
 
     @OnMessage
     public void onMessage(String msg, Session session) throws Exception {
-        WebSocketController.getInstance().WSController(msg, session);
+        WebSocketController.accessInstance().WSController(msg, session);
     }
 	
 	@OnOpen
@@ -65,13 +65,11 @@ public class GameSceneWSHandler {
     
     // private methods
     private void exitRoomOnSocketClose(Session session) throws Exception {
-        GameSceneService gameSceneServiceInstance = GameSceneService.getInstance();
+        GameSceneService gameSceneServiceInstance = GameSceneService.accessInstance();
         String userName = gameSceneServiceInstance.userNameBySession.get(session.getId());
         String roomId = gameSceneServiceInstance.userLocationMapWithName.get(userName);
-
-        LobbySceneService.getInstance().exitRoomByUserName(userName);
         
         String msg = "{\"header\":{\"type\":\"requestExitRoom\",\"date\":" + Instant.now().toEpochMilli() + "},\"payload\":{\"roomId\":" + roomId + ",\"userName\":\"" + userName + "\"}}";
-        WebSocketController.getInstance().WSController(msg, session);
+        WebSocketController.accessInstance().WSController(msg, session);
     }
 }

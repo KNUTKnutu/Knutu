@@ -21,17 +21,17 @@ import lombok.extern.slf4j.Slf4j;
 @ServerEndpoint(value="/ws/lobbyscene")
 public class LobbySceneWSHandler {
 
-    private LobbySceneService serviceInstance = LobbySceneService.getInstance();
-    private LobbySceneInstances instances = LobbySceneInstances.getInstance();
+    private LobbySceneService serviceInstance = LobbySceneService.accessInstance();
+    private LobbySceneInstances instances = LobbySceneInstances.accessInstance();
     private Set<Session> clients = instances.clients;
     private Map<String, User> onlineUsers = instances.onlineUsers;
 
     @OnMessage
     public void onMessage(String msg, Session session) throws Exception {
-        WebSocketController.getInstance().WSController(msg, session);
+        WebSocketController.accessInstance().WSController(msg, session);
     }
 
-    @Scheduled(fixedDelay = 500)
+    @Scheduled(fixedDelay = 2000)
     public void onPollingTime() throws Exception {
         for(Session session : this.clients) {
             if(!this.serviceInstance.sendCurrentRooms(session)) log.info("error occured while broadcasting room infos");
@@ -59,9 +59,8 @@ public class LobbySceneWSHandler {
         this.onlineUsers.remove(session.getId());
         
         try {
-            LobbySceneService instance = LobbySceneService.getInstance();
-            String userName = instance.userNameBySession.get(session.getId());
-            if(!instance.onSessionClosed(userName, session.getId())) {
+            LobbySceneService instance = LobbySceneService.accessInstance();
+            if(!instance.onSessionClosed(session.getId())) {
                 log.info("failed to logout on onClose method from LobbySceneWSHandler");
             }
         } catch (Exception e) {

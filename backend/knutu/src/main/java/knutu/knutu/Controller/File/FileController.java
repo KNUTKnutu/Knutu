@@ -16,6 +16,6 @@ public class FileController {
     public String testing(@RequestParam("file") MultipartFile file, String fileName) throws IOException, FirebaseAuthException {
         if(file.isEmpty()) return "error - file is empty";
 
-        return FirebaseService.getFirebaseInstance().addFile(file, fileName);
+        return FirebaseService.accessFirebaseInstance().addFile(file, fileName);
     }
 }

@@ -1,6 +1,7 @@
 package knutu.knutu.Logic.WebSocket.LobbyScene;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,14 +24,15 @@ import knutu.knutu.Service.lib.classes.User.User;
 public class LobbySceneService {
 
     public static LobbySceneService service = new LobbySceneService();
-    public static LobbySceneService getInstance() { return service; }
+    public static LobbySceneService accessInstance() { return service; }
     
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private LobbySceneInstances instances = LobbySceneInstances.getInstance();
-    private Map<String, User> onlineUsers = instances.onlineUsers;
+    private LobbySceneInstances instances = LobbySceneInstances.accessInstance();
+    // private Map<String, User> onlineUsers = instances.onlineUsers;
     private Map<String, Room> gameRooms = instances.gameRooms;
     public Map<String, String> userNameBySession = instances.userNameBySession;
-    public Map<String, String> gamingUsers = instances.gamingUsers;
+    // public Map<String, String> userNameBySession = instances.userNameBySession;
+    // public Map<String, String> gamingUsers = instances.gamingUsers;
     public Map<String, Channel> availableChannels = instances.availableChannels;
 
     private boolean isInitialized = false;
@@ -42,16 +44,17 @@ public class LobbySceneService {
 
         this.userNameBySession.put(_session.getId(), name);
 
-        User user = FirebaseService.getFirebaseInstance().getUserWithName(name);
-        onlineUsers.put(user.getName(), user);
+        User user = FirebaseService.accessFirebaseInstance().getUserWithName(name);
+        // onlineUsers.put(user.getName(), user);
 
         String ret = gson.toJson(user);
 
         return ret;
     }
 
-    public Channel getChannelInfo(String channelName) {
-        return this.availableChannels.get(channelName);
+    public Collection<User> getChannelInfo(String channelName) throws Exception {
+        // return this.availableChannels.get(channelName);
+        return this.getUsersInChannel();
     }
 
     public Collection<Channel> getChannelInfos() {
@@ -60,17 +63,22 @@ public class LobbySceneService {
             this.isInitialized = true;
         }
 
-        return this.availableChannels.values();
+        Collection<Channel> _channels = new LinkedList<Channel>();
+
+        for (Channel _channel : this.availableChannels.values()) {
+            int _userCount = this.userNameBySession.values().size();
+            _channel.setUserCount(_userCount);
+            _channels.add(_channel);
+        }
+
+        return _channels;
     }
 
     public boolean enterChannel(User user, String channelName) {
         try {
             if(channelName == null || channelName.isEmpty()) throw new BadRequest("The given channel name is nullish or undefined");
             if(user == null || user.getName().isEmpty()) throw new BadRequest("User is invalid.");
-            
-            Channel channel = this.availableChannels.get(channelName);
-            channel.addUserOnline(user);
-            channel.setUserCount(channel.getUserCount() + 1);
+
             return true;
         } catch(Exception e) {
             e.printStackTrace();
@@ -117,7 +125,7 @@ public class LobbySceneService {
             Short currEntry = Short.parseShort(Integer.toString(Integer.parseInt(gameRoom.getCurrEntry().toString()) + Integer.parseInt("1")));
             gameRoom.setCurrEntry(currEntry);
 
-            gamingUsers.put(user.getName(), Integer.toString(roomId));         
+            // gamingUsers.put(user.getName(), Integer.toString(roomId));         
 
             return gameRoom;
         } catch (Exception e){
@@ -138,11 +146,11 @@ public class LobbySceneService {
                 Players.remove(player);
                 gameRoom.setPlayers(Players);
                 gameRooms.put(Integer.toString(roomId), gameRoom);
-                gamingUsers.remove(player.getName());
+                // gamingUsers.remove(player.getName());
                 break;
             }
 
-            User user = FirebaseService.getFirebaseInstance().getUserWithName(userName);
+            User user = FirebaseService.accessFirebaseInstance().getUserWithName(userName);
             user.setInGame(false);
 
             Short currEntry = Short.parseShort(Integer.toString(Integer.parseInt(gameRoom.getCurrEntry().toString()) - Integer.parseInt("1")));
@@ -160,14 +168,14 @@ public class LobbySceneService {
         }
     }
 
-    public void exitRoomByUserName(String userName) {
-        try {
-            String roomId = gamingUsers.get(userName);
-            this.exitRoom(Integer.parseInt(roomId), userName);
-        } catch (Exception e) {
-            e.getCause();
-        }
-    }
+    // public void exitRoomByUserName(String userName) {
+    //     try {
+    //         String roomId = gamingUsers.get(userName);
+    //         this.exitRoom(Integer.parseInt(roomId), userName);
+    //     } catch (Exception e) {
+    //         e.getCause();
+    //     }
+    // }
 
     public int getAvailableRoomId() {
         int idx = 1;
@@ -195,7 +203,7 @@ public class LobbySceneService {
 
     public boolean sendCurrentRooms(Session _session) {
         try {
-            Map<String, Room> rooms = LobbySceneService.getInstance().getCurrentRooms();
+            Map<String, Room> rooms = LobbySceneService.accessInstance().getCurrentRooms();
             Gson gson = new GsonBuilder().create();
             String finalizedJSON = JSONBeautifier.finalizeJSON("currentRooms", gson.toJson(rooms));
             _session.getBasicRemote().sendText(finalizedJSON);
@@ -207,9 +215,10 @@ public class LobbySceneService {
 
     public boolean sendCurrentChannelInfo(Session _session) {
         try {
-            Channel channel = this.getChannelInfo("K");
-            Gson gson = new GsonBuilder().create();
-            String finalizedJSON = JSONBeautifier.finalizeJSON("currentChannelInfo", gson.toJson(channel));
+            // Channel channel = this.getChannelInfo("K");
+            // Gson gson = new GsonBuilder().create();
+            Collection<User> users = this.getUsersInChannel();
+            String finalizedJSON = JSONBeautifier.finalizeJSON("currentChannelInfo", gson.toJson(users));
             _session.getBasicRemote().sendText(finalizedJSON);
             return true;
         } catch(Exception e) {
@@ -217,9 +226,22 @@ public class LobbySceneService {
         }
     }
 
+    public Collection<User> getUsersInChannel() throws Exception {
+        Collection<User> users = new LinkedList<User>();
+        for (String userName : this.userNameBySession.values()) {
+            User user = FirebaseService.accessFirebaseInstance().getUserWithName(userName);
+            if(user != null) {
+                users.add(user);
+            }
+        }
+        return users;
+    }
 
-    public boolean isUserLoggedIn(String userName) {
-        if(onlineUsers.get(userName) != null) return true;
+    public boolean isUserLoggedIn(String _userName) {
+
+        for(String userName : userNameBySession.values()) {
+            if(userName.equals(_userName)) return true;
+        }
         return false;
     }
 
@@ -233,15 +255,16 @@ public class LobbySceneService {
         }
     }
 
-    public boolean onSessionClosed(String userName, String sessionId) {
+    public boolean onSessionClosed(String sessionId) {
         try {
-            Channel K =  this.availableChannels.get("K");
-            K.getOnlineUsers().remove(userName);
-            this.availableChannels.put("K", K);
-            K.setUserCount(K.getUserCount() - 1);
-            this.onlineUsers.remove(userName);
-            this.gamingUsers.remove(userName);
             this.userNameBySession.remove(sessionId);
+            // Channel K =  this.availableChannels.get("K");
+            // K.getOnlineUsers().remove(userName);
+            // this.availableChannels.put("K", K);
+            // K.setUserCount(K.getUserCount() - 1);
+            // this.onlineUsers.remove(userName);
+            // this.gamingUsers.remove(userName);
+            // this.userNameBySession.remove(sessionId);
             return true;
         } catch (Exception e) {
             e.getCause();

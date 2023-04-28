@@ -14,7 +14,7 @@ import knutu.knutu.Service.lib.classes.User.User;
 
 public class LobbySceneInstances {
     public static LobbySceneInstances LobbySceneInstances = new LobbySceneInstances();
-    public static LobbySceneInstances getInstance() { return LobbySceneInstances; }
+    public static LobbySceneInstances accessInstance() { return LobbySceneInstances; }
 
     public Set<Session> clients = Collections.synchronizedSet(new HashSet<Session>());
     public Map<String, User> onlineUsers = new HashMap<String, User>();
