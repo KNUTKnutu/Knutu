@@ -16,6 +16,8 @@
       border-bottom: 1px solid black;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      
       h2 {
         margin: 20px;
         margin-left: 52px;
@@ -29,6 +31,7 @@
         border-radius: 4px;
         font-weight: 600;
         font-size: 1.25rem;
+        height: 44px;
 
         background-color: white;
         margin: 10px 52px 10px;
