@@ -17,9 +17,9 @@ const Rooms = (): JSX.Element => {
         testing.forEach(ele => testingtwo.push(ele[1]));
 
         testingtwo.sort((a: any, b: any) => {
-        if(a.number > b.number) return 1;
+            if(a.number > b.number) return 1;
             if(a.number < b.number) return -1;
-        return 0;
+            return 0;
     });
 
         roomList = testingtwo.map((room: any) => {
