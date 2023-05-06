@@ -1,0 +1,46 @@
+# Ignore Lists Specified For Go
+
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
+*.so
+
+# Compiled Go files
+*.exe
+*.test
+*.prof
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
+# Generated files
+*.pb.go
+
+# MacOS specific files
+.DS_Store
+
+# Testing output
+/report.xml
+
+# Go language-specific files
+*.log
+*.test
+*.out
+
+# Local development config
+.env.local
+
+# IDE-specific files
+.idea/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Ignore binaries created by go build
+/bin/
+
+# Ignore Privates
+/**/[Pp]rivate*/
+/**/[Pp]rivate[s]*/
