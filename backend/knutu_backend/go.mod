@@ -30,6 +30,7 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.3 // indirect
 	github.com/googleapis/gax-go/v2 v2.8.0 // indirect
+	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
