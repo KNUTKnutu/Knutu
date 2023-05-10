@@ -136,8 +136,6 @@ public class FirebaseService implements FirebaseServiceInterface {
             .document(_user.getId())
             .set(user);
 
-        log.info(apiFuture.get().getUpdateTime().toString());
-
         return true;
     }
 

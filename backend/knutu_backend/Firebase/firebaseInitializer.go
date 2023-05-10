@@ -10,8 +10,6 @@ import (
 	"google.golang.org/api/option"
 )
 
-// const PATH__FIREBASE_CONFIG string = "./Privates/serviceAccountKey.json"
-
 var (
 	ctx             context.Context   = nil
 	app             *firebase.App     = nil
