@@ -16,9 +16,17 @@ import {
   MAXIMUM,
   SPECIALMODE,
 } from "../../../../constant";
-import { checkRoomEnterable, getAvailableRoomId } from "../../../../Logic/API/GET/get";
+import {
+  checkRoomEnterable,
+  getAvailableRoomId,
+} from "../../../../Logic/API/GET/get";
 import { postEnterRoom, post__makeRoom } from "../../../../Logic/API/POST/post";
-import { currentSceneState, enteredRoomIdState, fallState, userState } from "../../../../Recoil/atom";
+import {
+  currentSceneState,
+  enteredRoomIdState,
+  fallState,
+  userState,
+} from "../../../../Recoil/atom";
 import styles from "../../../../Styles/Components/Main/Scenes/LobbyScene/_makeScene.module.scss";
 
 interface Props {
@@ -26,7 +34,6 @@ interface Props {
 }
 
 const MakeRoom = ({ setIsShow }: Props) => {
-  
   const user = useRecoilValue(userState);
   const setEnteredRoomIdState = useSetRecoilState(enteredRoomIdState);
   const setCurrentScene = useSetRecoilState(currentSceneState);
@@ -43,9 +50,9 @@ const MakeRoom = ({ setIsShow }: Props) => {
     mode: "end", // 게임 모드
     special: "", // 특수 규칙
     roundWord: "", // 게임 씬에서 각 라운드의 시작 단어(게임 중 상단에 뜨는)
-    currWord: "" // 게임 씬에서 가장 최근에 입력된 단어
+    currWord: "", // 게임 씬에서 가장 최근에 입력된 단어
   });
-  
+
   const { title, pw, isPw, maximum, time_limit, rounds, lang, mode, special } =
     roomInfo;
 
@@ -67,38 +74,44 @@ const MakeRoom = ({ setIsShow }: Props) => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setFallScene(true);
-    getAvailableRoomId().then(res => {
+    getAvailableRoomId().then((res) => {
       // TODO: 아래 res.data 에 있는 빨간 줄 치워야 함. build 불가
       let roomId = res.data;
 
       const room = {
         roomId,
-        ...roomInfo
+        ...roomInfo,
       };
 
       console.log(room);
 
       post__makeRoom(room)
         .then((res) => {
-          if(res?.status == 200) {
-            checkRoomEnterable(roomId)
-              .then((res) => {
-                setTimeout(()=> setFallScene(false), 2000);
-                if(res?.status == 200) {
-                  postEnterRoom(roomId, user)
-                    .then((res) => {
-                      setEnteredRoomIdState(roomId);
-                      setCurrentScene(SCENE__GAMESCENE);
-                      setIsShow((prev) => !prev);
-                    })
-                }
-              })
+          if (res?.status == 200) {
+            checkRoomEnterable(roomId).then((res) => {
+              if (res?.status == 200) {
+                setFallScene(true);
+                const startTime = performance.now();
+                postEnterRoom(roomId, user).then((res) => {
+                  const endTime = performance.now();
+                  const loadingTime = endTime - startTime;
+                  const waitTime = loadingTime > 2000 ? loadingTime : 2000;
+                  setTimeout(() => setFallScene(false), waitTime);
+                  setEnteredRoomIdState(roomId);
+                  setTimeout(
+                    () => setCurrentScene(SCENE__GAMESCENE),
+                    waitTime + 1000
+                  );
+                  setIsShow((prev) => !prev);
+                });
+              }
+            });
           }
-        }).catch((e) => {
+        })
+        .catch((e) => {
           console.error("failed to make room");
           console.error(e);
-        })
+        });
     });
   };
 
@@ -187,7 +200,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
             >
               {ROUNDS.map((cur, idx) => (
                 <option key={idx} value={cur}>
-                 {cur}
+                  {cur}
                 </option>
               ))}
             </select>

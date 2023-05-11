@@ -1,7 +1,7 @@
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { LOGO, SCENE__INTROSCENE, SCENE__LOBBYSCENE } from "../../constant";
 import { put__logOut } from "../../Logic/API/PUT/put";
-import { fallState, currentSceneState, userState } from "../../Recoil/atom";
+import { fallState, currentSceneState, userState,InactiveAnimationState } from "../../Recoil/atom";
 import styles from "../../styles/Components/Header/_header.module.scss";
 
 const Header = () => {
@@ -19,9 +19,9 @@ const Header = () => {
     setUser(null);
   }
 
+  const [aniInactive, setInactive] = useRecoilState(InactiveAnimationState);
   const onAnimationFall = () => {
-    setFall(!fall)
-    console.log(fall)
+    aniInactive && setFall(!fall) 
   }
 
   return (

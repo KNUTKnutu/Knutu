@@ -3,7 +3,16 @@ import Main from "./Components/Main/Main";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
 import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
-import { enteredRoomIdState, enteredRoomState, fallState, isGameInProgress, mountOpacity, roomsState, usersState, userState } from "./Recoil/atom";
+import {
+  enteredRoomIdState,
+  enteredRoomState,
+  fallState,
+  isGameInProgress,
+  mountOpacity,
+  roomsState,
+  usersState,
+  userState,
+} from "./Recoil/atom";
 import KnutuWebSocketHandler from "./Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
 import { WebSocketPacket } from "./Logic/Library/KnutuWebSocket/KnutuWebSocketTypes";
 import KnutuAudioHandler from "./Logic/Library/KnutuAudio/KnutuAudioHandler";
@@ -31,22 +40,25 @@ const App = () => {
     return () => clearTimeout(timeout);
   }, []);
   const messageListener = (msg: any) => {
-
     const json = JSON.parse(msg.data);
     const { body } = json;
     const { type } = json.header;
 
     console.log(json);
 
-    const webSocketHandler: KnutuWebSocketHandler = KnutuWebSocketHandler.getInstance();
+    const webSocketHandler: KnutuWebSocketHandler =
+      KnutuWebSocketHandler.getInstance();
 
     // TODO. switch문 따로 함수 구비 필요. 너무 굵어져 유지보수 힘듦
-    switch(type) {
+    switch (type) {
       case "currentRooms":
         setCurrentRoomsState(body);
-        webSocketHandler.send("onLobbyEntrance", webSocketHandler.wrapPacket("onLobbyEntrance", {
-          user
-        }));
+        webSocketHandler.send(
+          "onLobbyEntrance",
+          webSocketHandler.wrapPacket("onLobbyEntrance", {
+            user,
+          })
+        );
         break;
       case "onLobbyEntrance":
         // TODO. 로비에 들어가면서 이미 로그인 된 유저인지 한 번 더 체크하는 로직 필요.
@@ -64,20 +76,23 @@ const App = () => {
         const packet: WebSocketPacket = {
           header: {
             type: "requestRoomInfo",
-            date: new Date().getTime()
+            date: new Date().getTime(),
           },
           payload: {
-            roomId
-          }
+            roomId,
+          },
         };
         webSocketHandler.send("requestRoomInfo", packet);
         break;
       case "requestRoomInfo":
         setEnteredRoom(json.payload.data);
-        webSocketHandler.send("submitSessionInfo", webSocketHandler.wrapPacket("submitSessionInfo", {
-          userName: user?.name,
-          roomId
-        }));
+        webSocketHandler.send(
+          "submitSessionInfo",
+          webSocketHandler.wrapPacket("submitSessionInfo", {
+            userName: user?.name,
+            roomId,
+          })
+        );
         break;
       case "submitSessionInfo":
       case "requestExitRoom":
@@ -86,14 +101,23 @@ const App = () => {
         break;
       case "allPlayerReady":
         setFallScene(true);
-        setIsGameInProgress(true);
-        const {payload: {data: {roundWord}}} = json;
-        setTimeout(()=> setFallScene(false), 2000);
+        const startTime = performance.now();
+        const {
+          payload: {
+            data: { roundWord },
+          },
+        } = json;
         setEnteredRoom({
           ...enteredRoom,
           roundWord,
-          currWord: roundWord
+          currWord: roundWord,
         });
+        const endTime = performance.now();
+        const loadingTime = endTime - startTime;
+        const waitTime = loadingTime > 2000 ? loadingTime : 2000;
+        setTimeout(() => setFallScene(false), waitTime);
+        setTimeout(() => setIsGameInProgress(true), waitTime + 1000);
+
         break;
     }
   };

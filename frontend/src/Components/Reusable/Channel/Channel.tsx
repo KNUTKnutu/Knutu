@@ -61,12 +61,16 @@ const Channel = ({ name, userCount }: ChannelProps) => {
   const onChannelClicked = async () => {
     const channelName = name;
     setFallScene(true);
+    const startTime = performance.now();
     if (user) {
       const res = await put__enterChannel({ user, channelName });
-      setTimeout(()=> setFallScene(false), 2000);
+      const endTime = performance.now();
+      const loadingTime = endTime - startTime;
+      const waitTime = loadingTime > 2000 ? loadingTime : 2000;
+      setTimeout(() => setFallScene(false), waitTime);
       if (res !== null && !(res instanceof AxiosError)) {
-        setCurrentScene(SCENE__LOBBYSCENE);
-      
+        setTimeout(() => setCurrentScene(SCENE__LOBBYSCENE), waitTime + 1000);
+
         const users = Object.values(res.data.onlineUsers);
         const sortedUsers: any = users.sort((a: any, b: any) => {
           return b.level - a.level;

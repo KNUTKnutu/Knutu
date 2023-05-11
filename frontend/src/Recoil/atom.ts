@@ -131,3 +131,10 @@ export const fallState = atom({
   key: "fallState",
   default: false
 })
+
+export const InactiveAnimationState = atom<Boolean>(
+  {
+    key: "InactiveAnimationState",
+    default: false
+  }
+)

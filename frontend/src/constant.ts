@@ -60,3 +60,9 @@ export const SPECIALMODE = [
   { id: "injeong", label: "어인정" },
   { id: "knut", label: "교통대" },
 ];
+
+export const SCENE__FALL  = [
+  "fall_intro",
+  "fall_lobby",
+  "fall_game",
+];

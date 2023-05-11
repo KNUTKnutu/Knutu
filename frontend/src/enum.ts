@@ -6,7 +6,7 @@ export enum LOGINSTATE {
 }
 
 export enum SCENESTATE {
-  SCENE__INTROSCENE = 1,
+  SCENE__INTROSCENE = 0,
   SCENE__LOBBYSCENE,
   SCENE__GAMESCENE,
 }

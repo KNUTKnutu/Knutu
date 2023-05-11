@@ -79,7 +79,7 @@ $game-roominfo-min-width: $game-roominfo-width - $game-roominfo-padding * 2;
 $game-roominfo-max-height: $game-roominfo-height - $game-roominfo-gap * 3;
 
 /* FallAnimation*/
-$fall-cols: 8; // 열 수
+$fall-cols: 6; // 열 수
 $fall-rows: 6; // 행 수
 
 $ellipse-width: 1920px; // 화면 가로 길이

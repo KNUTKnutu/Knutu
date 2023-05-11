@@ -25,14 +25,18 @@ const Room = ({roomInfo}: any): JSX.Element => {
 
     const onRoomClicked = async (e: React.MouseEvent<HTMLDivElement>) => {
         setFallScene(true);
+        const startTime = performance.now();
         checkRoomEnterable(roomNumber)
             .then((res) => {
                 if(res?.status == 200) {
                 postEnterRoom(roomNumber, user)
                     .then((res) => {
-                        setTimeout(()=> setFallScene(false), 2000);
+                        const endTime = performance.now();
+                        const loadingTime = endTime - startTime;
+                        const waitTime = loadingTime > 2000 ? loadingTime : 2000;
+                        setTimeout(() => setFallScene(false), waitTime);
                         setEnteredRoomIdState(roomNumber);
-                        setCurrentScene(SCENE__GAMESCENE);
+                        setTimeout(() => setCurrentScene(SCENE__GAMESCENE), waitTime+1000);
                     });
             }
             else {

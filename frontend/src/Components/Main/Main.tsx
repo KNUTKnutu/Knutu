@@ -9,7 +9,7 @@ import {
   SCENE__INTROSCENE,
   SCENE__LOBBYSCENE,
 } from "../../constant";
-import FallAni from "../Reusable/Animation/FallAni";
+import FallAniPage from "../Reusable/Animation/FallAniPage";
 
 const CONTENTS = [
   {
@@ -32,14 +32,13 @@ const Main = (): JSX.Element => {
       {CONTENTS.map((content) => {
         const { key, component } = content;
         return (
-     
           <Scene id={key} key={key}>
             {component}
           </Scene>
           
         );
       })}
-      <FallAni />
+      <FallAniPage />
     </main>
   );
 };
