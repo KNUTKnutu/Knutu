@@ -34,7 +34,6 @@ const FallAniPage = () => {
   /** 애니메이션이 작동 중인지 아니면 끝났는지 감시 */
   const animationStart = () => {
     setInactive(false);
-    console.log();
   };
   const animationEnd = () => {
     setInactive(true);
@@ -63,6 +62,12 @@ const FallAniPage = () => {
     return () => clearTimeout(timeout);
   }, []);
 
+  let clouds = [];
+
+  for (let i = 0; i < 36; i++) {
+    clouds.push(<div key={i} className={styles[class__scene__fall]}></div>);
+  }
+
   return (
     <div
       className={`${visible ? styles.visiable : styles.unvisiable} ${
@@ -71,42 +76,7 @@ const FallAniPage = () => {
       onAnimationStart={animationStart}
       onAnimationEnd={animationEnd}
     >
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
-      <div className={styles[class__scene__fall]}></div>
+      {clouds}
     </div>
   );
 };
