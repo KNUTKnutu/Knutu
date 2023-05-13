@@ -11,9 +11,7 @@ import (
 )
 
 func main() {
-
 	defer afterDeath()
-
 	runBackend()
 }
 
