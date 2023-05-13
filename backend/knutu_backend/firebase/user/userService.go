@@ -2,13 +2,14 @@ package Firebase
 
 import (
 	"fmt"
-	"knutu_backend_go/Firebase"
-	"knutu_backend_go/Struct"
+	Firebase "knutu_backend_go/firebase"
+
+	"knutu_backend_go/structs"
 
 	"google.golang.org/api/iterator"
 )
 
-func GetUserByName(_userName string) (Struct.User, error) {
+func GetUserByName(_userName string) (structs.User, error) {
 	ctx := Firebase.GetContext()
 	client := Firebase.GetFirestore()
 
@@ -19,16 +20,16 @@ func GetUserByName(_userName string) (Struct.User, error) {
 	for {
 		doc, err := iter.Next()
 		if err == iterator.Done {
-			return Struct.User{}, fmt.Errorf("user not found")
+			return structs.User{}, fmt.Errorf("user not found")
 		}
 		if err != nil {
-			return Struct.User{}, err
+			return structs.User{}, err
 		}
 
-		var user Struct.User
+		var user structs.User
 		err = doc.DataTo(&user)
 		if err != nil {
-			return Struct.User{}, err
+			return structs.User{}, err
 		}
 
 		return user, nil

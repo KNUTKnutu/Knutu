@@ -1,4 +1,4 @@
-package Struct
+package structs
 
 type User struct {
 	Id                 string     `json:"id" firestore:"id"`

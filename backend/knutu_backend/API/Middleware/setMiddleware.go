@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	instants "knutu_backend_go/InstantsLib"
+	instants "knutu_backend_go/instant"
 
 	firebase "firebase.google.com/go"
 	"github.com/gin-gonic/gin"

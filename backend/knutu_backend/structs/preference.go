@@ -1,4 +1,4 @@
-package Struct
+package structs
 
 type Preference struct {
 	Language          string
