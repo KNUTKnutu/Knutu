@@ -60,23 +60,16 @@ const Channel = ({ name, userCount }: ChannelProps) => {
 
   const onChannelClicked = async () => {
     const channelName = name;
-    setFallScene(true);
     const startTime = performance.now();
     if (user) {
       const res = await put__enterChannel({ user, channelName });
       const endTime = performance.now();
       const loadingTime = endTime - startTime;
       const waitTime = loadingTime > 2000 ? loadingTime : 2000;
-      setTimeout(() => setFallScene(false), waitTime);
-      if (res !== null && !(res instanceof AxiosError)) {
+      if (res !== null && res.data === true && !(res instanceof AxiosError)) {
+        setFallScene(true);
+        setTimeout(() => setFallScene(false), waitTime);
         setTimeout(() => setCurrentScene(SCENE__LOBBYSCENE), waitTime + 1000);
-
-        const users = Object.values(res.data.onlineUsers);
-        const sortedUsers: any = users.sort((a: any, b: any) => {
-          return b.level - a.level;
-        });
-
-        setUsersOnChannel(sortedUsers);
       } else {
         window.alert("채널에 입장할 수 없습니다. 다시 시도해주세요.");
       }

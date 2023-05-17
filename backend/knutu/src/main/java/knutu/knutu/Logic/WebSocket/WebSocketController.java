@@ -65,9 +65,9 @@ public class WebSocketController {
                 return;
             case "requestExitRoom":
                 type = "requestExitRoom";
-                payload = this.gameSceneInstances.onRequestExitRoom(session, requestPacket);
                 roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
                 sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
+                payload = this.gameSceneInstances.onRequestExitRoom(session, requestPacket);
                 lock.unlock();
                 this.setAndRespond(type, payload, sessions);
                 return;
@@ -78,6 +78,15 @@ public class WebSocketController {
                 lock.unlock();
                 this.setAndRespond(type, payload, sessions);
                 return;
+            case "readyToProcessRound":
+                type = "readyToProcessRound";
+                roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
+                sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
+                payload = this.gameSceneInstances.onReadyToProcessRound(session, requestPacket);
+                lock.unlock();
+                if(payload.equals("true")) {
+                    this.setAndRespond(type, payload, sessions);
+                }
             default:
                 break;
         }
@@ -87,13 +96,18 @@ public class WebSocketController {
 
     private void setAndRespond(String type, String payload, Session session) throws Exception {
         String packet = "{\"header\": {\"type\": \"" + type + "\", \"timestamp\": \"" + Instant.now().toEpochMilli() + "\"}, \"payload\": {\"data\": " + payload + "}}";
-        session.getBasicRemote().sendText(packet);
+        synchronized (session) {
+            session.getBasicRemote().sendText(packet);
+        }
     }
 
     private void setAndRespond(String type, String payload, Collection<Session> sessions) throws Exception {
-        if(sessions == null) return;
-        for(Session session : sessions) {
-            this.setAndRespond(type, payload, session);
+        if(sessions != null) {
+            for(Session session : sessions) {
+                synchronized (session) {
+                    this.setAndRespond(type, payload, session);
+                }
+            }
         }
     }
 }

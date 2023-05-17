@@ -10,6 +10,7 @@ import javax.websocket.Session;
 
 import org.json.simple.JSONObject;
 
+import com.google.api.gax.rpc.OutOfRangeException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -109,6 +110,12 @@ public class GameSceneService {
 
             if(this.checkAllPlayerReady(this.gameRooms.get(roomId).getPlayers())) {
                 this.broadCastAllPlayerReady(roomId);
+                List<Player> players = this.gameRooms.get(roomId).getPlayers();
+                for (Player player : players) {
+                    player.setReady(false);
+                }
+
+                this.gameRooms.get(roomId).setPlayers(players);
             }
 
             return this.getSessionsInRoom(roomId);
@@ -161,12 +168,37 @@ public class GameSceneService {
         }
     }
 
-    private void togglePlayerReady(String roomId, String playerName) {
-        Room room = this.gameRooms.get(roomId);
+    public String onReadyToProcessRound(Session _session, JSONObject _requestPacket) {
+        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
+        String userName = (String) requestedPayload.get("userName");
+        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+
+        try {
+            this.togglePlayerRoundReady(roomId, userName);
+
+            if(this.checkAllPlayerRoundReady(this.gameRooms.get(roomId).getPlayers())) {
+                List<Player> players = this.gameRooms.get(roomId).getPlayers();
+                for (Player player : players) {
+                    player.setReady(false);
+                }
+
+                this.gameRooms.get(roomId).setPlayers(players);
+                return "true";
+            }
+            return "false";
+        } catch(Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            throw new NullPointerException("Error on onReadyToProcessRound");
+        }
+    }
+
+    private void togglePlayerReady(String _roomId, String _playerName) {
+        Room room = this.gameRooms.get(_roomId);
         List<Player> gamers = room.getPlayers();
 
         for(Player player: gamers) {
-            if(!player.getName().equals(playerName)) continue;
+            if(!player.getName().equals(_playerName)) continue;
             player.setReady(!player.isReady()); 
             break;
         }
@@ -174,10 +206,32 @@ public class GameSceneService {
         room.setPlayers(gamers);
     }
 
-    private boolean checkAllPlayerReady(List<Player> players) {
-        if(players.size() <= 1) return false;
-        for (Player player: players) {
+    private void togglePlayerRoundReady(String _roomId, String _playerName) {
+        Room room = this.gameRooms.get(_roomId);
+        List<Player> gamers = room.getPlayers();
+
+        for(Player player: gamers) {
+            if(!player.getName().equals(_playerName)) continue;
+            player.setRoundReady(!player.isRoundReady()); 
+            break;
+        }
+
+        room.setPlayers(gamers);
+    }
+
+    private boolean checkAllPlayerReady(List<Player> _players) {
+        if(_players.size() <= 1) return false;
+        for (Player player: _players) {
             if(!player.isReady())
+                return false;
+        }
+        return true;
+    }
+
+    private boolean checkAllPlayerRoundReady(List<Player> _players) {
+        if(_players.size() <= 1) throw new OutOfRangeException("Player size is invalid", null, null, false);
+        for (Player player: _players) {
+            if(!player.isRoundReady())
                 return false;
         }
         return true;

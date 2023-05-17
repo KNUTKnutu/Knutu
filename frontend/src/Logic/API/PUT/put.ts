@@ -22,13 +22,13 @@ export const put__enterChannel = async ({
     endPoint = `${API_URL}/enterChannel/${channelName}`;
     const res__enterChannel = await axios.put(endPoint, user);
 
-    if (res__enterChannel.status === 200) {
+    if (res__enterChannel.status === 200 && res__enterChannel === true) {
       endPoint = `${API_URL}/getChannelInfo?channelName=${channelName}`;
       const res__getChannelUsers = await axios.get(endPoint);
 
       return res__getChannelUsers;
     }
-
+    
     return res__enterChannel;
   } catch (err: any) {
     const error: AxiosError = err;

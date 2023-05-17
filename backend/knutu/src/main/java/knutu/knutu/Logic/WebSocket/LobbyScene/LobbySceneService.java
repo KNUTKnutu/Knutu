@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import knutu.knutu.Controller.Exceptions.BadRequest;
+import knutu.knutu.Controller.Exceptions.Conflict;
 import knutu.knutu.Logic.Library.JSONBeautifier;
 import knutu.knutu.Service.FirebaseService;
 import knutu.knutu.Service.lib.classes.Channel.Channel;
@@ -73,6 +74,12 @@ public class LobbySceneService {
         try {
             if(channelName == null || channelName.isEmpty()) throw new BadRequest("The given channel name is nullish or undefined");
             if(user == null || user.getName().isEmpty()) throw new BadRequest("User is invalid.");
+
+            for(String _userName : this.userNameBySession.values()) {
+                if(_userName.equals(user.getName())) {
+                    throw new Conflict("The user is already on the channel right now.");
+                }
+            }
 
             return true;
         } catch(Exception e) {
