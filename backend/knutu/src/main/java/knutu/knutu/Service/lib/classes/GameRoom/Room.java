@@ -26,4 +26,5 @@ public class Room {
     private Collection<Chat>    chats;  // 이 방 안에서 오고간 채팅의 모음      
     private int       currRound;  // 현재 라운드
     private String      currTurn;   // 현재 누구의 차례인지
+    private boolean     isGaming;   // 게임이 진행 중인지
 }

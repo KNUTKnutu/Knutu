@@ -112,14 +112,19 @@ public class GameSceneService {
         try {
             this.togglePlayerReady(roomId, userName);
 
-            if(this.checkAllPlayerReady(this.gameRooms.get(roomId).getPlayers())) {
+            Room room = this.gameRooms.get(roomId);
+
+            if(this.checkAllPlayerReady(room.getPlayers())) {
                 this.broadCastAllPlayerReady(roomId);
-                List<Player> players = this.gameRooms.get(roomId).getPlayers();
+                List<Player> players = room.getPlayers();
                 for (Player player : players) {
                     player.setReady(false);
                 }
 
-                this.gameRooms.get(roomId).setPlayers(players);
+                room.setGaming(true);
+                room.setPlayers(players);
+
+                this.gameRooms.put(roomId, room);
             }
 
             return this.getSessionsInRoom(roomId);
