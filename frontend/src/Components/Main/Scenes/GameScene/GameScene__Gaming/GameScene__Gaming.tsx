@@ -16,14 +16,16 @@ const GameScene__Gaming = ({ _isGaming }: any): JSX.Element => {
   
   useEffect(() => {
     if(isGaming && !isFalling) {
-      // KnutuAudioHandler.getInstance().playOneShot() // 게임 시작 시 들릴 사운드
+      const audio = KnutuAudioHandler.getInstance();
+      audio.stop(); // 기존 브금 중단
+      audio.play(KnutuAudioHandler.clipOnGameStart);  // GameScene Waiting => GameScene Gaming 넘어가면서 나올 노래
       setTimeout(() => {
         const payload = KnutuWebSocketHandler.getInstance().wrapPacket("readyToProcessRound", {
           roomId: gamingRoom.number,
           userName: user?.name
         });
         KnutuWebSocketHandler.getInstance().send("readyToProcessRound", payload);
-      }, 2000);
+      }, 4000);
     }
   }, [isGaming, isFalling]);
 

@@ -33,13 +33,15 @@ const App = () => {
   // mount 시 Scene에 opacity:0 부여
   const [opacity, setOpacity] = useRecoilState(mountOpacity);
 
+  const audio = KnutuAudioHandler.getInstance();
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       setOpacity(true);
     }, 200);
     const localStoredVolume = localStorage.getItem("localStoredVolume");
     if(localStoredVolume !== null) {
-      KnutuAudioHandler.getInstance().setVolume(localStoredVolume);
+      audio.setVolume(localStoredVolume);
     }
     return () => clearTimeout(timeout);
   }, []);
@@ -47,7 +49,7 @@ const App = () => {
   useEffect(() => {
     if(user === null) return;
     const {preference: {masterVolume: volume}} = user;
-    KnutuAudioHandler.getInstance().setVolume(volume);
+    audio.setVolume(volume);
     localStorage.setItem("localStoredVolume", volume);
 
   }, [user]);
@@ -113,7 +115,7 @@ const App = () => {
         setEnteredRoom(json.payload.data);
         break;
       case "allPlayerReady":
-        KnutuAudioHandler.getInstance().playOneShot(KnutuAudioHandler.clipAllUserReady);
+        audio.playOneShot(KnutuAudioHandler.clipAllUserReady);
         setFallScene(true);
         const startTime = performance.now();
         const {
@@ -131,8 +133,12 @@ const App = () => {
         const waitTime = loadingTime > 2000 ? loadingTime : 2000;
         setTimeout(() => setFallScene(false), waitTime);
         setTimeout(() => setIsGameInProgress(true), waitTime + 1000);
-
         break;
+      case "readyToProcessRound":
+        audio.stop();
+        audio.playOneShot(KnutuAudioHandler.clipOnRoundStart, 100, () => {
+          console.log("round start!");
+        });
     }
   };
 

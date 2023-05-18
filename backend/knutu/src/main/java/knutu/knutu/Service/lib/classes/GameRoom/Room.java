@@ -24,4 +24,6 @@ public class Room {
     private String      roundWord;  // 게임 중인 방에서, 현재 설정된 라운드 워드(각 라운드마다의 시작 단어를 나타내는 단어)
     private String      currWord;   // 게임 중인 방 내에서 가장 최근에 게임 씬에 입력된 단어
     private Collection<Chat>    chats;  // 이 방 안에서 오고간 채팅의 모음      
+    private Short       currRound;  // 현재 라운드
+    private String      currTurn;   // 현재 누구의 차례인지
 }

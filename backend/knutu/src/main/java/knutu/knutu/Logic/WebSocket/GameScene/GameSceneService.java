@@ -175,17 +175,26 @@ public class GameSceneService {
 
         try {
             this.togglePlayerRoundReady(roomId, userName);
+            Room room = this.gameRooms.get(roomId);
 
-            if(this.checkAllPlayerRoundReady(this.gameRooms.get(roomId).getPlayers())) {
-                List<Player> players = this.gameRooms.get(roomId).getPlayers();
+            if(this.checkAllPlayerRoundReady(room.getPlayers())) {
+                List<Player> players = room.getPlayers();
+                Player firstPlayer = null;
                 for (Player player : players) {
+                    if(firstPlayer == null) {
+                        firstPlayer = player;
+                    }
                     player.setReady(false);
                 }
 
-                this.gameRooms.get(roomId).setPlayers(players);
-                return "true";
+                if(room.getCurrRound() == null) {
+                    room.setCurrRound(Short.parseShort("1"));
+                    room.setCurrTurn(firstPlayer.getName());
+                }
+
+                return gson.toJson(room);
             }
-            return "false";
+            return null;
         } catch(Exception e) {
             e.getCause();
             e.printStackTrace();
