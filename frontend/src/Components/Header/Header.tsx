@@ -3,6 +3,7 @@ import { LOGO, SCENE__INTROSCENE, SCENE__LOBBYSCENE } from "../../constant";
 import { put__logOut } from "../../Logic/API/PUT/put";
 import { fallState, currentSceneState, userState,InactiveAnimationState } from "../../Recoil/atom";
 import styles from "../../styles/Components/Header/_header.module.scss";
+import KnutuAudioHandler from './../../Logic/Library/KnutuAudio/KnutuAudioHandler';
 
 const Header = () => {
 
@@ -24,9 +25,14 @@ const Header = () => {
     aniInactive && setFall(!fall) 
   }
 
+  const onMuteVolumeClicked = () => {
+    KnutuAudioHandler.getInstance().toggleMute();
+  }
+
   return (
     <header className={styles.header_container}>
       <h1>{LOGO}</h1>
+      <button onClick={onMuteVolumeClicked}> Mute Volume </button>
       <button onClick={onAnimationFall}> 토글 fall </button>
       <button style={{display: user && currentScene == SCENE__LOBBYSCENE ? "block" : "none"}} onClick={onLogoutBtnClicked}>로그아웃로그아웃로그아웃로그아웃로그아웃로그아웃로그아웃로그아웃로그아웃로그아웃로그아웃로그아웃</button>
     </header>

@@ -37,8 +37,21 @@ const App = () => {
     const timeout = setTimeout(() => {
       setOpacity(true);
     }, 200);
+    const localStoredVolume = localStorage.getItem("localStoredVolume");
+    if(localStoredVolume !== null) {
+      KnutuAudioHandler.getInstance().setVolume(localStoredVolume);
+    }
     return () => clearTimeout(timeout);
   }, []);
+
+  useEffect(() => {
+    if(user === null) return;
+    const {preference: {masterVolume: volume}} = user;
+    KnutuAudioHandler.getInstance().setVolume(volume);
+    localStorage.setItem("localStoredVolume", volume);
+
+  }, [user]);
+
   const messageListener = (msg: any) => {
     const json = JSON.parse(msg.data);
     const { body } = json;
@@ -100,6 +113,7 @@ const App = () => {
         setEnteredRoom(json.payload.data);
         break;
       case "allPlayerReady":
+        KnutuAudioHandler.getInstance().playOneShot(KnutuAudioHandler.clipAllUserReady);
         setFallScene(true);
         const startTime = performance.now();
         const {

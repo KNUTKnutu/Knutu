@@ -10,6 +10,7 @@ import { EMAIL, STATUSCODE__UNAUTHORIZED } from "../../../../../../constant";
 import { FINDSTATE } from "../../../../../../enum";
 import { getFindId } from "../../../../../../Logic/API/GET/get";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Find/_findId.module.scss";
+import KnutuWebSocketHandler from './../../../../../../Logic/Library/KnutuWebSocket/KnutuWebSocketHandler';
 
 interface FindIdProps {
   setIsLoading: Dispatch<SetStateAction<boolean>>;

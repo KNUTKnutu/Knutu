@@ -11,6 +11,7 @@ class KnutuAudioHandler {
 
     private readonly defaultAudioSource: HTMLAudioElement = document.getElementById("audioSource") as HTMLAudioElement;
     private readonly defaultAudioClipLocation: AudioClip = "/src/Assets/Audios/";
+    private readonly defaultAudioVolume: AudioVolume = 40;
     
     public static readonly clipAllUserReady: AudioClip = "AllUserReady.mp3";
     public static readonly clipGameSceneGaming: AudioClip = "GameScene_Gaming.mp3";
@@ -24,6 +25,7 @@ class KnutuAudioHandler {
     public static readonly clipSuspense: AudioClip = "Suspense.mp3";
 
     private currentAudioClip: AudioClip = "";
+    private currentAudioVolume: AudioVolume = this.defaultAudioVolume;
 
     /** 
      * Plays an AudioClip independent with default audioSource.  
@@ -35,15 +37,26 @@ class KnutuAudioHandler {
      * @param1 AudioClip to play. please give this parameter as AudioClip constants in KnutuAudioHandler such as clipSuspense.
      * @returns void.
      * */
-    public playOneShot = (_audioClip: AudioClip): void => {
-        if(!_audioClip) return;
+    public playOneShot = (_audioClip: AudioClip, _volumeMultiplier?: AudioVolume = 100, _callback?: void): void => {
+        if(!_audioClip) return console.error("No clip specified.");
+        if(_volumeMultiplier > 100) return console.error("Given volume amount is invalid.");
+        if(this.defaultAudioSource.muted) return;
+
+        _volumeMultiplier /= 100;
+
         const tempAudioSource: HTMLAudioElement = document.createElement("audio") as HTMLAudioElement;
         document.getElementsByTagName("body")[0].appendChild(tempAudioSource);
         const playOneShotName: string = Math.floor(Math.random() * Math.pow(2, 16)).toString();
         tempAudioSource.setAttribute("name", playOneShotName);
+        tempAudioSource.volume = 1 * this.currentAudioVolume * _volumeMultiplier;
+
         this._setSrc(tempAudioSource, _audioClip);
         tempAudioSource.play();
-        tempAudioSource.addEventListener("ended", () => document.getElementsByName(playOneShotName)[0].remove());
+
+        tempAudioSource.addEventListener("ended", () => {
+            _callback();
+            document.getElementsByName(playOneShotName)[0].remove();
+        });
     };
 
     /** 
@@ -156,6 +169,34 @@ class KnutuAudioHandler {
         if(_audioVolume > 100) return console.error("given audioVolume is higher than 100, so nothing happened on SetVolume method.");
         if(_audioVolume > 1) _audioVolume /= 100;
         this.defaultAudioSource.volume = _audioVolume;
+        this.currentAudioVolume = _audioVolume;
+    }
+
+    /** 
+     * Gets the boolean value whether DefaultAudioSource is muted or not.
+     * @param1 No parameter needed.
+     * @returns boolean type, the property of muted on DefaultAudioSource.
+     * */
+    public getMute = (): boolean => {
+        return this.defaultAudioSource.muted;
+    }
+
+    /** 
+     * Lets DefaultAudioSource to be muted.  
+     * @param1 boolean type, whether to mute or not to. You can just simply skip this paramether to set it to be muted.
+     * @returns void.
+     * */
+    public setMute = (_isMute?: boolean = true): void => {
+        this.defaultAudioSource.muted = _isMute;
+    }
+
+    /** 
+     * Lets DefaultAudioSource to toggle its status of the property "muted".
+     * @param1 No parameter needed.
+     * @returns void.
+     * */
+    public toggleMute = (): void => {
+        this.defaultAudioSource.muted = !this.getMute();
     }
 
     /** 

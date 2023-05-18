@@ -110,7 +110,7 @@ public class FirebaseService implements FirebaseServiceInterface {
         Preference pref = new Preference();
         pref.setLanguage(Preference.LANGUAGE__DEFAULT);
         pref.setAccountDisabled(false);
-        pref.setMasterVolume(1);
+        pref.setMasterVolume(40);
 
         user.setId(_user.getId());
         user.setPw(_user.getPw());
