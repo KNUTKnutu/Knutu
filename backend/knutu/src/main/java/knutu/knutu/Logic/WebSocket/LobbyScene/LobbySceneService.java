@@ -183,7 +183,7 @@ public class LobbySceneService {
         try {
             Room gameRoom = gameRooms.get(Integer.toString(roomId));
             if(gameRoom == null) return false;
-            return gameRoom.getCurrEntry() != gameRoom.getMaxEntry() ? true : false;
+            return gameRoom.getCurrEntry() != gameRoom.getMaxEntry() && !gameRoom.isGaming() ? true : false;
         } catch (Exception e) {
             throw new Exception(e);
         }
