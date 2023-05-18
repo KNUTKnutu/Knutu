@@ -24,20 +24,18 @@ const Room = ({roomInfo}: any): JSX.Element => {
     const setFallScene = useSetRecoilState(fallState);
 
     const onRoomClicked = async (e: React.MouseEvent<HTMLDivElement>) => {
-        checkRoomEnterable(roomNumber)
-            .then((res) => {
-                if(res?.status == 200) {
+        checkRoomEnterable(roomNumber).then((res) => {
+            if(res?.status == 200) {
                 setFallScene(true);
                 const startTime = performance.now();
-                postEnterRoom(roomNumber, user)
-                    .then((res) => {
-                        const endTime = performance.now();
-                        const loadingTime = endTime - startTime;
-                        const waitTime = loadingTime > 2000 ? loadingTime : 2000;
-                        setTimeout(() => setFallScene(false), waitTime);
-                        setEnteredRoomIdState(roomNumber);
-                        setTimeout(() => setCurrentScene(SCENE__GAMESCENE), waitTime+1000);
-                    });
+                postEnterRoom(roomNumber, user).then((res) => {
+                    const endTime = performance.now();
+                    const loadingTime = endTime - startTime;
+                    const waitTime = loadingTime > 2000 ? loadingTime : 2000;
+                    setTimeout(() => setFallScene(false), waitTime);
+                    setEnteredRoomIdState(roomNumber);
+                    setTimeout(() => setCurrentScene(SCENE__GAMESCENE), waitTime+1000);
+                });
             }
             else {
                 window.alert("방에 입장할 수 없습니다. 잠시 후 다시 시도해주세요.");
