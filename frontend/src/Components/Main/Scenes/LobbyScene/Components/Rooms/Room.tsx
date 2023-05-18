@@ -24,11 +24,11 @@ const Room = ({roomInfo}: any): JSX.Element => {
     const setFallScene = useSetRecoilState(fallState);
 
     const onRoomClicked = async (e: React.MouseEvent<HTMLDivElement>) => {
-        setFallScene(true);
-        const startTime = performance.now();
         checkRoomEnterable(roomNumber)
             .then((res) => {
                 if(res?.status == 200) {
+                setFallScene(true);
+                const startTime = performance.now();
                 postEnterRoom(roomNumber, user)
                     .then((res) => {
                         const endTime = performance.now();
