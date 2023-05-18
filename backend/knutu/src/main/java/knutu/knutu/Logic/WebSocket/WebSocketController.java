@@ -56,7 +56,6 @@ public class WebSocketController {
                 return;
             case "submitSessionInfo":
                 type = "submitSessionInfo";
-                this.gameSceneInstances.saveSessionInfoToRoom(session, requestPacket);
                 roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
                 sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
                 payload = this.gameSceneInstances.onSubmitSessionInfo(session, requestPacket);
@@ -96,11 +95,6 @@ public class WebSocketController {
     }
 
     private void setAndRespond(String type, String payload, Session session) throws Exception {
-        // payload가 string인 경우에 대한 방어 코드
-        // if(payload.getClass().equals(String.class)) {
-        //     payload = '"' + payload + '"';
-        // }
-
         String packet = "{\"header\": {\"type\": \"" + type + "\", \"timestamp\": \"" + Instant.now().toEpochMilli() + "\"}, \"payload\": {\"data\": " + payload + "}}";
         synchronized (session) {
             session.getBasicRemote().sendText(packet);

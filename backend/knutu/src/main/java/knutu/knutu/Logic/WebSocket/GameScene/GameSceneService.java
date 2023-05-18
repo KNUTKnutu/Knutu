@@ -18,82 +18,86 @@ import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneInstances;
 import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneService;
 import knutu.knutu.Service.lib.classes.GameRoom.Room;
 import knutu.knutu.Service.lib.classes.Player.Player;
-import knutu.knutu.Service.lib.classes.User.User;
-import knutu.knutu.Service.lib.classes.stdictLib.StdictLib;
+// import knutu.knutu.Service.lib.classes.stdictLib.StdictLib;
 
 public class GameSceneService {
 
     public static GameSceneService service = new GameSceneService();
     public static GameSceneService accessInstance() { return service; }
 
-    private StdictLib libInstance = StdictLib.getstdictLibInstance();
+    // private StdictLib libInstance = StdictLib.getstdictLibInstance();
 
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private GameSceneInstances instances = GameSceneInstances.accessInstance();
 
-    private Map<String, User> onlineUsers = instances.onlineUsers;
     private Map<String, Room> gameRooms = LobbySceneInstances.accessInstance().gameRooms;
-    
-    public Map<String, Collection<Session>> sessionsInRoom = instances.sessionsInRoom;
-    public Map<String, String> userLocationMapWithName = instances.userLocationMapWithName;
-    public Map<String, String> userLocationMapWithSessionID = instances.userLocationMapWithName;
+
     public Map<String, String> userNameBySession = instances.userNameBySession;
+    public Map<String, Session> sessionByUserName = instances.sessionByUserName;
+    public Map<String, String> roomIdByUserName = instances.roomIdByUserName;
 
     public String onRequestRoomInfo(Session _session, JSONObject _requestPacket) throws Exception  {
         return simpleRoomReturn(_session, _requestPacket);
     }
 
     public String onSubmitSessionInfo(Session _session, JSONObject _requestPacket) throws Exception {
+        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
+        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+        String userName = (String) requestedPayload.get("userName");
+
+        this.userNameBySession.put(_session.getId(), userName);
+        this.sessionByUserName.put(userName, _session);
+        this.roomIdByUserName.put(userName, roomId);
+
         return simpleRoomReturn(_session, _requestPacket);
     }
 
     public String onRequestExitRoom(Session _session, JSONObject _requestPacket) {
         JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
-        String userName = (String) requestedPayload.get("userName");
         String roomId = Long.toString((long) requestedPayload.get("roomId"));
-        
-        if(this.userLocationMapWithName.containsKey(userName)) {
-            this.userLocationMapWithName.remove(this.userLocationMapWithName.get(userName));
-            this.userLocationMapWithSessionID.remove(_session.getId());
-            for(Session session : this.sessionsInRoom.get(roomId)) {
-                if(!session.getId().equals(_session.getId())) continue;
-                this.sessionsInRoom.get(roomId).remove(session);
-                break;
-            }
-        }
 
         Room room = LobbySceneService.accessInstance().getRoom(roomId);
-        String ret = gson.toJson(room);
+        
+        if(this.userNameBySession.containsKey(_session.getId())) {
+            String userName = this.userNameBySession.get(_session.getId());
+            this.userNameBySession.remove(_session.getId());
+            this.roomIdByUserName.remove(userName);
+            this.sessionByUserName.remove(userName);
+        
+            List<Player> players = new LinkedList<Player>();
 
-        return ret;
-    }
+            for(Player player : room.getPlayers()) {
+                if(player.getName().equals(userName)) continue;
+                players.add(player);
+            }
 
-    public void saveSessionInfoToRoom(Session _session, JSONObject _requestPacket) throws Exception {
-        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
-        String userName = (String) requestedPayload.get("userName");
-        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+            if(!players.isEmpty()) {
+                room.setPlayers(players);
+                String ret = gson.toJson(room);
+                return ret;
+            }
 
-        this.userLocationMapWithName.put(userName, roomId);
-        this.userLocationMapWithSessionID.put(_session.getId(), roomId);
-        this.userNameBySession.put(_session.getId(), userName);
-
-        Collection<Session> sessions = this.sessionsInRoom.get(roomId);
-
-        if(sessions == null) {
-            sessions = new LinkedList<Session>();
+            this.gameRooms.remove(roomId);
+            return null;
         }
 
-        if(sessions.add(_session)) {
-            this.sessionsInRoom.put(roomId, sessions);
-        }
+        return null;
     }
 
-    public Collection<Session> getSessionsInRoom(String roomId) {
-        return this.sessionsInRoom.get(roomId);
+    public Collection<Session> getSessionsInRoom(String _roomId) {
+        return this.sessionByUserName.values();
+    }
+
+    public String getRoomIdUserNameBelongs(String _userName) {
+        return this.roomIdByUserName.get(_userName);
     }
 
     public String getRoomIdSessionBelongs(Session _session) {
-        return this.userLocationMapWithSessionID.get(_session.getId());
+        return this.getRoomIdUserNameBelongs(this.userNameBySession.get(_session.getId()));
+    }
+
+    public boolean isUserLoggedIn(String _userName) {
+        return this.sessionByUserName.get(_userName) != null;
     }
 
     public String onRequestToggleReady(Session _session, JSONObject _requestPacket) {
@@ -130,36 +134,39 @@ public class GameSceneService {
         Collection<Session> sessions = this.getSessionsInRoom(roomId);
 
         Room room = this.gameRooms.get(roomId);
-        Short rounds = room.getRounds();
+        int rounds = room.getRounds();
 
         String roundWord = "";
 
-        switch(rounds.toString()) {
-            case "2":
+        switch(rounds) {
+            case 2:
                 roundWord = "안녕";
                 break;
-            case "3":
+            case 3:
                 roundWord = "민경호";
                 break;
-            case "4":
+            case 4:
                 roundWord = "강민공주";
                 break;
-            case "5":
+            case 5:
                 roundWord = "소프트웨어";
                 break;
-            case "6":
+            case 6:
                 roundWord = "황여진학회장";
                 break;
-            case "7":
+            case 7:
                 roundWord = "한국교통대학교";
                 break;
-            case "8":
+            case 8:
                 roundWord = "충북충주대소원면";
                 break;
-            case "9":
+            case 9:
                 roundWord = "서울고속버스터미널";
                 break;
         }
+
+        room.setRoundWord(roundWord);
+        this.gameRooms.put(roomId, room);
 
         String packet = "{\"header\": {\"type\": \"" + "allPlayerReady" + "\", \"timestamp\": \"" + Instant.now().toEpochMilli() + "\"}, \"payload\": {\"data\": {\"allPlayerReady\": true, \"roundWord\": \"" + roundWord + "\"}}}";
         
@@ -187,8 +194,8 @@ public class GameSceneService {
                     player.setReady(false);
                 }
 
-                if(room.getCurrRound() == null) {
-                    room.setCurrRound(Short.parseShort("1"));
+                if(room.getCurrRound() == -1) {
+                    room.setCurrRound(1);
                     room.setCurrTurn(firstPlayer.getName());
                 }
 

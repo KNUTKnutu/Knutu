@@ -17,6 +17,9 @@ const QuestionBoard = () => {
     <span key={i}>{round_word[i]}</span>
   ));
 
+  console.log(room);
+  console.log(round_suggestion);
+
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setBoardInput(e.target.value);
     if(boardInput.length >= 17) setBoardInput(boardInput.substring(0, 17));

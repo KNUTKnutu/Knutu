@@ -15,6 +15,7 @@ import com.google.gson.GsonBuilder;
 import knutu.knutu.Controller.Exceptions.BadRequest;
 import knutu.knutu.Controller.Exceptions.Conflict;
 import knutu.knutu.Logic.Library.JSONBeautifier;
+import knutu.knutu.Logic.WebSocket.GameScene.GameSceneService;
 import knutu.knutu.Service.FirebaseService;
 import knutu.knutu.Service.lib.classes.Channel.Channel;
 import knutu.knutu.Service.lib.classes.GameRoom.Room;
@@ -62,7 +63,9 @@ public class LobbySceneService {
         Collection<Channel> _channels = new LinkedList<Channel>();
 
         for (Channel _channel : this.availableChannels.values()) {
-            int _userCount = this.userNameBySession.values().size();
+            int lobbySceneUserCount = this.userNameBySession.values().size();
+            int gameSceneUserCount =GameSceneService.accessInstance().userNameBySession.values().size();
+            int _userCount = lobbySceneUserCount + gameSceneUserCount;
             _channel.setUserCount(_userCount);
             _channels.add(_channel);
         }
@@ -98,7 +101,7 @@ public class LobbySceneService {
 
     public boolean makeRoom(Room room) {
         try {
-            gameRooms.put(Short.toString(room.getNumber()), room);
+            gameRooms.put(String.valueOf(room.getNumber()), room);
             return true;
         } catch (Exception e){
             return false;
@@ -124,8 +127,7 @@ public class LobbySceneService {
             gamers.add(enteredPlayer);
             gameRoom.setPlayers(gamers);
 
-            Short currEntry = Short.parseShort(Integer.toString(Integer.parseInt(gameRoom.getCurrEntry().toString()) + Integer.parseInt("1")));
-            gameRoom.setCurrEntry(currEntry);  
+            gameRoom.setCurrEntry(gameRoom.getCurrEntry() + 1);  
 
             return gameRoom;
         } catch (Exception e){
@@ -152,7 +154,7 @@ public class LobbySceneService {
             User user = FirebaseService.accessFirebaseInstance().getUserWithName(userName);
             user.setInGame(false);
 
-            Short currEntry = Short.parseShort(Integer.toString(Integer.parseInt(gameRoom.getCurrEntry().toString()) - Integer.parseInt("1")));
+            int currEntry = gameRoom.getCurrEntry() - 1;
             gameRoom.setCurrEntry(currEntry);
 
             if(currEntry == 0) {
@@ -226,7 +228,6 @@ public class LobbySceneService {
     }
 
     public boolean isUserLoggedIn(String _userName) {
-
         for(String userName : userNameBySession.values()) {
             if(userName.equals(_userName)) return true;
         }

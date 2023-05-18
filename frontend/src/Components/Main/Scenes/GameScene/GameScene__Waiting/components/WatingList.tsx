@@ -6,6 +6,7 @@ import WatingUser from "./WatingUser";
 const WatingList = () => {
 
   const roomState = useRecoilValue(enteredRoomState);
+  console.log(roomState);
 
   if(roomState?.players == null) return <></>;
 

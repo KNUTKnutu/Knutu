@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import knutu.knutu.Controller.Exceptions.Conflict;
 import knutu.knutu.Controller.Exceptions.Unauthorized;
+import knutu.knutu.Logic.WebSocket.GameScene.GameSceneService;
 import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneService;
 import knutu.knutu.Service.FirebaseService;
 import knutu.knutu.Service.lib.classes.User.User;
@@ -26,7 +27,8 @@ public class SigningController {
             throw new Unauthorized("Wrong user information given.");
         }
 
-        if(LobbySceneService.accessInstance().isUserLoggedIn(user.getName())) {
+        if(LobbySceneService.accessInstance().isUserLoggedIn(user.getName())
+            || GameSceneService.accessInstance().isUserLoggedIn(user.getName())) {
             throw new Conflict("This User Has Already Logged In.");
         }
 

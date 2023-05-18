@@ -64,8 +64,9 @@ public class GameSceneWSHandler {
     // private methods
     private void exitRoomOnSocketClose(Session session) throws Exception {
         GameSceneService gameSceneServiceInstance = GameSceneService.accessInstance();
+
         String userName = gameSceneServiceInstance.userNameBySession.get(session.getId());
-        String roomId = gameSceneServiceInstance.userLocationMapWithName.get(userName);
+        String roomId = gameSceneServiceInstance.getRoomIdUserNameBelongs(userName);
         
         String msg = "{\"header\":{\"type\":\"requestExitRoom\",\"date\":" + Instant.now().toEpochMilli() + "},\"payload\":{\"roomId\":" + roomId + ",\"userName\":\"" + userName + "\"}}";
         WebSocketController.accessInstance().WSController(msg, session);
