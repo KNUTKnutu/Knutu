@@ -2,7 +2,11 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { LOGOUT, TITLE } from "../../../../../../constant";
 import { LOGINSTATE } from "../../../../../../enum";
 import { Nullable, User } from "../../../../../../interface";
-import { channelsState, isLoggedOutRecently, userState } from "../../../../../../Recoil/atom";
+import {
+  channelsState,
+  isLoggedOutRecently,
+  userState,
+} from "../../../../../../Recoil/atom";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Profile/_profile.module.scss";
 import DEFAULT_PROFILE from "../../../../../../Assets/Images/default_profile.svg";
 
@@ -11,9 +15,10 @@ interface Props {
   user: Nullable<User>;
 }
 
-const Profile = ({ setCurrLoginState, user }: Props) => {
+const EDIT = <span className="material-icons">edit</span>;
 
-  if(user == null) return <></>;
+const Profile = ({ setCurrLoginState, user }: Props) => {
+  if (user == null) return <></>;
 
   const { name, title, profilePicture, level, currentExperience } =
     user as User;
@@ -53,8 +58,11 @@ const Profile = ({ setCurrLoginState, user }: Props) => {
       </div>
       <div className={styles.player}>
         <div className={styles.sub}>
-          <img src={profilePicture} alt="profilePicture" onError={onErrorImg} />
-          <span className={styles.title}>{title}</span>
+          <div>
+            {EDIT}
+            <img src={profilePicture} alt="profilePicture" onError={onErrorImg} />
+          </div>
+          <span className={styles.title}>{title}{EDIT}</span>
         </div>
         <div className={styles.main}>
           <div className={styles.name}>
