@@ -1,36 +1,45 @@
 import styles from "../../styles/Components/Footer/_footer.module.scss";
-import { useState, useRef, RefObject } from 'react';
+import { useState, useRef, ChangeEvent, LegacyRef, useEffect } from "react";
 
 const Footer = (): JSX.Element => {
   const [selectedValue, setSelectedValue] = useState(2);
-  const testDivContainer = useRef<HTMLDivElement | null>(document.createElement("div"));
+  const [word, setWord] = useState([]);
+  const testDivContainer = useRef<HTMLDivElement>(null);
 
-  let testInterval: null | ReturnType<typeof setTimeout> = null;
+  const options = [];
+  for (let i = 2; i <= 20; i++) {
+    options.push(i);
+  }
 
-  const onDropdownValueChanged = (e): void => {
+  let testInterval: any = null;
+  let IntervalTime: any = null;
+
+  const onDropdownValueChanged = (e: ChangeEvent<HTMLSelectElement>): void => {
     setSelectedValue(Number(e.target.value));
-  }
+  };  
 
-  const fireTest1 = (e): void => {
-    // 여러분이 로직 작성하실 부분입니다.
-  }
+  useEffect(() => {
+    // 선택된 값이 변경될 때마다 배열 크기 업데이트
+    setWord(Array.from({ length: selectedValue }));
+  }, [selectedValue]);
+  
+  const fireTest1 = (e: any): void => {
+    if (IntervalTime !== null) return;
 
-  const fireTest2 = (e): void => {
-    // 제가 모의로 만든 테스트 로직입니다.
-    
-    if(testInterval !== null) return;
-    
+    IntervalTime = 1000 / (selectedValue - 1);
+    console.log(IntervalTime);
     const {current} = testDivContainer;
 
-    while(current.lastElementChild) {
+    if(current === null) return;
+
+    while (current.lastElementChild) {
       current.removeChild(current.lastElementChild);
     }
 
-    const charArr = ["안", "녕", "하", "세", "요"];
+    const charArr = ["가", "가"];
     let idx = 0;
-
     const appendSpan = () => {
-      if(charArr[idx] === undefined) return testInterval = null;
+      if (charArr[idx] === undefined) return (testInterval = null);
 
       const span = document.createElement("span");
       span.textContent = charArr[idx];
@@ -40,40 +49,63 @@ const Footer = (): JSX.Element => {
       idx++;
 
       testInterval = setTimeout(() => {
-        appendSpan()
-      }, 200);
-    }
+        appendSpan();
+      }, IntervalTime);
+    };
 
     appendSpan();
-  }
+  };
+
+  const fireTest2 = (e: any): void => {
+    // 제가 모의로 만든 테스트 로직입니다.
+
+    if (testInterval !== null) return;
+
+    const {current} = testDivContainer;
+
+    if(current === null) return;
+
+    while (current.lastElementChild) {
+      current.removeChild(current.lastElementChild);
+    }
+
+    const charArr = ["안", "녕", "하", "세", "요"];
+    let idx = 0;
+
+    const appendSpan = () => {
+      if (charArr[idx] === undefined) return (testInterval = null);
+
+      const span = document.createElement("span");
+      span.textContent = charArr[idx];
+
+      current.appendChild(span);
+
+      idx++;
+
+      testInterval = setTimeout(() => {
+        appendSpan();
+      }, 200);
+    };
+
+    appendSpan();
+  };
 
   return (
     <footer className={styles.footer_container}>
-      <select defaultValue="2" name="testSelect" onChange={onDropdownValueChanged}>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-        <option value="7">7</option>
-        <option value="8">8</option>
-        <option value="9">9</option>
-        <option value="10">10</option>
-        <option value="11">11</option>
-        <option value="12">12</option>
-        <option value="13">13</option>
-        <option value="14">14</option>
-        <option value="15">15</option>
-        <option value="16">16</option>
-        <option value="17">17</option>
-        <option value="18">18</option>
-        <option value="19">19</option>
-        <option value="20">20</option>
+      <select
+        defaultValue="2"
+        name="testSelect"
+        onChange={onDropdownValueChanged}
+      >
+        {options.map((option) => (
+        <option key={option} value={option}>
+          {option}
+        </option>
+      ))}
       </select>
       <button onClick={fireTest1}>test 1</button>
       <button onClick={fireTest2}>test 2</button>
-      <div className={styles.testDivContainer} ref={testDivContainer}>
-      </div>
+      <div className={styles.testDivContainer} ref={testDivContainer}></div>
     </footer>
   );
 };
