@@ -1,11 +1,11 @@
 import styles from "../../styles/Components/Footer/_footer.module.scss";
-import { useState, useRef } from 'react';
+import { useState, useRef, RefObject } from 'react';
 
 const Footer = (): JSX.Element => {
   const [selectedValue, setSelectedValue] = useState(2);
-  const testDivContainer = useRef();
+  const testDivContainer = useRef<HTMLDivElement | null>(document.createElement("div"));
 
-  let testInterval = null;
+  let testInterval: null | ReturnType<typeof setTimeout> = null;
 
   const onDropdownValueChanged = (e): void => {
     setSelectedValue(Number(e.target.value));
