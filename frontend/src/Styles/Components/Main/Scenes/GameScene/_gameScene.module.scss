@@ -47,7 +47,7 @@
   }
 
   .game_scene__gaming_container {
-    background-color: darkseagreen;
+    background: linear-gradient(to bottom right, #552288, #66aacc);
 
     &.true {
       display: grid;

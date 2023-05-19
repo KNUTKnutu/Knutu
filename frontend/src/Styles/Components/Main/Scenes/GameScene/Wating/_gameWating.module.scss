@@ -64,7 +64,6 @@
     }
     .exit_button {
       padding: 18px 37px;
-      color:hsla(34, 78%, 91%, 0.90)
     }
   }
 }
@@ -259,7 +258,7 @@
             border: unset;
             resize: none;
             font-family: "NanumSquareAceb";
-            background: none;
+            background: inherit;
 
             &:focus {
               outline: unset;

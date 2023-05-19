@@ -128,7 +128,6 @@
     .game_gamming_chatting__body {
       display: grid;
       grid-template-rows: 5.62fr 1.17fr;
-      background-color: darkseagreen;
       border-radius: 20px;
 
       .game_gamming_chatting__chattingScreen {
@@ -169,7 +168,7 @@
             border: unset;
             resize: none;
             font-family: "NanumSquareAceb";
-            background-color: darkseagreen;
+            background: inherit;
 
             &:focus {
               outline: unset;
