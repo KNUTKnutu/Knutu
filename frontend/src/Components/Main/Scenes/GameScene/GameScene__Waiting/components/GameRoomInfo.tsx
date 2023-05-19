@@ -61,6 +61,7 @@ const GameRoomInfo = () => {
         {modeInTotal}
       </div>
       <div className={styles.room_time}>라운드 {rounds} / {limitTime} 초</div>
+      <div className={styles.room_time}>여기에 무엇을~~ 넣을까 고민 중이랍니다~~</div>
       <div className={styles.wating_button}>
         <div className={styles.ready_button} onClick={ready}>
           준비

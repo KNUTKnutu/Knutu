@@ -8,6 +8,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   &::before {
     content: "";
     display: block;
@@ -16,7 +17,13 @@
     background-image: $main-background-image;
     background-size: auto;
     animation: background-infinite 10s linear infinite;
-    opacity: 0.7;
+    transition: filter 1s;
+    opacity: 0.6;
+    filter: grayscale(0);
+  }
+
+  &.main_inGame::before {
+    filter: grayscale(1);
   }
 }
 

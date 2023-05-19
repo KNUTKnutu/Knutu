@@ -2,6 +2,7 @@
 
 .game_scene_container {
   height: 100%;
+
   & > *:not(button) {
     position: absolute;
     width: 100%;
@@ -11,7 +12,17 @@
   }
 
   .game_scene__waiting_container {
-    background-color: rgb(129, 123, 173);   
+    // $linear-start: hsla(300, 100%, 16%, 0.98);
+    // $linear-1: hsla(300, 100%, 16%, 0.95);
+    // $linear-2: hsla(300, 100%, 16%, 0.9);
+    // $linear-3: hsla(300, 100%, 16%, 0.7);
+    // $linear-4: hsla(300, 100%, 16%, 0.65);
+
+    // background: linear-gradient(to right bottom, $linear-start, $linear-1 10%, $linear-2 40%, $linear-3 70%, $linear-4 100%);
+    // background-color: rgb(129, 123, 173); 
+
+    background: linear-gradient(135deg, hsla(271, 25%, 34%, 0.98) 0%, hsla(211, 38%, 32%, 0.92) 100%);
+
     &.true {
       display: none;
     }
@@ -21,6 +32,17 @@
       padding: 32px 92px 40px 92px;
       grid-template-columns: 2fr 8fr;
       column-gap: 30px;
+    }
+
+    .game_scene__waiting__watermark {
+      position: absolute;
+      font-size: 5rem;
+      text-transform: uppercase;
+      right: -1.2rem;
+      bottom: 4.2rem;
+      transform: rotateZ(-45deg);
+      opacity: 0.1;
+      z-index: 0;
     }
   }
 

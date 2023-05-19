@@ -1,8 +1,21 @@
 @import "../../../../../variable.module";
 
 .login_side {
+  position: relative;
   flex: 1;
   height: 100%;
   background-color: white;
   border-radius: 20px;
+  z-index: 0;
+
+  .watermark {
+    position: absolute;
+    font-size: 5rem;
+    text-transform: uppercase;
+    right: -1.75rem;
+    bottom: 3.3rem;
+    transform: rotateZ(-45deg);
+    opacity: 0.1;
+    z-index: 0;
+  }
 }

@@ -29,6 +29,7 @@ code {
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
   animation: fadeIn 1s;
+  z-index: 999;
 }
 
 @keyframes fadeIn {

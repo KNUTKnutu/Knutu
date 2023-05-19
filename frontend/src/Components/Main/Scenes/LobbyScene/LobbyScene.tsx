@@ -7,6 +7,9 @@ const LobbyScene = (): JSX.Element => {
     <div className={styles.lobby_scene_container}>
       <LobbySceneLeft />
       <LobbySceneRight />
+      <div className={styles.lobby_scene_watermark}>
+        Lobby
+      </div>
     </div>
   );
 };

@@ -11,6 +11,7 @@ const GameScene__Waiting = ({ _isGaming }: any): JSX.Element => {
     >
       <GameWatingLeft />
       <GameWatingRight />
+      <div className={styles.game_scene__waiting__watermark}>Room</div>
     </div>
   );
 };

@@ -34,7 +34,12 @@ const LoginSide = () => {
   };
 
   return (
-    <div className={styles.login_side}>{condi_render(currLoginState)}</div>
+    <div className={styles.login_side}>
+      {condi_render(currLoginState)}
+      <div className={styles.watermark}>
+        Intro
+      </div>
+    </div>
   );
 };
 

@@ -24,8 +24,11 @@
   }
 
   .form {
+    position: relative;
     flex: 5;
     border-top: 2px solid gray;
+    z-index: 1;
+
     & > form {
       display: flex;
       flex-direction: column;
@@ -90,6 +93,7 @@
         border: none;
         outline: solid black;
         margin: 16px 0;
+        opacity: 0.9;
 
         &:hover {
           background-color: $accent-color;

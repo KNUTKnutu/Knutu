@@ -10,6 +10,8 @@ import {
   SCENE__LOBBYSCENE,
 } from "../../constant";
 import FallAniPage from "../Reusable/Animation/FallAniPage";
+import { currentSceneState } from './../../Recoil/atom';
+import { useRecoilValue } from 'recoil';
 
 const CONTENTS = [
   {
@@ -27,15 +29,18 @@ const CONTENTS = [
 ];
 
 const Main = (): JSX.Element => {
+
+  const sceneState = useRecoilValue(currentSceneState);
+  const mainClasses = `${styles.main_container} ${sceneState === SCENE__GAMESCENE && styles.main_inGame}`;
+
   return (
-    <main className={styles.main_container}>
+    <main className={mainClasses}>
       {CONTENTS.map((content) => {
         const { key, component } = content;
         return (
           <Scene id={key} key={key}>
             {component}
           </Scene>
-          
         );
       })}
       <FallAniPage />

@@ -24,8 +24,11 @@
   }
 
   .form {
+    position: relative;
     flex: 3;
     border-top: 2px solid gray;
+    z-index: 1;
+    
     & > form {
       display: flex;
       flex-direction: column;
