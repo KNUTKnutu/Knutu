@@ -1,5 +1,6 @@
 import styles from "../../styles/Components/Footer/_footer.module.scss";
 import { useState, useRef, ChangeEvent, useEffect } from "react";
+import KnutuAudioHandler from "../../Logic/Library/KnutuAudio/KnutuAudioHandler";
 
 const Footer = (): JSX.Element => {
   const [selectedValue, setSelectedValue] = useState(2);
@@ -60,7 +61,8 @@ const Footer = (): JSX.Element => {
     if (testInterval !== null) return;
 
     const { current } = testDivContainer;
-
+    const audio = KnutuAudioHandler.getInstance();
+    
     if (current === null) return;
 
     while (current.lastElementChild) {
@@ -71,14 +73,18 @@ const Footer = (): JSX.Element => {
     let idx = 0;
 
     const appendSpan = () => {
-      if (charArr[idx] === undefined) return (testInterval = null);
+      if (charArr[idx] === undefined) {
+        audio.stop();
+        return (testInterval = null);
+      }
 
       const span = document.createElement("span");
       span.textContent = charArr[idx];
 
       current.appendChild(span);
-
       idx++;
+
+      audio.play(KnutuAudioHandler.clipOnWordAni);
 
       testInterval = setTimeout(() => {
         appendSpan();
