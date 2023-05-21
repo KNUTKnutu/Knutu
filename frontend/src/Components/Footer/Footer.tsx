@@ -74,7 +74,6 @@ const Footer = (): JSX.Element => {
 
     const appendSpan = () => {
       if (charArr[idx] === undefined) {
-        audio.stop();
         return (testInterval = null);
       }
 
@@ -82,9 +81,8 @@ const Footer = (): JSX.Element => {
       span.textContent = charArr[idx];
 
       current.appendChild(span);
+      audio.playOneShot(KnutuAudioHandler.clipOnWordAni);
       idx++;
-
-      audio.play(KnutuAudioHandler.clipOnWordAni);
 
       testInterval = setTimeout(() => {
         appendSpan();
