@@ -47,10 +47,10 @@
         position: relative;
     
         img {
-          width: 250px;
-          height: 250px;
+          width: 200px;
+          height: 200px;
           border-radius: 50%;
-          margin-top: 20px;
+          margin-top: 75px;
         }
     
         & > span {
@@ -60,9 +60,9 @@
           padding: 4px;
           border: 1px solid black;
           border-radius: 50%;
+          transition: transform 0.25s;
 
           &:hover {
-            transition: transform 0.25s;
             transform: scale(1.5);
           }
         }
@@ -89,9 +89,9 @@
           padding: 4px;
           border: 1px solid black;
           border-radius: 50%;
+          transition: transform .25s;
 
           &:hover {
-            transition: transform 0.25s;
             transform: scale(1.5);
           }
         }
