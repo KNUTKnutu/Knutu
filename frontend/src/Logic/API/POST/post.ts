@@ -42,6 +42,7 @@ export const post__makeRoom = async (_roomInfo: any) => {
   try {
     const {roomId, title, mode, lang, rounds, time_limit: limitTime, maximum: maxEntry, pw, roundWord, currWord} = _roomInfo;
     const roomInfo = {
+      ..._roomInfo,
       number: roomId,
       title,
       lang,

@@ -51,9 +51,12 @@ const MakeRoom = ({ setIsShow }: Props) => {
     special: "", // 특수 규칙
     roundWord: "", // 게임 씬에서 각 라운드의 시작 단어(게임 중 상단에 뜨는)
     currWord: "", // 게임 씬에서 가장 최근에 입력된 단어
+    chat: [],
+    currRound: -1, // 현재 라운드
+    currTurn: "", // 현재 턴인 사람
   });
 
-  const { title, pw, isPw, maximum, time_limit, rounds, lang, mode, special } =
+  const {number, title, pw, isPw, maximum, time_limit, rounds, lang, mode, special, roundWord, currWord, currRound, currTurn } =
     roomInfo;
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

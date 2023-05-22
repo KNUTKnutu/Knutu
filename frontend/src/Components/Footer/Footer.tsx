@@ -9,6 +9,7 @@ const Footer = (): JSX.Element => {
 
   const options = [];
   for (let i = 2; i <= 20; i++) {
+    if(options.length >= 50) break;
     options.push(i);
   }
 
@@ -27,7 +28,6 @@ const Footer = (): JSX.Element => {
     if (IntervalTime !== null) return;
 
     IntervalTime = 1000 / (selectedValue - 1);
-    console.log(IntervalTime);
     const { current } = testDivContainer;
 
     if (current === null) return;

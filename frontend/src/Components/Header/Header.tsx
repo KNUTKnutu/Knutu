@@ -1,7 +1,7 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import { LOGO, SCENE__INTROSCENE, SCENE__LOBBYSCENE } from "../../constant";
 import { put__logOut } from "../../Logic/API/PUT/put";
-import { fallState, currentSceneState, userState,InactiveAnimationState } from "../../Recoil/atom";
+import { fallState, currentSceneState, userState,inactiveAnimationState } from "../../Recoil/atom";
 import styles from "../../styles/Components/Header/_header.module.scss";
 import KnutuAudioHandler from './../../Logic/Library/KnutuAudio/KnutuAudioHandler';
 
@@ -20,9 +20,11 @@ const Header = () => {
     setUser(null);
   }
 
-  const [aniInactive, setInactive] = useRecoilState(InactiveAnimationState);
+  const [aniInactive, setInactive] = useRecoilState(inactiveAnimationState);
   const onAnimationFall = () => {
-    aniInactive && setFall(!fall) 
+    // aniInactive && setFall(!fall)
+    setFall(!fall) 
+    console.log("fall", fall, "inactive", aniInactive)
   }
 
   const onMuteVolumeClicked = () => {

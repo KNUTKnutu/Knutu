@@ -45,15 +45,29 @@ export interface Player {
   isAccountgaemaeneo: boolean; // 개매너 유저인지
 }
 
+export interface Chat{
+  sender: string;
+  message: string;
+  timestamp: number;
+}
+
 export interface Room {
   number: number;
   title: string;
+  lang: string;
   modes: string[];
   rounds: number;
   limitTime: number;
   currEntry: number;
   maxEntry: number;
   pw: string;
+  players: Array<Player>;
+  roundWord: string;
+  currWord: string;
+  chats: Array<Chat>;
+  currRound: number;
+  currTurn: string;
+  isGaming: boolean;
 }
 
 export interface OneButtonProps {

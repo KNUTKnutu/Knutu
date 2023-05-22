@@ -112,7 +112,11 @@ export const enteredRoomState = atom({
     pw: "",
     players: [],
     roundWord: "",
-    currWord: ""
+    currWord: "",
+    chat: [],
+    currRound: -1,
+    currTurn: "",
+    isGaming: false,
   }
   // { number, title, mode, rounds, limitTime, players }
 });
@@ -132,9 +136,14 @@ export const fallState = atom({
   default: false
 })
 
-export const InactiveAnimationState = atom<Boolean>(
+export const inactiveAnimationState = atom<Boolean>(
   {
-    key: "InactiveAnimationState",
+    key: "inactiveAnimationState",
     default: false
   }
 )
+
+export const currentUserState = atom<String>({
+  key: "currentUserState",
+  default: "",
+})
