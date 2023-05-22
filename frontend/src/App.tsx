@@ -135,10 +135,45 @@ const App = () => {
         setTimeout(() => setIsGameInProgress(true), waitTime + 1000);
         break;
       case "readyToProcessRound":
+        setEnteredRoom(json.payload.data);
         audio.stop();
         audio.playOneShot(KnutuAudioHandler.clipOnRoundStart, 100, () => {
-          console.log("round start!");
+          webSocketHandler.send(
+            "readyToRoundStart",
+            webSocketHandler.wrapPacket("readyToRoundStart", {
+              userName: user?.name,
+              roomId,
+            })
+          );
         });
+        break;
+      case "readyToRoundStart":
+        setEnteredRoom(json.payload.data);
+        // 라운드 시작했을 때의 로직
+        break;
+      case "onTurnProcess":
+        setEnteredRoom(json.payload.data);
+        break;
+      case "onWordCorrect":
+        audio.playOneShot(KnutuAudioHandler.clipOnWordCorrect);
+        break;
+      case "onWordIncorrect":
+        audio.playOneShot(KnutuAudioHandler.clipOnWordIncorrect);
+        break;
+      case "onRoundEnd":
+        audio.stop();
+        audio.playOneShot(KnutuAudioHandler.clipOnRoundEnd, 100, () => {
+          setTimeout(() => {
+              const payload = KnutuWebSocketHandler.getInstance().wrapPacket("readyToProcessRound", {
+                roomId: gamingRoom.number,
+                userName: user?.name
+              });
+              KnutuWebSocketHandler.getInstance().send("readyToProcessRound", payload);
+          }, 3000);
+        });
+        setEnteredRoom(json.payload.data);
+        // 라운드 끝났을 때의 로직
+        break;
     }
   };
 

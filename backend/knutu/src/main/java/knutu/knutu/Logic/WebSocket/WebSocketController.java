@@ -87,6 +87,45 @@ public class WebSocketController {
                     this.setAndRespond(type, payload, sessions);
                 }
                 return;
+            case "readyToRoundStart":
+                type = "readyToRoundStart";
+                roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
+                sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
+                payload = this.gameSceneInstances.onReadyToRoundStart(session, requestPacket);
+                lock.unlock();
+                if(payload != null) {
+                    this.setAndRespond(type, payload, sessions);
+                }
+                return;
+            case "onTurnProcess":
+                type = "onTurnProcess";
+                roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
+                sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
+                payload = this.gameSceneInstances.onTurnProcess(session, requestPacket);
+                lock.unlock();
+                if(payload != null) {
+                    this.setAndRespond(type, payload, sessions);
+                }
+                return;
+            case "wordSubmit":
+                type = "wordSubmit";
+                sessions = this.gameSceneInstances.onPlayerReady(session, requestPacket);
+                String[] result = this.gameSceneInstances.onWordSubmit(session, requestPacket);
+                if(result[0].equals("incorrect")) {
+                    type = "onWordIncorrect";
+                } else {
+                    type = "onWordCorrect";
+                }
+                lock.unlock();
+                this.setAndRespond(type, result[1], sessions);
+                return;
+            case "onRoundEnd":
+                type = "onRoundEnd";
+                sessions = this.gameSceneInstances.onPlayerReady(session, requestPacket);
+                payload = this.gameSceneInstances.onRoundEnd(session, requestPacket);
+                lock.unlock();
+                this.setAndRespond(type, payload, sessions);
+                return;
             default:
                 break;
         }

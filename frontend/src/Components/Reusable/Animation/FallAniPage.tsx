@@ -4,7 +4,7 @@ import {
   currentSceneState,
   fallState,
   isGameInProgress,
-  InactiveAnimationState,
+  inactiveAnimationState,
 } from "../../../Recoil/atom";
 import styles from "../../../styles/Components/Reusable/Animation/_fall.module.scss";
 import { SCENESTATE } from "../../../enum";
@@ -28,7 +28,7 @@ const FallAniPage = () => {
     False   False       true */
   const aniActive = useRecoilValue<Boolean>(fallState);
   const [aniInactive, setInactive] = useRecoilState<Boolean>(
-    InactiveAnimationState
+    inactiveAnimationState
   );
 
   /** 애니메이션이 작동 중인지 아니면 끝났는지 감시 */

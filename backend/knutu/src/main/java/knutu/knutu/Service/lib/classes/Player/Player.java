@@ -12,7 +12,7 @@ public class Player {
     private int     level;              // 현재 레벨
     private double  currentExperience;  // 현재 경험치
     private boolean isAccountgaemaeneo; // 개매너 유저인지
-    private boolean isReady;            // 레디를 박았는 지(gaming으로 들어가면 모두 false로 변경됨)
+    private boolean isReady;            // waiting 의 ready, turn ready 등에 두루두루 사용
     private boolean isRoundReady;       // 라운드 진행 준비가 되었는 지(라운드가 끝나면 모두 false로 변경됨)
-    private int score;
+    private int     score;
 }

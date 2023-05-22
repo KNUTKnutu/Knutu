@@ -18,7 +18,7 @@ import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneInstances;
 import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneService;
 import knutu.knutu.Service.lib.classes.GameRoom.Room;
 import knutu.knutu.Service.lib.classes.Player.Player;
-// import knutu.knutu.Service.lib.classes.stdictLib.StdictLib;
+import knutu.knutu.Service.lib.classes.stdictLib.StdictLib;
 
 public class GameSceneService {
 
@@ -211,6 +211,128 @@ public class GameSceneService {
             e.getCause();
             e.printStackTrace();
             throw new NullPointerException("Error on onReadyToProcessRound");
+        }
+    }
+
+    public String onReadyToRoundStart(Session _session, JSONObject _requestPacket) {
+        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
+        String userName = (String) requestedPayload.get("userName");
+        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+
+        try {
+            this.togglePlayerRoundReady(roomId, userName);
+            Room room = this.gameRooms.get(roomId);
+
+            if(this.checkAllPlayerRoundReady(room.getPlayers())) {
+                List<Player> players = room.getPlayers();
+                for (Player player : players) {
+                    player.setReady(false);
+                }
+
+                return gson.toJson(room);
+            }
+            return null;
+        } catch(Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            throw new NullPointerException("Error on onReadyToRoundStart");
+        }
+    }
+
+    public String[] onWordSubmit(Session _session, JSONObject _requestPacket) {
+        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
+        String userName = (String) requestedPayload.get("userName");
+        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+        String word = (String) requestedPayload.get("word");
+
+        String queryResult = StdictLib.getstdictLibInstance().simpleQuery(word);
+
+        String[] ret = new String[2];
+
+        if(queryResult.equals("")) {
+            ret[0] = "incorrect";
+            ret[1] = null;
+        } else {
+            ret[0] = "correct";
+            ret[1] = queryResult;
+        }
+
+        return ret;
+    }
+
+    public String onRoundEnd(Session _session, JSONObject _requestPacket) {
+        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
+        String userName = (String) requestedPayload.get("userName");
+        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+
+        // try {
+        //     this.togglePlayerReady(roomId, userName);
+
+        //     Room room = this.gameRooms.get(roomId);
+
+        //     if(this.checkAllPlayerReady(room.getPlayers())) {
+        //         this.broadCastAllPlayerReady(roomId);
+        //         List<Player> players = room.getPlayers();
+        //         for (Player player : players) {
+        //             player.setReady(false);
+        //         }
+
+        //         room.setGaming(true);
+        //         room.setPlayers(players);
+
+        //         this.gameRooms.put(roomId, room);
+        //     }
+
+        //     return this.getSessionsInRoom(roomId);
+        // } catch(Exception e) {
+        //     e.getCause();
+        //     e.printStackTrace();
+        //     return null;
+        // }
+
+        return null;
+    }
+
+    public String onTurnProcess(Session _session, JSONObject _requestPacket) {
+        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
+        String userName = (String) requestedPayload.get("userName");
+        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+
+        try {
+            this.togglePlayerRoundReady(roomId, userName);
+            Room room = this.gameRooms.get(roomId);
+
+            if(this.checkAllPlayerRoundReady(room.getPlayers())) {
+                List<Player> players = room.getPlayers();
+                boolean turnFlag = false;
+                boolean isLastPlayer = true;
+                String firstPlayerName = null;
+
+                for (Player player : players) {
+                    player.setReady(false);
+                    if(firstPlayerName == null) {
+                        firstPlayerName = player.getName();
+                    }
+                    if(turnFlag) {
+                        room.setCurrTurn(player.getName());
+                        isLastPlayer = false;
+                    }
+                    if(turnFlag == false && room.getCurrTurn().equals(player.getName())) {
+                        turnFlag = true;
+                    }
+                }
+
+                if(isLastPlayer == true) {
+                    room.setCurrTurn(firstPlayerName);
+                }
+
+                return gson.toJson(room);
+            }
+            return null;
+        } catch(Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            throw new NullPointerException("Error on onReadyToRoundStart");
         }
     }
 
