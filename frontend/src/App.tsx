@@ -12,6 +12,7 @@ import {
   roomsState,
   usersState,
   userState,
+  isRoundInProgress
 } from "./Recoil/atom";
 import KnutuWebSocketHandler from "./Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
 import { WebSocketPacket } from "./Logic/Library/KnutuWebSocket/KnutuWebSocketTypes";
@@ -29,6 +30,7 @@ const App = () => {
   const setUsersState = useSetRecoilState(usersState);
   const setIsGameInProgress = useSetRecoilState(isGameInProgress);
   const setFallScene = useSetRecoilState(fallState);
+  const setIsRoundInProgress = useSetRecoilState(isRoundInProgress);
 
   // mount 시 Scene에 opacity:0 부여
   const [opacity, setOpacity] = useRecoilState(mountOpacity);
@@ -148,14 +150,25 @@ const App = () => {
         });
         break;
       case "readyToRoundStart":
+        audio.stop();
+        audio.play(KnutuAudioHandler.clipOnRound);
         setEnteredRoom(json.payload.data);
-        // 라운드 시작했을 때의 로직
+        setIsRoundInProgress(true);
         break;
       case "onTurnProcess":
         setEnteredRoom(json.payload.data);
+        setIsRoundInProgress(true);
         break;
       case "onWordCorrect":
         audio.playOneShot(KnutuAudioHandler.clipOnWordCorrect);
+        setTimeout(() => {
+          const payload = KnutuWebSocketHandler.getInstance().wrapPacket("onTurnProcess", {
+            roomId: gamingRoom.number,
+            userName: user?.name
+          });
+          KnutuWebSocketHandler.getInstance().send("onTurnProcess", payload);
+        }, 1000);
+        setIsRoundInProgress(false);
         break;
       case "onWordIncorrect":
         audio.playOneShot(KnutuAudioHandler.clipOnWordIncorrect);
@@ -172,6 +185,7 @@ const App = () => {
           }, 3000);
         });
         setEnteredRoom(json.payload.data);
+        setIsRoundInProgress(false);
         // 라운드 끝났을 때의 로직
         break;
     }

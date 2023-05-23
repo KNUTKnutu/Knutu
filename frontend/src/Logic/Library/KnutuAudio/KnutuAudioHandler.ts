@@ -27,7 +27,7 @@ class KnutuAudioHandler {
     public static readonly clipOnWordCorrect: AudioClip = "OnWordCorrect.mp3";
     public static readonly clipOnWordAni: AudioClip = "OnWordAni.wav";
     public static readonly clipOnWordIncorrect: AudioClip = "OnWordIncorrect.mp3";
-    public static readonly clipRoundEnd: AudioClip = "RoundEnd.mp3";
+    public static readonly clipOnRoundEnd: AudioClip = "OnRoundEnd.mp3";
     public static readonly clipSuspense: AudioClip = "Suspense.mp3";
 
     private currentAudioClip: AudioClip = "";

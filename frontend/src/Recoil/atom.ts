@@ -129,21 +129,26 @@ export const isLoggedOutRecently = atom({
 export const isGameInProgress = atom({
   key: "isGameInProgress",
   default: false
-})
+});
+
+export const isRoundInProgress = atom({
+  key: "isRoundInProgress",
+  default: false
+});
 
 export const fallState = atom({
   key: "fallState",
   default: false
-})
+});
 
 export const inactiveAnimationState = atom<Boolean>(
   {
     key: "inactiveAnimationState",
     default: false
   }
-)
+);
 
 export const currentUserState = atom<String>({
   key: "currentUserState",
   default: "",
-})
+});

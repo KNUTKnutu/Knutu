@@ -71,6 +71,8 @@
       }
 
       .board_question {
+        display: flex;
+        justify-content: center;
         width: 704px;
         height: 117px;
         padding: 30px;

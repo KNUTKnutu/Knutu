@@ -12,7 +12,9 @@ public class Player {
     private int     level;              // 현재 레벨
     private double  currentExperience;  // 현재 경험치
     private boolean isAccountgaemaeneo; // 개매너 유저인지
-    private boolean isReady;            // waiting 의 ready, turn ready 등에 두루두루 사용
-    private boolean isRoundReady;       // 라운드 진행 준비가 되었는 지(라운드가 끝나면 모두 false로 변경됨)
-    private int     score;
+    private boolean isGameReady;        // GameScene waiting 의 ready 상태
+    private boolean isRoundReady;       // 라운드 진행 준비가 되었는 지
+    private boolean isRoundStartReady;  // 라운드 진행 준비 재확인.(이게 모두 ready가 되면 본인 턴에서 입력이 가능한 상태로 바뀜)
+    private boolean isTurnChangeReady;  // 턴 바꿀 준비
+    private int     score;              // 현재 플레이어 점수
 }

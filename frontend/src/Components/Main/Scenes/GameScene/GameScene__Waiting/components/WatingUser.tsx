@@ -9,7 +9,7 @@ type userInfoType = {
   profileFicture?: string; // userProfile: 사용자 프로필 src
   level: string; // userLevel: 사용자 레벨
   name: string; // userName: 사용자 이름
-  isReady: boolean;
+  isGameReady: boolean;
 }
 
 interface userInfoInterface {
@@ -17,7 +17,7 @@ interface userInfoInterface {
 }
 
 const WatingUser = ({ userinfo }: userInfoInterface) => {
-  const { name, title, profileFicture, level, isReady }: userInfoType = userinfo;
+  const { name, title, profileFicture, level, isGameReady }: userInfoType = userinfo;
 
   let profilePicture = profileFicture || knutu;
 
@@ -29,7 +29,7 @@ const WatingUser = ({ userinfo }: userInfoInterface) => {
       <div className={styles.user_name}>{name}</div>
       <div
         className={
-          isReady === true
+          isGameReady === true
             ? `${styles.user_onready}`
             : `${styles.user_notready}`
         }

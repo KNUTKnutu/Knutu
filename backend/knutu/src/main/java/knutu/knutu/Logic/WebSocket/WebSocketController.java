@@ -22,22 +22,25 @@ public class WebSocketController {
     private JSONParser jsonParser = new JSONParser();
     private JSONObject requestPacket;
 
+    private Lock lock = new ReentrantLock();
+
     private LobbySceneService lobbySceneInstances = LobbySceneService.accessInstance();
     private GameSceneService gameSceneInstances = GameSceneService.accessInstance();
 
     public void WSController(String msg, Session session) throws Exception {
-        requestPacket = (JSONObject) this.jsonParser.parse(msg);
+        try {
+            requestPacket = (JSONObject) this.jsonParser.parse(msg);
+        } catch (Exception e) {
+            return;
+        }
         JSONObject requestHeader = (JSONObject) requestPacket.get("header");
         String headerType = requestHeader.get("type").toString();
-    
-        final Lock lock = new ReentrantLock();
-        lock.lock();
 
         String type = "";
         String payload = "";
 
         // 자주 쓰일 변수는 선언해놓고 돌려쓰기
-        Collection<Session> sessions = new LinkedList<Session>();
+        Collection<Session> sessions = null;
         String roomId;
     
         // TODO case별로 호출 메소드를 따로 파서 정리하기. 이대로는 switch문 내부가 너무 굵어져, 점점 복잡해짐.
@@ -52,61 +55,45 @@ public class WebSocketController {
                 break;
             case "currentRooms":
                 this.lobbySceneInstances.sendCurrentRooms(session);
-                lock.unlock();
-                return;
+                break;
             case "submitSessionInfo":
                 type = "submitSessionInfo";
                 roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
                 sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
                 payload = this.gameSceneInstances.onSubmitSessionInfo(session, requestPacket);
-                lock.unlock();
-                this.setAndRespond(type, payload, sessions);
-                return;
+                break;
             case "requestExitRoom":
                 type = "requestExitRoom";
                 roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
                 sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
                 payload = this.gameSceneInstances.onRequestExitRoom(session, requestPacket);
-                lock.unlock();
-                this.setAndRespond(type, payload, sessions);
-                return;
+                break;
             case "requestToggleReady":
                 type = "requestToggleReady";
                 sessions = this.gameSceneInstances.onPlayerReady(session, requestPacket);
                 payload = this.gameSceneInstances.onRequestToggleReady(session, requestPacket);
-                lock.unlock();
-                this.setAndRespond(type, payload, sessions);
-                return;
+                break;
             case "readyToProcessRound":
                 type = "readyToProcessRound";
                 roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
                 sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
                 payload = this.gameSceneInstances.onReadyToProcessRound(session, requestPacket);
-                lock.unlock();
-                if(payload != null) {
-                    this.setAndRespond(type, payload, sessions);
-                }
-                return;
+                if(payload == null) return;
+                break;
             case "readyToRoundStart":
                 type = "readyToRoundStart";
                 roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
                 sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
                 payload = this.gameSceneInstances.onReadyToRoundStart(session, requestPacket);
-                lock.unlock();
-                if(payload != null) {
-                    this.setAndRespond(type, payload, sessions);
-                }
-                return;
+                if(payload == null) return;
+                break;
             case "onTurnProcess":
                 type = "onTurnProcess";
                 roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
                 sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
                 payload = this.gameSceneInstances.onTurnProcess(session, requestPacket);
-                lock.unlock();
-                if(payload != null) {
-                    this.setAndRespond(type, payload, sessions);
-                }
-                return;
+                if(payload == null) return;
+                break;
             case "wordSubmit":
                 type = "wordSubmit";
                 sessions = this.gameSceneInstances.onPlayerReady(session, requestPacket);
@@ -116,21 +103,29 @@ public class WebSocketController {
                 } else {
                     type = "onWordCorrect";
                 }
-                lock.unlock();
                 this.setAndRespond(type, result[1], sessions);
                 return;
+            case "onFail":
+                type = "onFail";
+                roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
+                sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
+                payload = this.gameSceneInstances.onFail(session, requestPacket);
+                break;
             case "onRoundEnd":
                 type = "onRoundEnd";
                 sessions = this.gameSceneInstances.onPlayerReady(session, requestPacket);
                 payload = this.gameSceneInstances.onRoundEnd(session, requestPacket);
-                lock.unlock();
-                this.setAndRespond(type, payload, sessions);
-                return;
+                if(payload == null) return;
+                break;
             default:
                 break;
         }
-        lock.unlock();
-        this.setAndRespond(type, payload, session);
+
+        if(sessions == null) {
+            this.setAndRespond(type, payload, session);
+        } else {
+            this.setAndRespond(type, payload, sessions);
+        }
     }
 
     private void setAndRespond(String type, String payload, Session session) throws Exception {
@@ -143,9 +138,11 @@ public class WebSocketController {
     private void setAndRespond(String type, String payload, Collection<Session> sessions) throws Exception {
         if(sessions != null) {
             for(Session session : sessions) {
+                this.lock.lock();
                 synchronized (session) {
                     this.setAndRespond(type, payload, session);
                 }
+                this.lock.unlock(); 
             }
         }
     }

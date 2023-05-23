@@ -27,5 +27,5 @@ public class Room {
     private int         currRound;  // 현재 라운드
     private String      currTurn;   // 현재 누구의 차례인지
     private boolean     isGaming;   // 게임이 진행 중인지
-    private float       remainRoundTime;    // 라운드 남은 시간
+    private int         remainRoundTime;    // 라운드 남은 시간
 }

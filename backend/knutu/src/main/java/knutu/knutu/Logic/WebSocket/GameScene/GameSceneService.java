@@ -1,14 +1,21 @@
 package knutu.knutu.Logic.WebSocket.GameScene;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.websocket.Session;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import com.google.api.gax.rpc.OutOfRangeException;
 import com.google.gson.Gson;
@@ -118,7 +125,7 @@ public class GameSceneService {
                 this.broadCastAllPlayerReady(roomId);
                 List<Player> players = room.getPlayers();
                 for (Player player : players) {
-                    player.setReady(false);
+                    player.setGameReady(false);
                 }
 
                 room.setGaming(true);
@@ -196,7 +203,7 @@ public class GameSceneService {
                     if(firstPlayer == null) {
                         firstPlayer = player;
                     }
-                    player.setReady(false);
+                    player.setRoundReady(false);
                 }
 
                 if(room.getCurrRound() == -1) {
@@ -220,14 +227,16 @@ public class GameSceneService {
         String roomId = Long.toString((long) requestedPayload.get("roomId"));
 
         try {
-            this.togglePlayerRoundReady(roomId, userName);
+            this.togglePlayerRoundStartReady(roomId, userName);
             Room room = this.gameRooms.get(roomId);
 
-            if(this.checkAllPlayerRoundReady(room.getPlayers())) {
+            if(this.checkAllPlayerRoundStartReady(room.getPlayers())) {
                 List<Player> players = room.getPlayers();
                 for (Player player : players) {
-                    player.setReady(false);
+                    player.setRoundStartReady(false);
                 }
+
+                room.setRemainRoundTime(room.getLimitTime() * 200);
 
                 return gson.toJson(room);
             }
@@ -251,10 +260,48 @@ public class GameSceneService {
 
         if(queryResult.equals("")) {
             ret[0] = "incorrect";
-            ret[1] = null;
+            ret[1] = "'" + word + "'";
         } else {
-            ret[0] = "correct";
-            ret[1] = queryResult;
+            Room room = this.gameRooms.get(roomId);
+
+            try {
+                JSONParser parser = new JSONParser();
+                JSONObject payload = (JSONObject) parser.parse(queryResult);
+                JSONObject channel = (JSONObject) payload.get("channel");
+                JSONArray items = (JSONArray) channel.get("item");
+                if(items.size() > 0) {
+                    JSONObject item = (JSONObject) items.get(0);
+
+                    if(item.containsKey("word")) {
+                        JSONObject bodyData = new JSONObject();
+                        String wordToReturn = (String) item.get("word");
+                        String part = (String) item.get("pos"); // 품사
+
+                        JSONObject sense = (JSONObject) item.get("sense");
+                        String definition = (String) sense.get("definition");
+                        
+                        bodyData.put("word", wordToReturn);
+                        bodyData.put("pos", part);
+                        bodyData.put("definition", definition);
+
+                        room.setCurrWord(wordToReturn);
+
+                        ret[0] = "correct";
+                        ret[1] = bodyData.toJSONString();
+
+                        for(Player player : room.getPlayers()) {
+                            if(player.getName() == userName) {
+                                player.setScore(((player.getScore() + 32 + (int) Math.random() * 7) * wordToReturn.length()) * 3);
+                            }
+                        }
+                    }
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+                ret[0] = "incorrect";
+                ret[1] = "'" + word + "'";
+            }
         }
 
         return ret;
@@ -265,30 +312,36 @@ public class GameSceneService {
         String userName = (String) requestedPayload.get("userName");
         String roomId = Long.toString((long) requestedPayload.get("roomId"));
 
-        // try {
-        //     this.togglePlayerReady(roomId, userName);
+        Room room = this.gameRooms.get(roomId);
+        for (Player player : room.getPlayers()) {
+            if(player.getName().equals(userName)) {
+                int score = (player.getScore() - 130 + (int) Math.random() * 33) * 2;
+                if(score < 0) score = 0;
+                player.setScore(score);
+            }
+        }        
+        
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-        //     Room room = this.gameRooms.get(roomId);
+        executorService.schedule(() -> {
+            Collection<Session> sessions = this.getSessionsInRoom(roomId);
+            String readyToProcessTurn = null;
+            for (Session session : sessions) {
+                readyToProcessTurn = this.onTurnProcess(session, _requestPacket);
+            }
+            if(readyToProcessTurn != null) {
+                String packet = "{\"header\": {\"type\": \"" + "onTurnProcess" + "\", \"timestamp\": \"" + Instant.now().toEpochMilli() + "\"}, \"payload\": {\"data\": " + gson.toJson(room) + "}}";
+                for(Session session : sessions) {
+                    try {
+                        session.getBasicRemote().sendText(packet);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, 4, TimeUnit.SECONDS);
 
-        //     if(this.checkAllPlayerReady(room.getPlayers())) {
-        //         this.broadCastAllPlayerReady(roomId);
-        //         List<Player> players = room.getPlayers();
-        //         for (Player player : players) {
-        //             player.setReady(false);
-        //         }
-
-        //         room.setGaming(true);
-        //         room.setPlayers(players);
-
-        //         this.gameRooms.put(roomId, room);
-        //     }
-
-        //     return this.getSessionsInRoom(roomId);
-        // } catch(Exception e) {
-        //     e.getCause();
-        //     e.printStackTrace();
-        //     return null;
-        // }
+        executorService.shutdown();
 
         return null;
     }
@@ -299,17 +352,17 @@ public class GameSceneService {
         String roomId = Long.toString((long) requestedPayload.get("roomId"));
 
         try {
-            this.togglePlayerRoundReady(roomId, userName);
+            this.togglePlayerTurnChangeReady(roomId, userName);
             Room room = this.gameRooms.get(roomId);
 
-            if(this.checkAllPlayerRoundReady(room.getPlayers())) {
+            if(this.checkAllPlayerTurnChangeReady(room.getPlayers())) {
                 List<Player> players = room.getPlayers();
                 boolean turnFlag = false;
                 boolean isLastPlayer = true;
                 String firstPlayerName = null;
 
                 for (Player player : players) {
-                    player.setReady(false);
+                    player.setTurnChangeReady(false);
                     if(firstPlayerName == null) {
                         firstPlayerName = player.getName();
                     }
@@ -332,7 +385,27 @@ public class GameSceneService {
         } catch(Exception e) {
             e.getCause();
             e.printStackTrace();
-            throw new NullPointerException("Error on onReadyToRoundStart");
+            throw new NullPointerException("Error on onTurnProcess");
+        }
+    }
+
+    public String onFail(Session _session, JSONObject _requestPacket) {
+        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
+        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+
+        try {
+            Room room = this.gameRooms.get(roomId);
+
+            if (room.getCurrRound() == room.getRounds()) 
+                return "gameEnd";
+
+            room.setCurrRound(room.getCurrRound() + 1);
+
+            return "nextRound";
+        } catch(Exception e) {
+            e.getCause();
+            e.printStackTrace();
+            throw new NullPointerException("Error on onFail");
         }
     }
 
@@ -342,7 +415,7 @@ public class GameSceneService {
 
         for(Player player: gamers) {
             if(!player.getName().equals(_playerName)) continue;
-            player.setReady(!player.isReady()); 
+            player.setGameReady(!player.isGameReady()); 
             break;
         }
 
@@ -362,10 +435,36 @@ public class GameSceneService {
         room.setPlayers(gamers);
     }
 
+    private void togglePlayerRoundStartReady(String _roomId, String _playerName) {
+        Room room = this.gameRooms.get(_roomId);
+        List<Player> gamers = room.getPlayers();
+
+        for(Player player: gamers) {
+            if(!player.getName().equals(_playerName)) continue;
+            player.setRoundStartReady(!player.isRoundStartReady()); 
+            break;
+        }
+
+        room.setPlayers(gamers);
+    }
+
+    private void togglePlayerTurnChangeReady(String _roomId, String _playerName) {
+        Room room = this.gameRooms.get(_roomId);
+        List<Player> gamers = room.getPlayers();
+
+        for(Player player: gamers) {
+            if(!player.getName().equals(_playerName)) continue;
+            player.setTurnChangeReady(!player.isTurnChangeReady()); 
+            break;
+        }
+
+        room.setPlayers(gamers);
+    }
+
     private boolean checkAllPlayerReady(List<Player> _players) {
         if(_players.size() <= 1) return false;
         for (Player player: _players) {
-            if(!player.isReady())
+            if(!player.isGameReady())
                 return false;
         }
         return true;
@@ -375,6 +474,24 @@ public class GameSceneService {
         if(_players.size() <= 1) throw new OutOfRangeException("Player size is invalid", null, null, false);
         for (Player player: _players) {
             if(!player.isRoundReady())
+                return false;
+        }
+        return true;
+    }
+
+    private boolean checkAllPlayerRoundStartReady(List<Player> _players) {
+        if(_players.size() <= 1) throw new OutOfRangeException("Player size is invalid", null, null, false);
+        for (Player player: _players) {
+            if(!player.isRoundStartReady())
+                return false;
+        }
+        return true;
+    }
+
+    private boolean checkAllPlayerTurnChangeReady(List<Player> _players) {
+        if(_players.size() <= 1) throw new OutOfRangeException("Player size is invalid", null, null, false);
+        for (Player player: _players) {
+            if(!player.isTurnChangeReady())
                 return false;
         }
         return true;

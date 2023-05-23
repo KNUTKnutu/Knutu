@@ -117,7 +117,7 @@ public class LobbySceneService {
             enteredPlayer.setLevel(user.getLevel());
             enteredPlayer.setCurrentExperience(user.getCurrentExperience());
             enteredPlayer.setAccountgaemaeneo(false); // user.getAccountgaemaeneo 가 안돼서 일단 보류
-            enteredPlayer.setReady(false);
+            enteredPlayer.setGameReady(false);
             enteredPlayer.setScore(0);
 
             user.setInGame(true);
