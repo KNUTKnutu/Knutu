@@ -105,7 +105,7 @@ const QuestionBoard = () => {
         <input className={styles.board_input} placeholder="여기에 입력해주세요" value={boardInput} onChange={onInputChange} onKeyPress={onKeyPress}/>
       </div>
       <div className={styles.timer}>
-        <div className={styles.timeGauge} style={{position: "absolute", width: `${timeGauge} + "%"`, height: "100%", backgroundColor: "red"}}>
+        <div className={styles.timeGauge} style={{width: `${timeGauge}%`}}>
         </div>
         <span className={styles.remainTurnTime}>
           {(remainTurnTimeNumber / 1000).toFixed(1) + "초"}
