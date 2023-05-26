@@ -1,6 +1,7 @@
 package knutu.knutu.Service;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,22 +42,31 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class FirebaseService implements FirebaseServiceInterface {
-    
-    @Value("${app.firebase-bucket}")
-    private String bucket;
     private FirebaseApp firebaseApp;
 
     private final String COLLECTION__USER = "User";
     // private final String COLLECTION__FILE = "File";
 
     // private final String KIND__USER = "user";
+    // enum RequestKind {
+    //     NAME("name"),
+    //     PW("pw"),
+    //     EMAIL("email"),
+    //     EXP("experience"),
+    //     PROFILE_PICTURE("profilePicture")
+    // }
+
     private final String KIND__NAME = "name";
     private final String KIND__PW = "pw";
     private final String KIND__EMAIL = "email";
     private final String KIND__EXPERIENCE = "experience";
+    private final String KIND__PROFILE_PICTURE = "profilePicture";
 
     public static final FirebaseService firebaseInstance = new FirebaseService();
     public static FirebaseService accessFirebaseInstance() { return firebaseInstance; }
+    
+    @Value("${app.firebase-bucket}")
+    public String bucket;
     
     @PostConstruct
     public void initFirebaseApp() {
@@ -215,6 +225,9 @@ public class FirebaseService implements FirebaseServiceInterface {
                 case KIND__PW:
                     currentUser.setPw(user.getPw());
                     break;
+                case KIND__PROFILE_PICTURE:
+                    currentUser.setProfilePicture(user.getProfilePicture());
+                    break;
             }
     
             long now = Instant.now().toEpochMilli();
@@ -234,6 +247,27 @@ public class FirebaseService implements FirebaseServiceInterface {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public boolean changeProfilePicture(MultipartFile _file, String _userId) throws Exception {
+        StorageClient storageInstance = StorageClient.getInstance();
+        Bucket bucketInstnace = storageInstance.bucket(this.bucket);
+
+        String fileName = _file.getOriginalFilename();
+        File file = File.createTempFile(_userId, fileName);
+        _file.transferTo(file);
+
+        Blob blobRequestResult = bucketInstnace.create(fileName, new FileInputStream(file), _file.getContentType());
+        if(blobRequestResult.equals(null)) {
+            return false;
+        }
+
+        User currentUser = this.getUser(_userId);
+        currentUser.setProfilePicture(fileName);
+
+        this.updateUser(_userId, currentUser, KIND__PROFILE_PICTURE);
+
+        return true;
     }
 
     // Delete

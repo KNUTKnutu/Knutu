@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.google.firebase.auth.FirebaseAuthException;
 
 public interface FirebaseServiceInterface {
+    
     // Users
     public boolean addUser(User user) throws Exception;
     public User getUser(String id) throws Exception;

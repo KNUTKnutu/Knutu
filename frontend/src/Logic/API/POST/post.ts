@@ -65,6 +65,18 @@ export const post__makeRoom = async (_roomInfo: any) => {
   }
 };
 
+export const postProfilePicture = async (_file: File, _userId: string) => {
+  try {
+    const res = await axios.post(`${API_URL}/profilePicture?userId=${_userId}`, {
+      _file
+    });
+    return res;
+  } catch (e: any) {
+    console.error(e);
+    return e;
+  }
+};
+
 // TODO : any 를 타입 선언해야함
 export const postEnterRoom = async (roomId: any, user: any) => {
   try {

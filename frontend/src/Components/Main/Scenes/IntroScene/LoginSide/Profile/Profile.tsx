@@ -9,18 +9,17 @@ import {
 } from "../../../../../../Recoil/atom";
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Profile/_profile.module.scss";
 import DEFAULT_PROFILE from "../../../../../../Assets/Images/default_profile.svg";
+import { postProfilePicture } from './../../../../../../Logic/API/POST/post';
 
 interface Props {
   setCurrLoginState: React.Dispatch<React.SetStateAction<LOGINSTATE>>;
   user: Nullable<User>;
 }
 
-const EDIT = <span className="material-icons">edit</span>;
-
 const Profile = ({ setCurrLoginState, user }: Props) => {
   if (user == null) return <></>;
 
-  const { name, title, profilePicture, level, currentExperience } =
+  const { id, name, title, profilePicture, level, currentExperience } =
     user as User;
 
   const setUser = useSetRecoilState(userState);
@@ -44,6 +43,31 @@ const Profile = ({ setCurrLoginState, user }: Props) => {
     setChannels([]);
   };
 
+  const onProfilePictureEditBtnClicked = (): void => {
+    const tempFileReader = document.createElement("input");
+    tempFileReader.type = 'file';
+    tempFileReader.accept = 'image/*';
+    tempFileReader.addEventListener('change', handleFileSelect, false);
+    tempFileReader.click();
+  }
+
+  const handleFileSelect = (): void => {
+    const selectedFile = event.target.files[0];
+
+    if(selectedFile === undefined || selectedFile === null) {
+      return window.alert("선택된 파일이 올바르지 않습니다.");
+    }
+
+    console.log(selectedFile);
+
+    postProfilePicture(selectedFile, id).then(() => {
+
+    }).catch((e) => {
+      console.error(e);
+      window.alert(e);
+    });
+  }
+
   /**
    * img가 엑박 뜰 경우 대체 이미지 설정
    */
@@ -59,10 +83,13 @@ const Profile = ({ setCurrLoginState, user }: Props) => {
       <div className={styles.player}>
         <div className={styles.sub}>
           <div>
-            {EDIT}
+            <span className="material-icons" onClick={onProfilePictureEditBtnClicked}>edit</span>
             <img src={profilePicture} alt="profilePicture" onError={onErrorImg} />
           </div>
-          <span className={styles.title}>{title}{EDIT}</span>
+          <span className={styles.title}>
+            {title}
+            <span className="material-icons" onClick={onProfilePictureEditBtnClicked}>edit</span>
+          </span>
         </div>
         <div className={styles.main}>
           <div className={styles.name}>
