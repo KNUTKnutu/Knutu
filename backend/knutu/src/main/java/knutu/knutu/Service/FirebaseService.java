@@ -281,9 +281,6 @@ public class FirebaseService implements FirebaseServiceInterface {
         Bucket bucketInstance = storageInstance.bucket(this.bucket);
 
         User currentUser = this.getUser(_userId);
-        System.out.println("<!==================!>");
-        System.out.println(currentUser);
-        System.out.println("<!==================!>");
         String profilePictureAddr = currentUser.getProfilePicture();
 
         Blob blob = bucketInstance.get(profilePictureAddr);
