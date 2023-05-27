@@ -12,7 +12,7 @@ import {
   roomsState,
   usersState,
   userState,
-  isRoundInProgress
+  isRoundInProgress,
 } from "./Recoil/atom";
 import KnutuWebSocketHandler from "./Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
 import { WebSocketPacket } from "./Logic/Library/KnutuWebSocket/KnutuWebSocketTypes";
@@ -46,27 +46,30 @@ const App = () => {
       const vol = localStorage.getItem("localStoredVolume");
       vol == 0 && localStorage.setItem("localStoredVolume", 40);
       audio.setVolume(vol);
-    }
+    };
 
     const createProfilePictureCache = (): void => {
-      localStorage.getItem("profilePictures") != 0 && return;
+      if (localStorage.getItem("profilePictures") !== null) {
+        return;
+      }
       localStorage.setItem("profilePictures", JSON.stringify({}));
-    }
+    };
 
     const initApp = (): void => {
       setDefaultVolume();
       createProfilePictureCache();
-    }
+    };
 
     return () => clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
-    if(user === null) return;
-    const {preference: {masterVolume: volume}} = user;
+    if (user === null) return;
+    const {
+      preference: { masterVolume: volume },
+    } = user;
     audio.setVolume(volume);
     localStorage.setItem("localStoredVolume", volume);
-
   }, [user]);
 
   const messageListener = (msg: any) => {
@@ -175,10 +178,13 @@ const App = () => {
       case "onWordCorrect":
         audio.playOneShot(KnutuAudioHandler.clipOnWordCorrect);
         setTimeout(() => {
-          const payload = KnutuWebSocketHandler.getInstance().wrapPacket("onTurnProcess", {
-            roomId: gamingRoom.number,
-            userName: user?.name
-          });
+          const payload = KnutuWebSocketHandler.getInstance().wrapPacket(
+            "onTurnProcess",
+            {
+              roomId: gamingRoom.number,
+              userName: user?.name,
+            }
+          );
           KnutuWebSocketHandler.getInstance().send("onTurnProcess", payload);
         }, 1000);
         setIsRoundInProgress(false);
@@ -190,11 +196,17 @@ const App = () => {
         audio.stop();
         audio.playOneShot(KnutuAudioHandler.clipOnRoundEnd, 100, () => {
           setTimeout(() => {
-              const payload = KnutuWebSocketHandler.getInstance().wrapPacket("readyToProcessRound", {
+            const payload = KnutuWebSocketHandler.getInstance().wrapPacket(
+              "readyToProcessRound",
+              {
                 roomId: gamingRoom.number,
-                userName: user?.name
-              });
-              KnutuWebSocketHandler.getInstance().send("readyToProcessRound", payload);
+                userName: user?.name,
+              }
+            );
+            KnutuWebSocketHandler.getInstance().send(
+              "readyToProcessRound",
+              payload
+            );
           }, 3000);
         });
         setEnteredRoom(json.payload.data);
