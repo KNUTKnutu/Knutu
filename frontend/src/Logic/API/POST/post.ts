@@ -67,9 +67,15 @@ export const post__makeRoom = async (_roomInfo: any) => {
 
 export const postProfilePicture = async (_file: File, _userId: string) => {
   try {
-    const res = await axios.post(`${API_URL}/profilePicture?userId=${_userId}`, {
-      _file
+    const formData = new FormData();
+    formData.append('_file', _file);
+
+    const res = await axios.post(`${API_URL}/profilePicture?userId=${_userId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
     });
+    
     return res;
   } catch (e: any) {
     console.error(e);

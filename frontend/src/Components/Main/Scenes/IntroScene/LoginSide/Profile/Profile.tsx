@@ -10,6 +10,7 @@ import {
 import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/LoginSide/Profile/_profile.module.scss";
 import DEFAULT_PROFILE from "../../../../../../Assets/Images/default_profile.svg";
 import { postProfilePicture } from './../../../../../../Logic/API/POST/post';
+import { getProfilePicture } from './../../../../../../Logic/API/GET/get';
 
 interface Props {
   setCurrLoginState: React.Dispatch<React.SetStateAction<LOGINSTATE>>;
@@ -19,7 +20,7 @@ interface Props {
 const Profile = ({ setCurrLoginState, user }: Props) => {
   if (user == null) return <></>;
 
-  const { id, name, title, profilePicture, level, currentExperience } =
+  const { id, name, title, profilePicture, level, currentExperience, profilePictureFile } =
     user as User;
 
   const setUser = useSetRecoilState(userState);
@@ -61,7 +62,41 @@ const Profile = ({ setCurrLoginState, user }: Props) => {
     console.log(selectedFile);
 
     postProfilePicture(selectedFile, id).then(() => {
+      getProfilePicture(id).then((result) => {
+        const { data } = result;
+        const _user = {
+          ...user,
+          profilePictureFile: data
+        }
+        setUser(_user);
+        
+        const profilePicturesPayload = JSON.parse(localStorage.getItem("profilePictures"));
+        if(profilePicturesPayload[id] == 0) {
+          const payloadToSave = {
+            ...profilePicturesPayload,
+            id: _user.profilePictureFile
+          }
+          localStorage.setItem("profilePictures", JSON.stringify(payloadToSave));
+        }
 
+        // const saveImageToLocalStorage = (key, image) => {
+        //   const reader = new FileReader();
+        //   reader.onloadend = function () {
+        //     const imageDataUrl = reader.result;
+        //     localStorage.setItem(key, imageDataUrl);
+        //   };
+        //   reader.readAsDataURL(image);
+        // }
+
+        // const displayImageFromLocalStorage = (key, elementId) => {
+        //   const imageDataUrl = localStorage.getItem(key);
+        //   if (imageDataUrl) {
+        //     const imageElement = document.getElementById(elementId);
+        //     imageElement.src = imageDataUrl;
+        //   }
+        // }
+
+      })
     }).catch((e) => {
       console.error(e);
       window.alert(e);
@@ -84,7 +119,7 @@ const Profile = ({ setCurrLoginState, user }: Props) => {
         <div className={styles.sub}>
           <div>
             <span className="material-icons" onClick={onProfilePictureEditBtnClicked}>edit</span>
-            <img src={profilePicture} alt="profilePicture" onError={onErrorImg} />
+            <img src={profilePictureFile ? profilePictureFile : DEFAULT_PROFILE} alt="profilePicture" onError={onErrorImg} />
           </div>
           <span className={styles.title}>
             {title}

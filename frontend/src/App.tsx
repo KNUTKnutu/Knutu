@@ -41,10 +41,23 @@ const App = () => {
     const timeout = setTimeout(() => {
       setOpacity(true);
     }, 200);
-    const localStoredVolume = localStorage.getItem("localStoredVolume");
-    if(localStoredVolume !== null) {
-      audio.setVolume(localStoredVolume);
+
+    const setDefaultVolume = (): void => {
+      const vol = localStorage.getItem("localStoredVolume");
+      vol == 0 && localStorage.setItem("localStoredVolume", 40);
+      audio.setVolume(vol);
     }
+
+    const createProfilePictureCache = (): void => {
+      localStorage.getItem("profilePictures") != 0 && return;
+      localStorage.setItem("profilePictures", JSON.stringify({}));
+    }
+
+    const initApp = (): void => {
+      setDefaultVolume();
+      createProfilePictureCache();
+    }
+
     return () => clearTimeout(timeout);
   }, []);
 

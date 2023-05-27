@@ -42,6 +42,16 @@ export const get__signin = async ({
   }
 };
 
+export const getProfilePicture = async (_userId: string) => {
+  try {
+    const res = await axios.get(`${API_URL}/profilePicture?userId=${_userId}`);
+    return res;
+  } catch (e: any) {
+    console.error(e);
+    return e;
+  }
+};
+
 export const getChannelInfos = async (): Promise<Nullable<Channels>> => {
   try {
     const res = await axios.get(`${API_URL}/getChannelInfos`);
