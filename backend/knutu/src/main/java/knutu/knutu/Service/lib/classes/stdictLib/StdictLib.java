@@ -17,7 +17,7 @@ public class StdictLib {
     public static final StdictLib stdictLibInstance = new StdictLib();
     public static StdictLib getstdictLibInstance() { return stdictLibInstance; }
 
-    private static final String authKey = privates.stdictAuthKey;
+    private static final String authKey = privates.STDICT_AUTH_KEY;
 
     /**
      * Makes a query to stdict, with shorthand way.  

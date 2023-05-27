@@ -68,11 +68,10 @@ public class FirebaseService implements FirebaseServiceInterface {
     private final String KIND__EXPERIENCE = "experience";
     private final String KIND__PROFILE_PICTURE = "profilePicture";
 
+    private String bucket = privates.BUCKET_NAME;
+
     public static final FirebaseService firebaseInstance = new FirebaseService();
     public static FirebaseService accessFirebaseInstance() { return firebaseInstance; }
-    
-    // @Value("${app.firebase-bucket}")
-    public String bucket = "knutu-3e04f.appspot.com";
     
     @PostConstruct
     public void initFirebaseApp() {
@@ -91,8 +90,8 @@ public class FirebaseService implements FirebaseServiceInterface {
                 FileInputStream serviceAccount;
                 FirebaseOptions options;
     
-                String keyURL = privates.keyURL;
-                String dbURL = privates.dbURL;
+                String keyURL = privates.KEY_URL;
+                String dbURL = privates.DB_URL;
     
                 serviceAccount = new FileInputStream(keyURL);
                 options = new FirebaseOptions.Builder()
@@ -101,7 +100,6 @@ public class FirebaseService implements FirebaseServiceInterface {
                         .build();
     
                 firebaseApp.initializeApp(options);
-    
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -209,6 +207,30 @@ public class FirebaseService implements FirebaseServiceInterface {
         }
     }
 
+    public ResponseEntity<Resource> getProfilePicture(String _userId) throws Exception {
+        StorageClient storageInstance = StorageClient.getInstance();
+        Bucket bucketInstance = storageInstance.bucket(this.bucket);
+
+        User currentUser = this.getUser(_userId);
+        String profilePictureAddr = currentUser.getProfilePicture();
+
+        Blob blob = bucketInstance.get(profilePictureAddr);
+        if(blob == null) {
+            throw new Exception("Profile Picture not Found");
+        }
+
+        byte[] fileBytes = StreamUtils.copyToByteArray(new ByteArrayInputStream(blob.getContent()));
+        ByteArrayResource resource = new ByteArrayResource(fileBytes);
+    
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentDispositionFormData("attachment", profilePictureAddr);
+        headers.setContentType(MediaType.IMAGE_PNG); // 이미지 타입에 맞게 변경
+    
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(resource);
+    }
+
     // Update
     public boolean updateUser(String id, User user, String kind) throws Exception {
         try {
@@ -256,48 +278,26 @@ public class FirebaseService implements FirebaseServiceInterface {
     }
 
     public boolean changeProfilePicture(MultipartFile _file, String _userId) throws Exception {
-        StorageClient storageInstance = StorageClient.getInstance();
-        Bucket bucketInstance = storageInstance.bucket(this.bucket);
+        StorageClient storage = StorageClient.getInstance();
+        Bucket bucket = storage.bucket(this.bucket);
 
         String fileName = _file.getOriginalFilename();
+        String filePath = "profilePicture/" + _userId + "/profilePicture";
+
         File file = File.createTempFile(_userId, fileName);
         _file.transferTo(file);
 
-        Blob blobRequestResult = bucketInstance.create(fileName, new FileInputStream(file), _file.getContentType());
+        Blob blobRequestResult = bucket.create(filePath, new FileInputStream(file), _file.getContentType());
         if(blobRequestResult.equals(null)) {
             return false;
         }
 
         User currentUser = this.getUser(_userId);
-        currentUser.setProfilePicture(fileName);
+        currentUser.setProfilePicture(filePath);
 
         this.updateUser(_userId, currentUser, KIND__PROFILE_PICTURE);
 
         return true;
-    }
-
-    public ResponseEntity<Resource> getProfilePicture(String _userId) throws Exception {
-        StorageClient storageInstance = StorageClient.getInstance();
-        Bucket bucketInstance = storageInstance.bucket(this.bucket);
-
-        User currentUser = this.getUser(_userId);
-        String profilePictureAddr = currentUser.getProfilePicture();
-
-        Blob blob = bucketInstance.get(profilePictureAddr);
-        if(blob == null) {
-            throw new Exception("Profile Picture not Found");
-        }
-
-        byte[] fileBytes = StreamUtils.copyToByteArray(new ByteArrayInputStream(blob.getContent()));
-        ByteArrayResource resource = new ByteArrayResource(fileBytes);
-    
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentDispositionFormData("attachment", profilePictureAddr);
-        headers.setContentType(MediaType.IMAGE_PNG); // 이미지 타입에 맞게 변경
-    
-        return ResponseEntity.ok()
-            .headers(headers)
-            .body(resource);
     }
 
     // Delete

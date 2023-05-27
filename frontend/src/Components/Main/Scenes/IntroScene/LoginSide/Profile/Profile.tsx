@@ -11,6 +11,7 @@ import styles from "../../../../../../Styles/Components/Main/Scenes/IntroScene/L
 import DEFAULT_PROFILE from "../../../../../../Assets/Images/default_profile.svg";
 import { postProfilePicture } from './../../../../../../Logic/API/POST/post';
 import { getProfilePicture } from './../../../../../../Logic/API/GET/get';
+import { useState } from 'react';
 
 interface Props {
   setCurrLoginState: React.Dispatch<React.SetStateAction<LOGINSTATE>>;
@@ -20,8 +21,10 @@ interface Props {
 const Profile = ({ setCurrLoginState, user }: Props) => {
   if (user == null) return <></>;
 
-  const { id, name, title, profilePicture, level, currentExperience, profilePictureFile } =
+  const { id, name, title, profilePicture, level, currentExperience } =
     user as User;
+
+  const [profilePictureImage, setProfilePictureImage] = useState('');
 
   const setUser = useSetRecoilState(userState);
   const setIsLoggedOut = useSetRecoilState(isLoggedOutRecently);
@@ -52,50 +55,33 @@ const Profile = ({ setCurrLoginState, user }: Props) => {
     tempFileReader.click();
   }
 
-  const handleFileSelect = (): void => {
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const selectedFile = event.target.files[0];
 
     if(selectedFile === undefined || selectedFile === null) {
       return window.alert("선택된 파일이 올바르지 않습니다.");
     }
 
-    console.log(selectedFile);
-
     postProfilePicture(selectedFile, id).then(() => {
       getProfilePicture(id).then((result) => {
-        const { data } = result;
-        const _user = {
-          ...user,
-          profilePictureFile: data
-        }
-        setUser(_user);
-        
-        const profilePicturesPayload = JSON.parse(localStorage.getItem("profilePictures"));
-        if(profilePicturesPayload[id] == 0) {
+        const { data } = result;        
+        const fileReader = new FileReader();
+
+        fileReader.onloadend = function () {
+          const imageDataUrl = fileReader.result;
+          const profilePicturesPayload = JSON.parse(localStorage.getItem("profilePictures"));
           const payloadToSave = {
-            ...profilePicturesPayload,
-            id: _user.profilePictureFile
+            ...profilePicturesPayload
           }
+
+          payloadToSave[name] = imageDataUrl;
+
           localStorage.setItem("profilePictures", JSON.stringify(payloadToSave));
-        }
+          setProfilePictureImage(imageDataUrl);
+        };
 
-        // const saveImageToLocalStorage = (key, image) => {
-        //   const reader = new FileReader();
-        //   reader.onloadend = function () {
-        //     const imageDataUrl = reader.result;
-        //     localStorage.setItem(key, imageDataUrl);
-        //   };
-        //   reader.readAsDataURL(image);
-        // }
-
-        // const displayImageFromLocalStorage = (key, elementId) => {
-        //   const imageDataUrl = localStorage.getItem(key);
-        //   if (imageDataUrl) {
-        //     const imageElement = document.getElementById(elementId);
-        //     imageElement.src = imageDataUrl;
-        //   }
-        // }
-
+        const blob = new Blob([data], { type: 'application/octet-stream' });
+        fileReader.readAsDataURL(blob);
       })
     }).catch((e) => {
       console.error(e);
@@ -119,7 +105,7 @@ const Profile = ({ setCurrLoginState, user }: Props) => {
         <div className={styles.sub}>
           <div>
             <span className="material-icons" onClick={onProfilePictureEditBtnClicked}>edit</span>
-            <img src={profilePictureFile ? profilePictureFile : DEFAULT_PROFILE} alt="profilePicture" onError={onErrorImg} />
+            <img src={profilePictureImage ? profilePictureImage : DEFAULT_PROFILE} alt="profilePicture" onError={onErrorImg} />
           </div>
           <span className={styles.title}>
             {title}

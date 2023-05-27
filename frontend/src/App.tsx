@@ -43,8 +43,9 @@ const App = () => {
     }, 200);
 
     const setDefaultVolume = (): void => {
-      const vol = localStorage.getItem("localStoredVolume");
-      vol == 0 && localStorage.setItem("localStoredVolume", 40);
+      let vol = localStorage.getItem("localStoredVolume");
+      vol === null ? vol = 40 : vol;
+      localStorage.setItem("localStoredVolume", vol);
       audio.setVolume(vol);
     };
 
@@ -59,6 +60,8 @@ const App = () => {
       setDefaultVolume();
       createProfilePictureCache();
     };
+
+    initApp();
 
     return () => clearTimeout(timeout);
   }, []);
