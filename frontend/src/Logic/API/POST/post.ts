@@ -13,10 +13,10 @@ interface SignUpProps {
 
 export const post__signup = async ({ id, pw, name, email }: SignUpProps) => {
   // regex
-  const isConfirmId = RegexId.test(id);
-  const isConfirmPw = RegexPw.test(pw);
-  const isConfirmName = RegexName.test(name);
-  const isConfirmEmail = RegexEmail.test(email);
+  const isConfirmId = id.match(RegexId);
+  const isConfirmPw = pw.match(RegexPw);
+  const isConfirmName = name.match(RegexName);
+  const isConfirmEmail = email.match(RegexEmail);
 
   if (isConfirmId && isConfirmPw && isConfirmName && isConfirmEmail) {
     console.log("정규표현식이 만족합니다.");
