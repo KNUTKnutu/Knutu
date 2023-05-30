@@ -158,6 +158,14 @@
           display: grid;
           gap: 8px;
           grid-template-columns: 2fr 8fr;
+          
+          &.playing {
+            background: url(../../../../../Assets/Images/game_room.png);
+            background-size: contain;
+            background-repeat: no-repeat;
+
+            opacity: 0.8;
+          }
 
           .room__number {
             display: flex;

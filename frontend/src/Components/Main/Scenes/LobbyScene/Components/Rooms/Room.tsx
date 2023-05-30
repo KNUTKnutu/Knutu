@@ -9,7 +9,7 @@ import { postEnterRoom } from "../../../../../../Logic/API/POST/post";
 
 const Room = ({roomInfo}: any): JSX.Element => {
 
-    const {number: roomNumber, title: roomTitle, mode: roomOption, lang, rounds: roomRound, limitTime: roomLimitTime, pw, currEntry: roomEntries, maxEntry: roomMaxEntry} = roomInfo;
+    const {number: roomNumber, title: roomTitle, mode: roomOption, lang, rounds: roomRound, limitTime: roomLimitTime, pw, currEntry: roomEntries, maxEntry: roomMaxEntry, isGaming: isPlaying} = roomInfo;
     const user = useRecoilValue(userState);
 
     const roomNumberString = RoomClass.getRoomNumberString(roomNumber);
@@ -44,7 +44,7 @@ const Room = ({roomInfo}: any): JSX.Element => {
     }
 
     return (
-        <div className={`${styles.lobby_scene_room}`} onClick={onRoomClicked}>
+        <div className={`${styles.lobby_scene_room} ${isPlaying ? styles.playing : ''}`} onClick={onRoomClicked}>
             <div className={styles.room__number}>
                 {roomNumberString}
             </div>
