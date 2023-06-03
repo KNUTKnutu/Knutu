@@ -1,4 +1,4 @@
-import { SCENE__GAMESCENE } from "../../../../../../constant";
+import { SCENE__GAMESCENE, SCENE__HOLDSCENE } from "../../../../../../constant";
 import styles from "../../../../../../Styles/Components/Main/Scenes/LobbyScene/_lobbyScene.module.scss";
 import { RoomClass } from "./Class/Room";
 import { roomInfoInterface } from "./Interface/roomOption";
@@ -26,12 +26,13 @@ const Room = ({roomInfo}: any): JSX.Element => {
     const onRoomClicked = async (e: React.MouseEvent<HTMLDivElement>) => {
         checkRoomEnterable(roomNumber).then((res) => {
             if(res?.status == 200) {
-                setFallScene(true);
+                setCurrentScene(SCENE__HOLDSCENE);
+                setTimeout(() => setFallScene(true), 1000);
                 const startTime = performance.now();
                 postEnterRoom(roomNumber, user).then((res) => {
                     const endTime = performance.now();
                     const loadingTime = endTime - startTime;
-                    const waitTime = loadingTime > 2000 ? loadingTime : 2000;
+                    const waitTime = loadingTime > 3000 ? loadingTime : 3000;
                     setTimeout(() => setFallScene(false), waitTime);
                     setEnteredRoomIdState(roomNumber);
                     setTimeout(() => setCurrentScene(SCENE__GAMESCENE), waitTime+1000);

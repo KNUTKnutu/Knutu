@@ -15,6 +15,7 @@ import {
   ROUNDS,
   MAXIMUM,
   SPECIALMODE,
+  SCENE__HOLDSCENE,
 } from "../../../../constant";
 import {
   checkRoomEnterable,
@@ -93,12 +94,13 @@ const MakeRoom = ({ setIsShow }: Props) => {
           if (res?.status == 200) {
             checkRoomEnterable(roomId).then((res) => {
               if (res?.status == 200) {
-                setFallScene(true);
+                setCurrentScene(SCENE__HOLDSCENE);
+                setTimeout(() => setFallScene(true), 1000);
                 const startTime = performance.now();
                 postEnterRoom(roomId, user).then((res) => {
                   const endTime = performance.now();
                   const loadingTime = endTime - startTime;
-                  const waitTime = loadingTime > 2000 ? loadingTime : 2000;
+                  const waitTime = loadingTime > 3000 ? loadingTime : 3000;
                   setTimeout(() => setFallScene(false), waitTime);
                   setEnteredRoomIdState(roomId);
                   setTimeout(

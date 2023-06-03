@@ -6,6 +6,7 @@ type ResponseStatusCode = number;
 export const SCENE__INTROSCENE: SceneNameType = "IntroScene";
 export const SCENE__LOBBYSCENE: SceneNameType = "LobbyScene";
 export const SCENE__GAMESCENE: SceneNameType = "GameScene";
+export const SCENE__HOLDSCENE: SceneNameType = "HoldScene";
 
 export const LOGO: string = "끄누투 코리아";
 export const TITLE: string = "KNUTU";

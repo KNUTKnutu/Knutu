@@ -1,15 +1,15 @@
-import styles from "../../../Styles/Components/Reusable/Channel/_channel.module.scss";
-import { ChannelProps, Users } from "../../../interface";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import styles from '../../../Styles/Components/Reusable/Channel/_channel.module.scss';
+import { ChannelProps, Users } from '../../../interface';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import {
   currentSceneState,
   fallState,
   usersState,
   userState,
-} from "../../../Recoil/atom";
-import { SCENE__LOBBYSCENE } from "../../../constant";
-import { put__enterChannel } from "../../../Logic/API/PUT/put";
-import { AxiosError } from "axios";
+} from '../../../Recoil/atom';
+import { SCENE__HOLDSCENE, SCENE__LOBBYSCENE } from '../../../constant';
+import { put__enterChannel } from '../../../Logic/API/PUT/put';
+import { AxiosError } from 'axios';
 
 // bar관련 주석
 // 0 ~ 20: 게임이 잘 안되는 유저 수 -> 검은색
@@ -30,11 +30,11 @@ const Channel = ({ name, userCount }: ChannelProps) => {
    */
   const bar_length: number = userCount === 0 ? 1 / total : userCount / total;
   const bar_color = (userCount: number) => {
-    if (userCount <= 20) return "black";
-    else if (userCount <= 50) return "#0288d1";
-    else if (userCount <= 300) return "#388e3c";
-    else if (userCount <= 350) return "#f9a825";
-    else return "#c62828";
+    if (userCount <= 20) return 'black';
+    else if (userCount <= 50) return '#0288d1';
+    else if (userCount <= 300) return '#388e3c';
+    else if (userCount <= 350) return '#f9a825';
+    else return '#c62828';
   };
 
   /**
@@ -62,16 +62,17 @@ const Channel = ({ name, userCount }: ChannelProps) => {
     const channelName = name;
     const startTime = performance.now();
     if (user) {
+      setCurrentScene(SCENE__HOLDSCENE);
+      setTimeout(() => setFallScene(true), 1000);
       const res = await put__enterChannel({ user, channelName });
       const endTime = performance.now();
       const loadingTime = endTime - startTime;
-      const waitTime = loadingTime > 2000 ? loadingTime : 2000;
+      const waitTime = loadingTime > 3000 ? loadingTime : 3000;
       if (res !== null && res.data === true && !(res instanceof AxiosError)) {
-        setFallScene(true);
         setTimeout(() => setFallScene(false), waitTime);
         setTimeout(() => setCurrentScene(SCENE__LOBBYSCENE), waitTime + 1000);
       } else {
-        window.alert("채널에 입장할 수 없습니다. 다시 시도해주세요.");
+        window.alert('채널에 입장할 수 없습니다. 다시 시도해주세요.');
       }
     }
   };
