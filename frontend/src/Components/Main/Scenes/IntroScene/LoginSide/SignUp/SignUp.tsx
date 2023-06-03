@@ -99,7 +99,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               name="id"
               value={id}
               onChange={onChange}
-              className={RegexId.test(id) && checkInput(id) ? styles.correctRegex : styles.wrongRegex}
+              className={checkInput(id) ? RegexId.test(id) ? styles.correctRegex : styles.wrongRegex : styles.basicInput}
             />
             <label htmlFor="id">{ID}</label>
           </div>
@@ -111,7 +111,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               name="pw"
               value={pw}
               onChange={onChange}
-              className={RegexPw.test(pw) && checkInput(pw) ? styles.correctRegex : styles.wrongRegex}
+              className={checkInput(pw) ? RegexPw.test(pw) ? styles.correctRegex : styles.wrongRegex : styles.basicInput}
             />
             <label htmlFor="pw">{PW}</label>
             <div className={styles.visi_icon} onClick={onClickVisi}>
@@ -126,7 +126,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               name="confirm_pw"
               value={confirm_pw}
               onChange={onChange}
-              className={RegexPw.test(confirm_pw) && confirm_pw == pw && checkInput(confirm_pw) ? styles.correctRegex : styles.wrongRegex}
+              className={checkInput(confirm_pw) ? RegexPw.test(confirm_pw) && confirm_pw == pw ? styles.correctRegex : styles.wrongRegex : styles.basicInput}
             />
             <label htmlFor="confirm_pw">{CONFIRM_PW}</label>
             <div className={styles.visi_icon} onClick={onClickPwCVisi}>
@@ -141,7 +141,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               name="name"
               value={name}
               onChange={onChange}
-              className={RegexName.test(name) && checkInput(name) ? styles.correctRegex : styles.wrongRegex}
+              className={checkInput(name) ? RegexName.test(name) ? styles.correctRegex : styles.wrongRegex : styles.basicInput}
             />
             <label htmlFor="name">{NAME}</label>
           </div>
@@ -153,7 +153,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               name="email"
               value={email}
               onChange={onChange}
-              className={RegexEmail.test(email) && checkInput(email) ? styles.correctRegex : styles.wrongRegex}
+              className={checkInput(email) ? RegexEmail.test(email) ? styles.correctRegex : styles.wrongRegex : styles.basicInput}
             />
             <label htmlFor="email">{EMAIL}</label>
           </div>
