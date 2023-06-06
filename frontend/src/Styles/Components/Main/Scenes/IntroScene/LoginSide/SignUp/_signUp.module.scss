@@ -50,15 +50,17 @@
           color: gray;
         }
 
-        & > .correctRegex{
+        & > .correctRegex {
           width: 100%;
           height: 100%;
           border-radius: 12px;
           padding: 0 20px;
           font-size: 1.875rem;
           border: none;
-          outline: 2px solid darkslateblue;
-          transition: all 0.3s;
+          outline-width: 2px;
+          outline-style: solid;
+          outline-color: darkslateblue;
+          transition: outline-color 0.3s;
 
           &:not(:placeholder-shown) {
             & + label {
@@ -71,15 +73,17 @@
           }
         }
 
-        & > .wrongRegex{
+        & > .wrongRegex {
           width: 100%;
           height: 100%;
           border-radius: 12px;
           padding: 0 20px;
           font-size: 1.875rem;
           border: none;
-          outline: 3px solid $accent-color;
-          transition: all 0.3s;
+          outline-width: 2px;
+          outline-style: solid;
+          outline-color: $accent-color;
+          transition: outline-color 0.3s;
 
           &:not(:placeholder-shown) {
             & + label {
