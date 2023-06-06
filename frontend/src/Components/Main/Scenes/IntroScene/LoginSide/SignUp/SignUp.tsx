@@ -29,25 +29,41 @@ const Signup = ({ setCurrLoginState }: Props) => {
     name: "",
     email: "",
   });
+
   const { id, pw, confirm_pw, name, email } = input;
   const [isPwVisi, setIsPwVisi] = useState(false);
   const [isPwCVisi, setIsPwCVisi] = useState(false);
 
-  const [, setValidId] = useState<boolean>(false);
-  const [, setValidPw] = useState<boolean>(false);
-  const [, setValidConfirmPw] = useState<boolean>(false);
-  const [, setValidName] = useState<boolean>(false);
-  const [, setValidEmail] = useState<boolean>(false);
+  const [validId, setValidId] = useState<boolean>(false);
+  const [validPw, setValidPw] = useState<boolean>(false);
+  const [validConfirmPw, setValidConfirmPw] = useState<boolean>(false);
+  const [validName, setValidName] = useState<boolean>(false);
+  const [validEmail, setValidEmail] = useState<boolean>(false);
 
   // 민경호 TODO: 비밀번호 해싱 => SHA256
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInput({ ...input, [e.target.name]: e.target.value });
-    setValidId(RegexId.test(id));
-    setValidPw(RegexPw.test(pw));
-    setValidConfirmPw(RegexPw.test(confirm_pw) && confirm_pw == pw);
-    setValidName(RegexName.test(name));
-    setValidEmail(RegexEmail.test(email));
+    const {target: {id, value}} = e;
+
+    setInput({ ...input, [id]: value });
+
+    switch(id) {
+      case "id":
+        setValidId(RegexId.test(value));
+        break;
+      case "pw":
+        setValidPw(RegexPw.test(value));
+        break;
+      case "confirm_pw":
+        setValidConfirmPw(pw === value && RegexPw.test(value));
+        break;
+      case "name":
+        setValidName(RegexName.test(value));
+        break;
+      case "email":
+        setValidEmail(RegexEmail.test(value));
+        break;
+    }
   };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -75,14 +91,16 @@ const Signup = ({ setCurrLoginState }: Props) => {
 
   // check Input logic * * *
 
-  const checkInput = (str : any) => {
-    if (str === undefined || str === null || str === "" || str === false) {
-      return false;
-    } else {
-      return true;
-    }
+  const checkInput = (_str : any) => {
+    return _str === undefined || _str === null || _str === "" || _str === false ? false : true;
   }
 
+  const isValidInput = (_value: string, _isValidInput: boolean): string => {
+    if(checkInput(_value)) {
+      return _isValidInput ? styles.correctRegex : styles.wrongRegex;
+    }
+    return styles.basicInput;
+  }
 
   return (
     <div className={styles.signup}>
@@ -99,7 +117,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               name="id"
               value={id}
               onChange={onChange}
-              className={checkInput(id) ? RegexId.test(id) ? styles.correctRegex : styles.wrongRegex : styles.basicInput}
+              className={isValidInput(id, validId)}
             />
             <label htmlFor="id">{ID}</label>
           </div>
@@ -111,7 +129,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               name="pw"
               value={pw}
               onChange={onChange}
-              className={checkInput(pw) ? RegexPw.test(pw) ? styles.correctRegex : styles.wrongRegex : styles.basicInput}
+              className={isValidInput(pw, validPw)}
             />
             <label htmlFor="pw">{PW}</label>
             <div className={styles.visi_icon} onClick={onClickVisi}>
@@ -126,7 +144,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               name="confirm_pw"
               value={confirm_pw}
               onChange={onChange}
-              className={checkInput(confirm_pw) ? RegexPw.test(confirm_pw) && confirm_pw == pw ? styles.correctRegex : styles.wrongRegex : styles.basicInput}
+              className={isValidInput(confirm_pw, validConfirmPw)}
             />
             <label htmlFor="confirm_pw">{CONFIRM_PW}</label>
             <div className={styles.visi_icon} onClick={onClickPwCVisi}>
@@ -141,7 +159,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               name="name"
               value={name}
               onChange={onChange}
-              className={checkInput(name) ? RegexName.test(name) ? styles.correctRegex : styles.wrongRegex : styles.basicInput}
+              className={isValidInput(name, validName)}
             />
             <label htmlFor="name">{NAME}</label>
           </div>
@@ -153,7 +171,7 @@ const Signup = ({ setCurrLoginState }: Props) => {
               name="email"
               value={email}
               onChange={onChange}
-              className={checkInput(email) ? RegexEmail.test(email) ? styles.correctRegex : styles.wrongRegex : styles.basicInput}
+              className={isValidInput(email, validEmail)}
             />
             <label htmlFor="email">{EMAIL}</label>
           </div>
