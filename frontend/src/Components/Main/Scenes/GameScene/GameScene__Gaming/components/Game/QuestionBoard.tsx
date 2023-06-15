@@ -57,18 +57,20 @@ const QuestionBoard = () => {
 
   useEffect(() => {
     const timerInterval: NodeJS.Timer = setInterval(() => {
-      if(remainTurnTimeNumber === 0 && RoundInProgress) {
-        if(room.currTurn === user?.name) {
-          const payload = KnutuWebSocketHandler.getInstance().wrapPacket("onRoundEnd", {
-            roomId: room.number,
-            userName: user?.name
-          });
-          KnutuWebSocketHandler.getInstance().send("onRoundEnd", payload);
+      if(remainTurnTimeNumber === 0) {
+        if(RoundInProgress) {
+          if(room.currTurn === user?.name) {
+            const payload = KnutuWebSocketHandler.getInstance().wrapPacket("onRoundEnd", {
+              roomId: room.number,
+              userName: user?.name
+            });
+            KnutuWebSocketHandler.getInstance().send("onRoundEnd", payload);
+          }
+          setRemainTurnTimeNumber(0);
+          setRemainRoundTimeNumber(0);
+          setTimeGauge(0);
+          return;
         }
-        setRemainTurnTimeNumber(0);
-        setRemainRoundTimeNumber(0);
-        setTimeGauge(0);
-        return;
       } else {
         setRemainTurnTimeNumber((prev) => prev - 100 > 0 ? prev - 100 : 0);
         setRemainRoundTimeNumber((prev) => prev - 100 > 0 ? prev - 100 : 0);
