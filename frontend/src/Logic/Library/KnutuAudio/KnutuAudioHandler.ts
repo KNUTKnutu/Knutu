@@ -46,7 +46,6 @@ class KnutuAudioHandler {
     public playOneShot = (_audioClip: AudioClip, _volumeMultiplier?: AudioVolume = 100, _callback?: void): void => {
         if(!_audioClip) return console.error("No clip specified.");
         if(_volumeMultiplier > 100) return console.error("Given volume amount is invalid.");
-        if(this.defaultAudioSource.muted) return;
 
         _volumeMultiplier /= 100;
 
@@ -54,7 +53,7 @@ class KnutuAudioHandler {
         document.getElementsByTagName("body")[0].appendChild(tempAudioSource);
         const playOneShotName: string = Math.floor(Math.random() * Math.pow(2, 16)).toString();
         tempAudioSource.setAttribute("name", playOneShotName);
-        tempAudioSource.volume = 1 * this.currentAudioVolume * _volumeMultiplier;
+        tempAudioSource.volume = this.defaultAudioSource.muted ? 0 : 1 * this.currentAudioVolume * _volumeMultiplier;
 
         this._setSrc(tempAudioSource, _audioClip);
         tempAudioSource.play();
