@@ -115,8 +115,7 @@ public class WebSocketController {
                 type = "onRoundEnd";
                 sessions = this.gameSceneInstances.onPlayerReady(session, requestPacket);
                 payload = this.gameSceneInstances.onRoundEnd(session, requestPacket);
-                if(payload == null) return;
-                break;
+                return;
             default:
                 break;
         }

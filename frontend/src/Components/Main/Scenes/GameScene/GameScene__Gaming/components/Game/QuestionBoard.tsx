@@ -50,50 +50,34 @@ const QuestionBoard = () => {
   useEffect(() => {
     if(RoundInProgress) {
       setRoundOver(false);
-      remainTimeTimeout = null;
       setRemainTurnTimeNumber(remainRoundTime);
       setRemainRoundTimeNumber(limitTime * 1000);
     } 
   }, [RoundInProgress]);
 
   useEffect(() => {
-    const timeoutCallback = (): void => {
-      if (!RoundInProgress || roundOver) return;
-      if (remainTurnTimeNumber < 0) {
-        setRemainTurnTimeNumber(0);
-        
-        if (room.currTurn === user.name) {
+    const timerInterval: NodeJS.Timer = setInterval(() => {
+      if(remainTurnTimeNumber === 0) {
+        if (room.currTurn === user?.name && RoundInProgress) {
           const payload = KnutuWebSocketHandler.getInstance().wrapPacket("onRoundEnd", {
             roomId: room.number,
             userName: user?.name
           });
           KnutuWebSocketHandler.getInstance().send("onRoundEnd", payload);
+          setRemainTurnTimeNumber(0);
+          setRemainRoundTimeNumber(0);
+          setTimeGauge(0);
+          return;
         }
-
-        remainTimeTimeout = null;
-        clearTimeout(remainTimeTimeout);
-        setRoundOver(true);
-
-        return;
+      } else {
+        setRemainTurnTimeNumber((prev) => prev - 100 > 0 ? prev - 100 : 0);
+        setRemainRoundTimeNumber((prev) => prev - 100 > 0 ? prev - 100 : 0);
+        setTimeGauge((remainTurnTimeNumber / remainRoundTime) * 100);
       }
+    }, 100);
 
-      setRemainTurnTimeNumber((prev) => prev - 100);
-      setRemainRoundTimeNumber((prev) => prev - 100);
-      setTimeGauge(remainTurnTimeNumber / remainRoundTime);
-      timeoutCallback();
-
-      remainTimeTimeout = setTimeout(() => timeoutCallback(), 100);
-    }
-
-    if(remainTimeTimeout === null) {
-      remainTimeTimeout = setTimeout(() => timeoutCallback());
-    }
-
-    return () => {
-      clearTimeout(remainTimeTimeout);
-    }
-
-  }, [remainTurnTimeNumber]);
+    return () => clearInterval(timerInterval);
+  });
 
   return (
     <div className={styles.questionboard}>

@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { LOGO, SCENE__INTROSCENE, SCENE__LOBBYSCENE } from "../../constant";
 import { put__logOut } from "../../Logic/API/PUT/put";
 import { fallState, currentSceneState, userState, inactiveAnimationState} from "../../Recoil/atom";

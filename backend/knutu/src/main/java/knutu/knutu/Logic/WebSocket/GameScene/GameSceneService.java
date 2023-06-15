@@ -209,6 +209,8 @@ public class GameSceneService {
                 if(room.getCurrRound() == -1) {
                     room.setCurrRound(1);
                     room.setCurrTurn(firstPlayer.getName());
+                } else {
+                    room.setCurrRound(room.getCurrRound() + 1);
                 }
 
                 return gson.toJson(room);
@@ -319,29 +321,18 @@ public class GameSceneService {
                 if(score < 0) score = 0;
                 player.setScore(score);
             }
-        }        
-        
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        }
 
-        executorService.schedule(() -> {
-            Collection<Session> sessions = this.getSessionsInRoom(roomId);
-            String readyToProcessTurn = null;
-            for (Session session : sessions) {
-                readyToProcessTurn = this.onTurnProcess(session, _requestPacket);
+        // refactor need
+        Collection<Session> sessions = this.getSessionsInRoom(roomId);
+        String packet = "{\"header\": {\"type\": \"" + "onRoundEnd" + "\", \"timestamp\": \"" + Instant.now().toEpochMilli() + "\"}, \"payload\": {\"data\": " + gson.toJson(room) + "}}";
+        for(Session session : sessions) {
+            try {
+                session.getBasicRemote().sendText(packet);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            if(readyToProcessTurn != null) {
-                String packet = "{\"header\": {\"type\": \"" + "onTurnProcess" + "\", \"timestamp\": \"" + Instant.now().toEpochMilli() + "\"}, \"payload\": {\"data\": " + gson.toJson(room) + "}}";
-                for(Session session : sessions) {
-                    try {
-                        session.getBasicRemote().sendText(packet);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }, 4, TimeUnit.SECONDS);
-
-        executorService.shutdown();
+        }
 
         return null;
     }

@@ -184,7 +184,7 @@ const App = () => {
           const payload = KnutuWebSocketHandler.getInstance().wrapPacket(
             "onTurnProcess",
             {
-              roomId: gamingRoom.number,
+              roomId,
               userName: user?.name,
             }
           );
@@ -202,7 +202,7 @@ const App = () => {
             const payload = KnutuWebSocketHandler.getInstance().wrapPacket(
               "readyToProcessRound",
               {
-                roomId: gamingRoom.number,
+                roomId,
                 userName: user?.name,
               }
             );
