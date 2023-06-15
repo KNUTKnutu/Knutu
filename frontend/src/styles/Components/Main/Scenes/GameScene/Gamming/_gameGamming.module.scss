@@ -123,6 +123,7 @@
       height: 100%;
       background: linear-gradient(90deg, hsla(0, 0%, 0%, 0.6), hsla(0, 0%, 0%, 0.2));
       z-index: 0;
+      transition: width .1s ease 0s;
     }
 
     .remainTurnTime {
