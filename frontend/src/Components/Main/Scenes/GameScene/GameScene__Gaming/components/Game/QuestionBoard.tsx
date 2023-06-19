@@ -4,8 +4,6 @@ import { enteredRoomState, userState, isRoundInProgress } from "../../../../../.
 import styles from "../../../../../../../Styles/Components/Main/Scenes/GameScene/Gamming/_gameGamming.module.scss";
 import KnutuWebSocketHandler from './../../../../../../../Logic/Library/KnutuWebSocket/KnutuWebSocketHandler';
 
-let remainTimeTimeout = null;
-
 const QuestionBoard = () => {
 
   const [boardInput, setBoardInput] = useState("");
@@ -30,8 +28,9 @@ const QuestionBoard = () => {
     if(boardInput.length >= 17) setBoardInput(boardInput.substring(0, 17));
   }
 
-  const onKeyPress = (e: React.KeyPressEvent<HTMLInputElement>): void => {
-    if(event.key === 'Enter' && RoundInProgress) {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if(!(e && user)) return;
+    if(e.key === 'Enter' && RoundInProgress) {
       if(room.currTurn === user.name) {
         const payload = KnutuWebSocketHandler.getInstance().wrapPacket("wordSubmit", {
           roomId: room.number,
@@ -88,7 +87,7 @@ const QuestionBoard = () => {
       {currWord ? currWord : roundWord[currRound - 1]}
       </div>
       <div className={styles.board_input_container}>
-        <input className={styles.board_input} placeholder="여기에 입력해주세요" value={boardInput} onChange={onInputChange} onKeyPress={onKeyPress}/>
+        <input className={styles.board_input} placeholder="여기에 입력해주세요" value={boardInput} onChange={(e) => onInputChange(e)} onKeyDown={(e) => onKeyDown(e)}/>
       </div>
       <div className={styles.timer}>
         <div className={styles.timeGauge} style={{width: `${timeGauge}%`}}>
