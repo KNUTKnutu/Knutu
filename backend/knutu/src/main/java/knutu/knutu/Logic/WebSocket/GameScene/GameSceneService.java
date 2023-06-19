@@ -194,6 +194,11 @@ public class GameSceneService {
             Room room = this.gameRooms.get(roomId);
 
             if(this.checkAllPlayerRoundReady(room.getPlayers())) {
+                if(room.getCurrRound() == room.getRounds()) {
+                    room.setGaming(false);
+                    return gson.toJson(room);
+                }
+
                 List<Player> players = room.getPlayers();
                 Player firstPlayer = null;
                 for (Player player : players) {
@@ -212,6 +217,7 @@ public class GameSceneService {
 
                 return gson.toJson(room);
             }
+
             return null;
         } catch(Exception e) {
             e.getCause();
@@ -284,7 +290,7 @@ public class GameSceneService {
                         bodyData.put("definition", definition);
                         bodyData.put("requestedWord", word);
 
-                        room.setCurrWord(wordToReturn);
+                        room.setCurrWord(word);
 
                         for(Player player : room.getPlayers()) {
                             if(player.getName() == userName) {
@@ -323,18 +329,7 @@ public class GameSceneService {
             }
         }
 
-        // refactor need
-        Collection<Session> sessions = this.getSessionsInRoom(roomId);
-        String packet = "{\"header\": {\"type\": \"" + "onRoundEnd" + "\", \"timestamp\": \"" + Instant.now().toEpochMilli() + "\"}, \"payload\": {\"data\": " + gson.toJson(room) + "}}";
-        for(Session session : sessions) {
-            try {
-                session.getBasicRemote().sendText(packet);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return null;
+        return gson.toJson(room);
     }
 
     public String onTurnProcess(Session _session, JSONObject _requestPacket) {
