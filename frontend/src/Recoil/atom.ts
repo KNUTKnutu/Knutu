@@ -117,6 +117,7 @@ export const enteredRoomState = atom({
     currRound: -1,
     currTurn: "",
     isGaming: false,
+    remainRoundTime: -1,
   }
   // { number, title, mode, rounds, limitTime, players }
 });
