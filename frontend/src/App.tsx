@@ -13,6 +13,7 @@ import {
   usersState,
   userState,
   isRoundInProgress,
+  gameSceneChatState,
 } from "./Recoil/atom";
 import KnutuWebSocketHandler from "./Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
 import { WebSocketPacket } from "./Logic/Library/KnutuWebSocket/KnutuWebSocketTypes";
@@ -25,6 +26,7 @@ const App = () => {
   const roomId = useRecoilValue(enteredRoomIdState);
   const [user, setUser] = useRecoilState(userState);
   const [enteredRoom, setEnteredRoom] = useRecoilState(enteredRoomState);
+  const [gameSceneChats, setGameSceneChats] = useRecoilState(gameSceneChatState);
 
   const setCurrentRoomsState = useSetRecoilState(roomsState);
   const setUsersState = useSetRecoilState(usersState);
@@ -135,6 +137,9 @@ const App = () => {
       case "requestToggleReady":
         setEnteredRoom(json.payload.data);
         break;
+      case "onChatSubmitOnGameScene":
+        setEnteredRoom(json.payload.data);
+        break;  
       case "allPlayerReady":
         audio.playOneShot(KnutuAudioHandler.clipAllUserReady);
         setFallScene(true);

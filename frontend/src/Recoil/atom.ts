@@ -4,7 +4,7 @@ import {
   SCENE__INTROSCENE,
   SCENE__LOBBYSCENE,
 } from "../constant";
-import { ChannelProps, Nullable, Room, User, Users } from "../interface";
+import { ChannelProps, Chat, Nullable, Room, User, Users } from "../interface";
 import KnutuWebSocketHandler from "../Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
 import KnutuAudioHandler from "../Logic/Library/KnutuAudio/KnutuAudioHandler";
 import localStorageEffect from "./effects/localStorageEffect";
@@ -113,7 +113,7 @@ export const enteredRoomState = atom({
     players: [],
     roundWord: "",
     currWord: "",
-    chat: [],
+    chats: [],
     currRound: -1,
     currTurn: "",
     isGaming: false,
@@ -152,4 +152,9 @@ export const inactiveAnimationState = atom<Boolean>(
 export const currentUserState = atom<String>({
   key: "currentUserState",
   default: "",
+});
+
+export const gameSceneChatState = atom<Chat[]>({
+  key: "gameSceneChatState",
+  default: [],
 });

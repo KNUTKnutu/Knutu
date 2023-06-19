@@ -8,5 +8,11 @@ import lombok.Setter;
 public class Chat {
     private String sender;
     private String message;
-    private int timestamp;
+    private long timestamp;
+
+    public Chat(String _sender, String _message, long _timeStamp) {
+        this.sender = _sender;
+        this.message = _message;
+        this.timestamp = _timeStamp;
+    }
 }

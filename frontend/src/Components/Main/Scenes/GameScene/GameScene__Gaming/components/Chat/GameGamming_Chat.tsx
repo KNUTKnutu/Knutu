@@ -4,7 +4,7 @@ interface ChatInfoInterface {
     chatInfo: {
       chatter: string;
       chatMessage: string;
-      chatTime: string;
+      chatTime: number;
     };
   }
   

@@ -67,6 +67,12 @@ public class WebSocketController {
                 sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
                 payload = this.gameSceneInstances.onRequestExitRoom(session, requestPacket);
                 break;
+            case "chatSubmitOnGameScene":
+                type = "onChatSubmitOnGameScene";
+                roomId = this.gameSceneInstances.getRoomIdSessionBelongs(session);
+                sessions = this.gameSceneInstances.getSessionsInRoom(roomId);
+                payload = this.gameSceneInstances.onChatSubmitOnGameScene(session, requestPacket);
+                break;
             case "requestToggleReady":
                 type = "requestToggleReady";
                 sessions = this.gameSceneInstances.onPlayerReady(session, requestPacket);

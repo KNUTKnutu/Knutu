@@ -5,7 +5,7 @@ import LobbyScene__Chat from "./LobbyScene__Chat";
 const LobbyScene__Chatting = (): JSX.Element => {
   const chatsList: any = [].map((chat) => (
     <LobbyScene__Chat
-      chatInfo={{ chatter: "", chatMessage: "", chatTime: "" }}
+      chatInfo={{ chatter: "", chatMessage: "", chatTime: 20 }}
     />
   ));
   const onClickMode = () => {};

@@ -57,7 +57,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
     currTurn: "", // 현재 턴인 사람
   });
 
-  const {number, title, pw, isPw, maximum, time_limit, rounds, lang, mode, special, roundWord, currWord, currRound, currTurn } =
+  const {number, title, pw, isPw, maximum, time_limit, rounds, lang, mode, special, roundWord, currWord, currRound, currTurn, chat } =
     roomInfo;
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

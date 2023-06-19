@@ -2,6 +2,7 @@ package knutu.knutu.Logic.WebSocket.GameScene;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.google.gson.GsonBuilder;
 
 import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneInstances;
 import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneService;
+import knutu.knutu.Service.lib.classes.Chat.Chat;
 import knutu.knutu.Service.lib.classes.GameRoom.Room;
 import knutu.knutu.Service.lib.classes.Player.Player;
 import knutu.knutu.Service.lib.classes.stdictLib.StdictLib;
@@ -86,6 +88,26 @@ public class GameSceneService {
         }
 
         return null;
+    }
+
+    public String onChatSubmitOnGameScene(Session _session, JSONObject _requestPacket) {
+        JSONObject requestedPayload = (JSONObject) _requestPacket.get("payload");
+        String roomId = Long.toString((long) requestedPayload.get("roomId"));
+        String chatter = (String) requestedPayload.get("chatter");
+        String chatMessage = (String) requestedPayload.get("chatMessage");
+        long chatTime = ((long) requestedPayload.get("chatTime"));
+
+        Chat chat = new Chat(chatter, chatMessage, chatTime);
+
+        Room room = LobbySceneService.accessInstance().getRoom(roomId);
+        Collection<Chat> currChats = room.getChats();
+        if(currChats == null) {
+            currChats = new ArrayList<Chat>();
+        }
+        currChats.add(chat);
+        room.setChats(currChats);
+
+        return gson.toJson(room);
     }
 
     public Collection<Session> getSessionsInRoom(String _roomId) {
@@ -195,6 +217,7 @@ public class GameSceneService {
 
             if(this.checkAllPlayerRoundReady(room.getPlayers())) {
                 if(room.getCurrRound() == room.getRounds()) {
+                    // 게임이 끝남
                     room.setGaming(false);
                     return gson.toJson(room);
                 }
@@ -214,6 +237,8 @@ public class GameSceneService {
                 } else {
                     room.setCurrRound(room.getCurrRound() + 1);
                 }
+
+                room.setCurrWord(String.valueOf(room.getRoundWord().charAt(room.getCurrRound() - 1)));
 
                 return gson.toJson(room);
             }

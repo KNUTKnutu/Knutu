@@ -31,17 +31,27 @@ const QuestionBoard = () => {
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>): void => {
     if(!(e && user)) return;
     if(e.key === 'Enter' && RoundInProgress) {
-      if(isMyTurn()) {
-        if(validateAnswer()) {
-          const payload = KnutuWebSocketHandler.getInstance().wrapPacket("wordSubmit", {
-            roomId: room.number,
-            userName: user?.name,
-            word: boardInput
-          });
-          KnutuWebSocketHandler.getInstance().send("wordSubmit", payload);
+      if(RoundInProgress) {
+        if(isMyTurn()) {
+          if(validateAnswer()) {
+            const payload = KnutuWebSocketHandler.getInstance().wrapPacket("wordSubmit", {
+              roomId: room.number,
+              userName: user?.name,
+              word: boardInput
+            });
+            KnutuWebSocketHandler.getInstance().send("wordSubmit", payload);
+            return;
+          }
+          // 끝말잇기 성립이 되지 않은 경우 채팅으로 간주
         }
-        // 끝말잇기 성립이 되지 않은 경우 채팅으로 간주
       }
+      const payload = KnutuWebSocketHandler.getInstance().wrapPacket("chatSubmitOnGameScene", {
+        roomId: room.number,
+        chatter: user?.name,
+        chatMessage: boardInput,
+        chatTime: new Date().getTime(),
+      });
+      KnutuWebSocketHandler.getInstance().send("chatSubmitOnGameScene", payload);
     }
   }
 
@@ -51,11 +61,7 @@ const QuestionBoard = () => {
 
   const validateAnswer = (): boolean => {
     // 현재는 끝말잇기만 생각하고 일단 작업하기로.
-    return boardInput[0] === getDisplayWord()[getDisplayWord().length - 1];
-  }
-
-  const getDisplayWord = (): string => {
-    return currWord ? currWord : roundWord[currRound - 1];
+    return boardInput[0] === currWord[currWord.length - 1];
   }
 
   useEffect(() => {
@@ -100,7 +106,7 @@ const QuestionBoard = () => {
     <div className={styles.questionboard}>
       <div className={styles.board_suggestion}>{create_round}</div>
       <div className={styles.board_question}>
-      {getDisplayWord()}
+      {currWord}
       <div className={styles.description}>
         {}
       </div>

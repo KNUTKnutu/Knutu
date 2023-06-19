@@ -210,11 +210,32 @@
       border-radius: 20px;
 
       .game_wating_chatting__chattingScreen {
+        position: relative;
         padding: 8px 18px 0px;
         height: 163px;
         font-weight: 100;
         border-bottom: 2px solid black;
         overflow: auto;
+
+        .new_message {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          bottom: 0;
+          padding-top: 4px;
+          padding-left: 4px;
+          padding-right: 4px;
+          border-radius: 4px 4px 0px 0px;
+          height: 4px;
+          color: black;
+          opacity: 0.6;
+          background: rgba(255, 255, 255, 0.4);
+          transition: height .3s ease-in-out;
+
+          &.active {
+            height: 21px;
+          }
+        }
 
         .game_wating_chatting_chat {
           display: grid;
