@@ -32,14 +32,26 @@ const QuestionBoard = () => {
     if(!(e && user)) return;
     if(e.key === 'Enter' && RoundInProgress) {
       if(room.currTurn === user.name) {
-        const payload = KnutuWebSocketHandler.getInstance().wrapPacket("wordSubmit", {
-          roomId: room.number,
-          userName: user?.name,
-          word: boardInput
-        });
-        KnutuWebSocketHandler.getInstance().send("wordSubmit", payload);
+        if(validateAnswer()) {
+          const payload = KnutuWebSocketHandler.getInstance().wrapPacket("wordSubmit", {
+            roomId: room.number,
+            userName: user?.name,
+            word: boardInput
+          });
+          KnutuWebSocketHandler.getInstance().send("wordSubmit", payload);
+        }
+        // 끝말잇기 성립이 되지 않은 경우 채팅으로 간주
       }
     }
+  }
+
+  const validateAnswer = (): boolean => {
+    // 현재는 끝말잇기만 생각하고 일단 작업하기로.
+    return boardInput[boardInput.length - 1] === getDisplayWord()[getDisplayWord().length - 1];
+  }
+
+  const getDisplayWord = (): string => {
+    return currWord ? currWord : roundWord[currRound - 1];
   }
 
   useEffect(() => {
@@ -84,7 +96,7 @@ const QuestionBoard = () => {
     <div className={styles.questionboard}>
       <div className={styles.board_suggestion}>{create_round}</div>
     <div className={styles.board_question}>
-      {currWord ? currWord : roundWord[currRound - 1]}
+      {getDisplayWord()}
       </div>
       <div className={styles.board_input_container}>
         <input className={styles.board_input} placeholder="여기에 입력해주세요" value={boardInput} onChange={(e) => onInputChange(e)} onKeyDown={(e) => onKeyDown(e)}/>
