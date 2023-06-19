@@ -180,7 +180,7 @@ const App = () => {
         break;
       case "onWordCorrect":
         audio.playOneShot(KnutuAudioHandler.clipOnWordCorrect);
-        setEnteredRoom(json.payload.data.currentRoomState);
+        setEnteredRoom(JSON.parse(json.payload.data.currentRoomState));
         setTimeout(() => {
           const payload = KnutuWebSocketHandler.getInstance().wrapPacket(
             "onTurnProcess",

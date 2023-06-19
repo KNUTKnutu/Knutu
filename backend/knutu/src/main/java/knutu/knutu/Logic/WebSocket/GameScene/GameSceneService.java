@@ -286,16 +286,16 @@ public class GameSceneService {
 
                         room.setCurrWord(wordToReturn);
 
-                        ret[0] = "correct";
-                        ret[1] = bodyData.toJSONString();
-
                         for(Player player : room.getPlayers()) {
                             if(player.getName() == userName) {
                                 player.setScore(((player.getScore() + 32 + (int) Math.random() * 7) * wordToReturn.length()) * 3);
                             }
                         }
 
-                        bodyData.put("currentRoomState", room);
+                        bodyData.put("currentRoomState", gson.toJson(room));
+
+                        ret[0] = "correct";
+                        ret[1] = bodyData.toJSONString();
                     }
                 }
 
