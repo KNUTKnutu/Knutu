@@ -43,9 +43,9 @@ const App = () => {
     }, 200);
 
     const setDefaultVolume = (): void => {
-      let vol = localStorage.getItem("localStoredVolume");
+      let vol = localStorage.getItem("localStoredVolume") === null ? null : Number(localStorage.getItem("localStoredVolume"));
       vol === null ? vol = 40 : vol;
-      localStorage.setItem("localStoredVolume", vol);
+      localStorage.setItem("localStoredVolume", vol.toString());
       audio.setVolume(vol);
     };
 
@@ -72,7 +72,7 @@ const App = () => {
       preference: { masterVolume: volume },
     } = user;
     audio.setVolume(volume);
-    localStorage.setItem("localStoredVolume", volume);
+    localStorage.setItem("localStoredVolume", volume.toString());
   }, [user]);
 
   const messageListener = (msg: any) => {
@@ -180,6 +180,7 @@ const App = () => {
         break;
       case "onWordCorrect":
         audio.playOneShot(KnutuAudioHandler.clipOnWordCorrect);
+        setEnteredRoom(json.payload.data.currentRoomState);
         setTimeout(() => {
           const payload = KnutuWebSocketHandler.getInstance().wrapPacket(
             "onTurnProcess",

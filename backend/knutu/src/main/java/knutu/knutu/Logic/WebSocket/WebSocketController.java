@@ -8,7 +8,6 @@ import knutu.knutu.Logic.WebSocket.LobbyScene.LobbySceneService;
 
 import java.time.Instant;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 

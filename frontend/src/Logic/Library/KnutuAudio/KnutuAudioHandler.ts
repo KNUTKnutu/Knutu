@@ -43,7 +43,7 @@ class KnutuAudioHandler {
      * @param1 AudioClip to play. please give this parameter as AudioClip constants in KnutuAudioHandler such as clipSuspense.
      * @returns void.
      * */
-    public playOneShot = (_audioClip: AudioClip, _volumeMultiplier?: AudioVolume = 100, _callback?: void): void => {
+    public playOneShot = (_audioClip: AudioClip, _volumeMultiplier: AudioVolume = 100, _callback?: any): void => {
         if(!_audioClip) return console.error("No clip specified.");
         if(_volumeMultiplier > 100) return console.error("Given volume amount is invalid.");
 
@@ -191,7 +191,7 @@ class KnutuAudioHandler {
      * @param1 boolean type, whether to mute or not to. You can just simply skip this paramether to set it to be muted.
      * @returns void.
      * */
-    public setMute = (_isMute?: boolean = true): void => {
+    public setMute = (_isMute: boolean = true): void => {
         this.defaultAudioSource.muted = _isMute;
     }
 

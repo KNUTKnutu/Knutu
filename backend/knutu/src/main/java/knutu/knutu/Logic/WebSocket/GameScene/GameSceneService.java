@@ -6,9 +6,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import javax.websocket.Session;
 
@@ -285,6 +282,7 @@ public class GameSceneService {
                         bodyData.put("word", wordToReturn);
                         bodyData.put("pos", part);
                         bodyData.put("definition", definition);
+                        bodyData.put("requestedWord", word);
 
                         room.setCurrWord(wordToReturn);
 
@@ -296,6 +294,8 @@ public class GameSceneService {
                                 player.setScore(((player.getScore() + 32 + (int) Math.random() * 7) * wordToReturn.length()) * 3);
                             }
                         }
+
+                        bodyData.put("currentRoomState", room);
                     }
                 }
 

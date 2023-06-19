@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -81,7 +80,7 @@ public class FirebaseService implements FirebaseServiceInterface {
         if(firebaseApps != null && firebaseApps.isEmpty() == false) {
             for(FirebaseApp app : firebaseApps) {
                 if(app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
-                    firebaseApp = app;
+                    this.firebaseApp = app;
                 }
             }
         }
@@ -94,12 +93,12 @@ public class FirebaseService implements FirebaseServiceInterface {
                 String dbURL = privates.DB_URL;
     
                 serviceAccount = new FileInputStream(keyURL);
-                options = new FirebaseOptions.Builder()
+                options = FirebaseOptions.builder()
                         .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                         .setDatabaseUrl(dbURL)
                         .build();
     
-                firebaseApp.initializeApp(options);
+                FirebaseApp.initializeApp(options);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -144,7 +143,7 @@ public class FirebaseService implements FirebaseServiceInterface {
         user.setAccountSuspended(false);
         user.setInGame(false);
 
-        ApiFuture<WriteResult> apiFuture = 
+        // ApiFuture<WriteResult> apiFuture = 
             fs
             .collection(COLLECTION__USER)
             .document(_user.getId())
