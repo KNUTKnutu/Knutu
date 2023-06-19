@@ -67,3 +67,9 @@ export const SCENE__FALL  = [
   "fall_lobby",
   "fall_game",
 ];
+
+export const point: { [key: string]: number } = {
+  'SCENE__INTROSCENE': 0,
+  'SCENE__LOBBYSCENE': 1,
+  'SCENE__GAMESCENE': 2,
+};

@@ -41,7 +41,7 @@ const FallAniPage = () => {
     "fall_intro",
     "fall_lobby",
     "fall_game",
-  ];;
+  ];
   useEffect(() => {
     switch (currentScene) {
       case SCENE__INTROSCENE:

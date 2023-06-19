@@ -12,6 +12,8 @@
 
   .gamer {
     display: grid;
+    position: relative;
+    width: 221px;
     padding: 20px;
     border: 3px solid black;
     border-radius: 5px;
@@ -19,27 +21,99 @@
     grid-template-columns: 1fr 1fr;
     justify-items: center;
     align-items: center;
+
     .name {
       word-break: break-all;
       grid-row: 3;
       grid-column: 2;
+      z-index: 1;
     }
+
     .profile {
       grid-row: 2 / span 2;
       grid-column: 1;
+      z-index: 1;
     }
+
     .level {
       padding-top: 16px;
       grid-row: 2;
       grid-column: 2;
+      z-index: 1;
     }
+
     .score {
       font-size: 40px;
       grid-row: 1;
       grid-column: 1 / span 2;
+      z-index: 1;
+    }
+    .cover {
+      position: absolute;
+      top: 191px;
+      width: 0px;
+      height: $game-border-size;
+      background-color: black;
+      transform-origin: center;
+      animation: coverAnimation 3s ease-in-out;
+      z-index: 1;
     }
   }
 }
+  .my_turn {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  .my_turn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 0px;
+    height: 3px;
+    animation: turnAnimation 3s ease-in-out forwards;
+    background-color: aqua;
+    transform-origin: center;
+  }
+  
+  .my_turn::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background-color: #593f96;
+  }
+  
+  .your_turn{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .your_turn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 0px;
+    height: 3px;
+    animation: turnAnimationReverse 3s ease-in-out forwards;
+    background-color: aqua;
+    transform-origin: center;
+  }
+  .first_mount.your_turn::before {
+    visibility: hidden;
+  }
+  
+  .your_turn::after {
+    content: '';
+    position: absolute;
+    inset: 2px;
+    background-color: #593f96;
+  }
 
 /*right*/
 .gamming_container {
@@ -203,5 +277,73 @@
         }
       }
     }
+  }
+}
+
+
+/* keyframes */
+@keyframes turnAnimation {
+  0% {
+    width: 0;
+  }
+  25% {
+    width: $game-gamer-width;
+    height: $game-border-size;
+  }
+  50% {
+    width: $game-gamer-width;
+    height: $game-gamer-height;
+  }
+  75% {
+    width: $game-gamer-width;
+    height: $game-gamer-height;
+  }
+  100% {
+    width: $game-gamer-width;
+    height: $game-gamer-height;
+  }
+}
+
+@keyframes coverAnimation{
+  0% {
+    width: 0px;
+  }
+  25% {
+    width: 0px;
+    height: $game-border-size;
+  }
+  50% {
+    width: 221px;
+    height: $game-border-size;
+  }
+  75% {
+    width: 0px;
+    height: $game-border-size;
+  }
+  100% {
+    width: 0px;
+    height: $game-border-size;
+  }
+}
+
+@keyframes turnAnimationReverse {
+  0% {
+    width: $game-gamer-width;
+    height: $game-gamer-height;
+  }
+  25% {
+    width: $game-gamer-width;
+    height: $game-gamer-height;
+  }
+  50% {
+    width: $game-gamer-width;
+    height: $game-gamer-height;
+  }
+  75% {
+    width: $game-gamer-width;
+    height: $game-border-size;
+  }
+  100% {
+    width: 0;
   }
 }
