@@ -1,8 +1,8 @@
-import styles from "./App.module.scss";
-import Main from "./Components/Main/Main";
-import Header from "./Components/Header/Header";
-import Footer from "./Components/Footer/Footer";
-import { useSetRecoilState, useRecoilState, useRecoilValue } from "recoil";
+import styles from './App.module.scss';
+import Main from './Components/Main/Main';
+import Header from './Components/Header/Header';
+import Footer from './Components/Footer/Footer';
+import { useSetRecoilState, useRecoilState, useRecoilValue } from 'recoil';
 import {
   enteredRoomIdState,
   enteredRoomState,
@@ -14,11 +14,11 @@ import {
   userState,
   isRoundInProgress,
   gameSceneChatState,
-} from "./Recoil/atom";
-import KnutuWebSocketHandler from "./Logic/Library/KnutuWebSocket/KnutuWebSocketHandler";
-import { WebSocketPacket } from "./Logic/Library/KnutuWebSocket/KnutuWebSocketTypes";
-import KnutuAudioHandler from "./Logic/Library/KnutuAudio/KnutuAudioHandler";
-import { useEffect } from "react";
+} from './Recoil/atom';
+import KnutuWebSocketHandler from './Logic/Library/KnutuWebSocket/KnutuWebSocketHandler';
+import { WebSocketPacket } from './Logic/Library/KnutuWebSocket/KnutuWebSocketTypes';
+import KnutuAudioHandler from './Logic/Library/KnutuAudio/KnutuAudioHandler';
+import { useEffect } from 'react';
 
 const App = () => {
   KnutuAudioHandler.getInstance().setLoop();
@@ -26,7 +26,8 @@ const App = () => {
   const roomId = useRecoilValue(enteredRoomIdState);
   const [user, setUser] = useRecoilState(userState);
   const [enteredRoom, setEnteredRoom] = useRecoilState(enteredRoomState);
-  const [gameSceneChats, setGameSceneChats] = useRecoilState(gameSceneChatState);
+  const [gameSceneChats, setGameSceneChats] =
+    useRecoilState(gameSceneChatState);
 
   const setCurrentRoomsState = useSetRecoilState(roomsState);
   const setUsersState = useSetRecoilState(usersState);
@@ -45,17 +46,20 @@ const App = () => {
     }, 200);
 
     const setDefaultVolume = (): void => {
-      let vol = localStorage.getItem("localStoredVolume") === null ? null : Number(localStorage.getItem("localStoredVolume"));
-      vol === null ? vol = 40 : vol;
-      localStorage.setItem("localStoredVolume", vol.toString());
+      let vol =
+        localStorage.getItem('localStoredVolume') === null
+          ? null
+          : Number(localStorage.getItem('localStoredVolume'));
+      vol === null ? (vol = 40) : vol;
+      localStorage.setItem('localStoredVolume', vol.toString());
       audio.setVolume(vol);
     };
 
     const createProfilePictureCache = (): void => {
-      if (localStorage.getItem("profilePictures") !== null) {
+      if (localStorage.getItem('profilePictures') !== null) {
         return;
       }
-      localStorage.setItem("profilePictures", JSON.stringify({}));
+      localStorage.setItem('profilePictures', JSON.stringify({}));
     };
 
     const initApp = (): void => {
@@ -74,7 +78,7 @@ const App = () => {
       preference: { masterVolume: volume },
     } = user;
     audio.setVolume(volume);
-    localStorage.setItem("localStoredVolume", volume.toString());
+    localStorage.setItem('localStoredVolume', volume.toString());
   }, [user]);
 
   const messageListener = (msg: any) => {
@@ -89,20 +93,20 @@ const App = () => {
 
     // TODO. switch문 따로 함수 구비 필요. 너무 굵어져 유지보수 힘듦
     switch (type) {
-      case "currentRooms":
+      case 'currentRooms':
         setCurrentRoomsState(body);
         webSocketHandler.send(
-          "onLobbyEntrance",
-          webSocketHandler.wrapPacket("onLobbyEntrance", {
+          'onLobbyEntrance',
+          webSocketHandler.wrapPacket('onLobbyEntrance', {
             user,
           })
         );
         break;
-      case "onLobbyEntrance":
+      case 'onLobbyEntrance':
         // TODO. 로비에 들어가면서 이미 로그인 된 유저인지 한 번 더 체크하는 로직 필요.
         setUser(json.payload.data);
         break;
-      case "currentChannelInfo":
+      case 'currentChannelInfo':
         // const users = Object.values(body.onlineUsers);
         const users = json.body;
         const sortedUsers: any = users.sort((a: any, b: any) => {
@@ -110,39 +114,39 @@ const App = () => {
         });
         setUsersState(sortedUsers);
         break;
-      case "onGameWaitingEntrance":
+      case 'onGameWaitingEntrance':
         const packet: WebSocketPacket = {
           header: {
-            type: "requestRoomInfo",
+            type: 'requestRoomInfo',
             date: new Date().getTime(),
           },
           payload: {
             roomId,
           },
         };
-        webSocketHandler.send("requestRoomInfo", packet);
+        webSocketHandler.send('requestRoomInfo', packet);
         break;
-      case "requestRoomInfo":
+      case 'requestRoomInfo':
         setEnteredRoom(json.payload.data);
         webSocketHandler.send(
-          "submitSessionInfo",
-          webSocketHandler.wrapPacket("submitSessionInfo", {
+          'submitSessionInfo',
+          webSocketHandler.wrapPacket('submitSessionInfo', {
             userName: user?.name,
             roomId,
           })
         );
         break;
-      case "submitSessionInfo":
-      case "requestExitRoom":
-      case "requestToggleReady":
+      case 'submitSessionInfo':
+      case 'requestExitRoom':
+      case 'requestToggleReady':
         setEnteredRoom(json.payload.data);
         break;
-      case "onChatSubmitOnGameScene":
+      case 'onChatSubmitOnGameScene':
         setEnteredRoom(json.payload.data);
-        break;  
-      case "allPlayerReady":
+        break;
+      case 'allPlayerReady':
         audio.playOneShot(KnutuAudioHandler.clipAllUserReady);
-        setFallScene(true);
+        !isGameInProgress && setFallScene(true);
         const startTime = performance.now();
         const {
           payload: {
@@ -160,60 +164,60 @@ const App = () => {
         setTimeout(() => setFallScene(false), waitTime);
         setTimeout(() => setIsGameInProgress(true), waitTime + 1000);
         break;
-      case "readyToProcessRound":
+      case 'readyToProcessRound':
         setEnteredRoom(json.payload.data);
         audio.stop();
         audio.playOneShot(KnutuAudioHandler.clipOnRoundStart, 100, () => {
           webSocketHandler.send(
-            "readyToRoundStart",
-            webSocketHandler.wrapPacket("readyToRoundStart", {
+            'readyToRoundStart',
+            webSocketHandler.wrapPacket('readyToRoundStart', {
               userName: user?.name,
               roomId,
             })
           );
         });
         break;
-      case "readyToRoundStart":
+      case 'readyToRoundStart':
         audio.stop();
         audio.play(KnutuAudioHandler.clipOnRound);
         setEnteredRoom(json.payload.data);
         setIsRoundInProgress(true);
         break;
-      case "onTurnProcess":
+      case 'onTurnProcess':
         setEnteredRoom(json.payload.data);
         setIsRoundInProgress(true);
         break;
-      case "onWordCorrect":
+      case 'onWordCorrect':
         audio.playOneShot(KnutuAudioHandler.clipOnWordCorrect);
         setEnteredRoom(JSON.parse(json.payload.data.currentRoomState));
         setTimeout(() => {
           const payload = KnutuWebSocketHandler.getInstance().wrapPacket(
-            "onTurnProcess",
+            'onTurnProcess',
             {
               roomId,
               userName: user?.name,
             }
           );
-          KnutuWebSocketHandler.getInstance().send("onTurnProcess", payload);
+          KnutuWebSocketHandler.getInstance().send('onTurnProcess', payload);
         }, 1000);
         setIsRoundInProgress(false);
         break;
-      case "onWordIncorrect":
+      case 'onWordIncorrect':
         audio.playOneShot(KnutuAudioHandler.clipOnWordIncorrect);
         break;
-      case "onRoundEnd":
+      case 'onRoundEnd':
         audio.stop();
         audio.playOneShot(KnutuAudioHandler.clipOnRoundEnd, 100, () => {
           setTimeout(() => {
             const payload = KnutuWebSocketHandler.getInstance().wrapPacket(
-              "readyToProcessRound",
+              'readyToProcessRound',
               {
                 roomId,
                 userName: user?.name,
               }
             );
             KnutuWebSocketHandler.getInstance().send(
-              "readyToProcessRound",
+              'readyToProcessRound',
               payload
             );
           }, 3000);

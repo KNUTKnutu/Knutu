@@ -50,12 +50,12 @@
     }
     .cover {
       position: absolute;
-      top: 191px;
+      top: 192px;
       width: 0px;
-      height: $game-border-size;
-      background-color: black;
+      height: 1px;
+      background-color: #593f96;
       transform-origin: center;
-      animation: coverAnimation 3s ease-in-out;
+      animation: coverAnimation 2s ease-in-out;
       z-index: 1;
     }
   }
@@ -74,7 +74,7 @@
     top: 0;
     width: 0px;
     height: 3px;
-    animation: turnAnimation 3s ease-in-out forwards;
+    animation: turnAnimation 2s ease-in-out forwards;
     background-color: aqua;
     transform-origin: center;
   }
@@ -82,7 +82,7 @@
   .my_turn::after {
     content: '';
     position: absolute;
-    inset: 2px;
+    inset: 3px;
     background-color: #593f96;
   }
   
