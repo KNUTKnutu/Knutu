@@ -55,7 +55,7 @@
       height: 1px;
       background-color: #593f96;
       transform-origin: center;
-      animation: coverAnimation 2s ease-in-out;
+      animation: coverAnimation 1s ease-in-out;
       z-index: 1;
     }
   }
@@ -74,15 +74,15 @@
     top: 0;
     width: 0px;
     height: 3px;
-    animation: turnAnimation 2s ease-in-out forwards;
-    background-color: aqua;
+    animation: turnAnimation 1s ease-in-out forwards;
+    background-color: $game-turn-color;
     transform-origin: center;
   }
   
   .my_turn::after {
     content: '';
     position: absolute;
-    inset: 3px;
+    inset: 2px;
     background-color: #593f96;
   }
   
@@ -100,8 +100,8 @@
     top: 0;
     width: 0px;
     height: 3px;
-    animation: turnAnimationReverse 3s ease-in-out forwards;
-    background-color: aqua;
+    animation: turnAnimationReverse 1s ease-in-out forwards;
+    background-color: $game-turn-color;
     transform-origin: center;
   }
   .first_mount.your_turn::before {
@@ -314,19 +314,19 @@
   }
   25% {
     width: 0px;
-    height: $game-border-size;
+    height: 3px;
   }
   50% {
-    width: 221px;
-    height: $game-border-size;
+    width: 214px;
+    height: 3px;
   }
   75% {
     width: 0px;
-    height: $game-border-size;
+    height: 3px;
   }
   100% {
     width: 0px;
-    height: $game-border-size;
+    height: 0px;
   }
 }
 

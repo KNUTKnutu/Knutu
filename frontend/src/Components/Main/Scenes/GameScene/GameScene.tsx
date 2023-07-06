@@ -10,16 +10,6 @@ const GameScene = (): JSX.Element => {
   // const [isGaming, setIsGaming] = useState(false);
   const isGaming = useRecoilValue(isGameInProgress);
 
-  // const onTestBtnClicked = (): void => {
-  //   // for test. 나중에 지워야 함 허강민 TODO
-  //   setIsGaming((prev) => !prev);
-  //   if(isGaming === true) {
-  //     KnutuAudioHandler.getInstance().play(KnutuAudioHandler.clipGameSceneGaming);
-  //   } else {
-  //     KnutuAudioHandler.getInstance().play(KnutuAudioHandler.clipGameSceneWaiting);
-  //   }
-  // }
-
   return (
     <div className={styles.game_scene_container}>
       <GameScene__Waiting _isGaming={isGaming} />
