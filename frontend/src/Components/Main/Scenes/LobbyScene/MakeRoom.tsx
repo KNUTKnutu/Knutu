@@ -189,7 +189,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
             >
               {LIMITTIME.map((cur, idx) => (
                 <option key={idx} value={cur}>
-                  <label htmlFor={`${cur}s`}>{cur}초</label>
+                  {cur}초
                 </option>
               ))}
             </select>

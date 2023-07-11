@@ -40,7 +40,6 @@ const GameGamming_Chatting = () => {
     };
   
     useEffect(() => {
-      console.log(room);
       setChats(room.chat);
     }, [room]);
 
