@@ -97,7 +97,7 @@ const GameWating_Chatting = () => {
           </div>
           <div
             className={styles.game_wating_chatting__chattingBar__chatContainer}
-          >
+        >
             <textarea
               className={styles.game_wating_chatting__chattingBar__chat}
               onChange={onChatChange}
