@@ -34,8 +34,6 @@ const QuestionBoard = () => {
     if(e.key === 'Enter' && RoundInProgress) {
       if(RoundInProgress) {
         if(isMyTurn()) {
-          console.log(originRoundTime)
-          console.log(remainTurnTimeNumber);
           if(validateAnswer()) {
             const payload = KnutuWebSocketHandler.getInstance().wrapPacket("wordSubmit", {
               roomId: room.number,
