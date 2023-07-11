@@ -17,6 +17,7 @@ public class Room {
     private String      mode;      // 방 모드들
     private int         rounds;     // 총 진행할 라운드
     private int         limitTime;  // 제한 시간
+    private int         originLimitTime;    // 원래 제한 시간
     private int         currEntry;  // 현재 방에 들어가있는 플레이어 인원 수(current entry)
     private int         maxEntry;   // 방의 최대 인원 수
     private String      pw;         // 방 비번 => "" = 오픈방

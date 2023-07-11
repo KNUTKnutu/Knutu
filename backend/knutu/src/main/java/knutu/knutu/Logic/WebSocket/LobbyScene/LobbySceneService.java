@@ -101,6 +101,7 @@ public class LobbySceneService {
 
     public boolean makeRoom(Room room) {
         try {
+            room.setOriginLimitTime(room.getLimitTime());
             gameRooms.put(String.valueOf(room.getNumber()), room);
             return true;
         } catch (Exception e){

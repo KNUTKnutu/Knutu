@@ -9,6 +9,7 @@ const QuestionBoard = () => {
   const [boardInput, setBoardInput] = useState("");
   const [timeGauge, setTimeGauge] = useState(0);
   const [roundOver, setRoundOver] = useState(true);
+  const [originRoundTime, setOriginRoundTime] = useState(-1);
   const [remainTurnTimeNumber, setRemainTurnTimeNumber] = useState(0);
   const [remainRoundTimeNumber, setRemainRoundTimeNumber] = useState(0);
   const room = useRecoilValue(enteredRoomState);
@@ -33,13 +34,17 @@ const QuestionBoard = () => {
     if(e.key === 'Enter' && RoundInProgress) {
       if(RoundInProgress) {
         if(isMyTurn()) {
+          console.log(originRoundTime)
+          console.log(remainTurnTimeNumber);
           if(validateAnswer()) {
             const payload = KnutuWebSocketHandler.getInstance().wrapPacket("wordSubmit", {
               roomId: room.number,
               userName: user?.name,
-              word: boardInput
+              word: boardInput,
+              expiredTime: originRoundTime - remainTurnTimeNumber
             });
             KnutuWebSocketHandler.getInstance().send("wordSubmit", payload);
+            setBoardInput("");
             return;
           }
           // 끝말잇기 성립이 되지 않은 경우 채팅으로 간주
@@ -73,6 +78,7 @@ const QuestionBoard = () => {
       setRoundOver(false);
       setRemainTurnTimeNumber(remainRoundTime);
       setRemainRoundTimeNumber(limitTime * 1000);
+      setOriginRoundTime(remainRoundTime);
     } 
   }, [RoundInProgress]);
 

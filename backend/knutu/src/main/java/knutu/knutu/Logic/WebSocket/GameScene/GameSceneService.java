@@ -283,6 +283,7 @@ public class GameSceneService {
         String userName = (String) requestedPayload.get("userName");
         String roomId = Long.toString((long) requestedPayload.get("roomId"));
         String word = (String) requestedPayload.get("word");
+        int expiredTime = (int) ((long) requestedPayload.get("expiredTime"));
 
         String queryResult = StdictLib.getstdictLibInstance().simpleQuery(word);
 
@@ -323,6 +324,9 @@ public class GameSceneService {
                             }
                         }
 
+                        room.setLimitTime(room.getLimitTime() - (expiredTime / 1000));
+                        room.setRemainRoundTime(room.getLimitTime() * 200);
+
                         bodyData.put("currentRoomState", gson.toJson(room));
 
                         ret[0] = "correct";
@@ -353,6 +357,9 @@ public class GameSceneService {
                 player.setScore(score);
             }
         }
+
+        room.setLimitTime(room.getOriginLimitTime());
+        room.setRemainRoundTime(room.getOriginLimitTime() * 200);
 
         return gson.toJson(room);
     }
