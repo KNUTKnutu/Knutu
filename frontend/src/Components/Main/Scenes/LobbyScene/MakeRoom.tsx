@@ -29,6 +29,7 @@ import {
   userState,
 } from "../../../../Recoil/atom";
 import styles from "../../../../Styles/Components/Main/Scenes/LobbyScene/_makeScene.module.scss";
+import { AxiosError, AxiosResponse } from 'axios';
 
 interface Props {
   setIsShow: Dispatch<SetStateAction<boolean>>;
@@ -57,7 +58,7 @@ const MakeRoom = ({ setIsShow }: Props) => {
     currTurn: "", // 현재 턴인 사람
   });
 
-  const {number, title, pw, isPw, maximum, time_limit, rounds, lang, mode, special, roundWord, currWord, currRound, currTurn, chat } =
+  const {title, pw, isPw, maximum, time_limit, rounds, lang, mode, special, roundWord, currWord, currRound, currTurn, chat } =
     roomInfo;
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -80,14 +81,16 @@ const MakeRoom = ({ setIsShow }: Props) => {
     e.preventDefault();
     getAvailableRoomId().then((res) => {
       // TODO: 아래 res.data 에 있는 빨간 줄 치워야 함. build 불가
+      if(res instanceof AxiosError) {
+        return window.alert(res);
+      }
+
       let roomId = res.data;
 
       const room = {
         roomId,
         ...roomInfo,
       };
-
-      console.log(room);
 
       post__makeRoom(room)
         .then((res) => {
