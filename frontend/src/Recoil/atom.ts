@@ -158,3 +158,13 @@ export const gameSceneChatState = atom<Chat[]>({
   key: "gameSceneChatState",
   default: [],
 });
+
+export const timerState = atom<Boolean>({
+  key: "timerState",
+  default: false,
+})
+
+export const afkTimeState = atom<number>({
+  key: "afkTimeState",
+  default: 0,
+})

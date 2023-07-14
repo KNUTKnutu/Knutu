@@ -14,11 +14,17 @@ import {
   userState,
   isRoundInProgress,
   gameSceneChatState,
+  timerState,
+  currentSceneState,
+  afkTimeState,
 } from './Recoil/atom';
 import KnutuWebSocketHandler from './Logic/Library/KnutuWebSocket/KnutuWebSocketHandler';
 import { WebSocketPacket } from './Logic/Library/KnutuWebSocket/KnutuWebSocketTypes';
 import KnutuAudioHandler from './Logic/Library/KnutuAudio/KnutuAudioHandler';
 import { useEffect } from 'react';
+import { put__exitRoom } from './Logic/API/PUT/put';
+import { SCENE__LOBBYSCENE } from './constant';
+import { AxiosError } from 'axios';
 
 const App = () => {
   KnutuAudioHandler.getInstance().setLoop();
@@ -28,17 +34,22 @@ const App = () => {
   const [enteredRoom, setEnteredRoom] = useRecoilState(enteredRoomState);
   const [gameSceneChats, setGameSceneChats] =
     useRecoilState(gameSceneChatState);
-
+  
+  
+  const setCurrentScene = useSetRecoilState(currentSceneState);
   const setCurrentRoomsState = useSetRecoilState(roomsState);
   const setUsersState = useSetRecoilState(usersState);
   const setIsGameInProgress = useSetRecoilState(isGameInProgress);
   const setFallScene = useSetRecoilState(fallState);
   const setIsRoundInProgress = useSetRecoilState(isRoundInProgress);
+  const setTimer = useSetRecoilState(timerState);
+  const setAfkTime = useSetRecoilState(afkTimeState);
 
   // mount 시 Scene에 opacity:0 부여
   const [opacity, setOpacity] = useRecoilState(mountOpacity);
 
   const audio = KnutuAudioHandler.getInstance();
+  const { number, title, lang, mode, rounds, limitTime, players } = enteredRoom;
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -91,6 +102,15 @@ const App = () => {
     const webSocketHandler: KnutuWebSocketHandler =
       KnutuWebSocketHandler.getInstance();
 
+    const kickUser = () => {
+      const payload = webSocketHandler.wrapPacket('requestExitRoom', {
+        roomId,
+        userName: user?.name,
+      });
+      webSocketHandler.send('requestExitRoom', payload);
+      setCurrentScene(SCENE__LOBBYSCENE);
+    };
+
     // TODO. switch문 따로 함수 구비 필요. 너무 굵어져 유지보수 힘듦
     switch (type) {
       case 'currentRooms':
@@ -135,18 +155,21 @@ const App = () => {
             roomId,
           })
         );
+        setTimer(true);
         break;
       case 'submitSessionInfo':
       case 'requestExitRoom':
       case 'requestToggleReady':
         setEnteredRoom(json.payload.data);
+        setAfkTime(0);
         break;
       case 'onChatSubmitOnGameScene':
         setEnteredRoom(json.payload.data);
+        setAfkTime(0);
         break;
       case 'allPlayerReady':
         audio.playOneShot(KnutuAudioHandler.clipAllUserReady);
-        !isGameInProgress && setFallScene(true);
+        setFallScene(true);
         const startTime = performance.now();
         const {
           payload: {
